@@ -1,0 +1,21 @@
+{
+  "name": "frontend-editor-js",
+  "version": "1.0.0",
+  "description": "frontend editor built with js ",
+  "main": "./dist/frontendEditor.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yehuya",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-order": "^1.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
+  }
+}
