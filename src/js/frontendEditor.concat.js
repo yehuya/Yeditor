@@ -4,9 +4,13 @@
 
 /**
  * __constructor
+ * @param Object (options)
  */
-function Text(){
+function Text(option){
     this.DOM = null
+    this.options = extendOption({
+        edit_class: null
+    }, option);
 
     this.get();
     this.edit();
@@ -24,10 +28,12 @@ Text.prototype.get = function(){
 
 /**
  * add 'contenteditable' Attr to all the DOM elements
+ * add editor css class to all the DOM elements
  */
 Text.prototype.edit = function(){
     for(var i = 0 ; i < this.DOM.length ; i++){
         this.DOM[i].setAttribute('contenteditable', 'true');
+        this.DOM[i].classList.add(this.options.edit_class);
     }
 }
 
@@ -84,9 +90,20 @@ Text.prototype.removeSurroundSelection = function(Node){
     }
 }
 
-// var b = document.createElement('strong');
-// a.surroundSelection(b);
-// a.removeSurroundSelection()
+/**
+ * extends two objects
+ * @param Object (the base object)
+ * @param Object
+ */
+var extendOption = function(def, set){
+    for(var n in set){
+        if(def.hasOwnProperty(n)){
+            def[n] = set[n];
+        }
+    }
+
+    return def;
+}
 /**
  * Attribute "Edit" = DOM will be editable
  * Item editable - onClick
@@ -97,5 +114,36 @@ Text.prototype.removeSurroundSelection = function(Node){
 // edit background-image Attr: Edit="image-background"
 // the Name of the editable content Attr: name="<name>" (for send item data)
 
-// text
-var a = new Text();
+/**
+ * frontendEditor __constructor
+ * @param Object (plugin options)
+ */
+function frontendEditor(option){
+    this.options = extendOption({
+        classes: {
+            text: 'frontendEditor-text',
+            image: 'frontendEditor-image'
+        }
+    }, option);
+
+    this.text = new Text({
+        edit_class: this.options.classes.text    
+    });
+}
+
+/**
+ * extends two objects
+ * @param Object (the base object)
+ * @param Object
+ */
+var extendOption = function(def, set){
+    for(var n in set){
+        if(def.hasOwnProperty(n)){
+            def[n] = set[n];
+        }
+    }
+
+    return def;
+}
+
+var a = new frontendEditor();
