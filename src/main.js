@@ -9,4 +9,4 @@
 // the Name of the editable content Attr: name="<name>" (for send item data)
 
 // text
-new Text();
+var a = new Text();
