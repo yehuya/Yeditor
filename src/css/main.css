@@ -1,0 +1,4 @@
+.frontendEditor-text:hover, .frontendEditor-text:focus {
+  box-sizing: border-box;
+  border: 1px dotted black;
+  outline: none; }
