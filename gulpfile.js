@@ -28,7 +28,7 @@ gulp.task('sass', function(){
 gulp.task('css', ['sass'], function(){
 	return gulp.src(['src/css/*.css'])
 	.pipe(cssmin())
-	.pipe(rename('frontendEditor.css.js'))
+	.pipe(rename('frontendEditor.min.css'))
 	.pipe(gulp.dest('dist'));
 });
 
