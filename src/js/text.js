@@ -4,9 +4,13 @@
 
 /**
  * __constructor
+ * @param Object (options)
  */
-function Text(){
+function Text(option){
     this.DOM = null
+    this.options = extendOption({
+        edit_class: null
+    }, option);
 
     this.get();
     this.edit();
@@ -24,10 +28,12 @@ Text.prototype.get = function(){
 
 /**
  * add 'contenteditable' Attr to all the DOM elements
+ * add editor css class to all the DOM elements
  */
 Text.prototype.edit = function(){
     for(var i = 0 ; i < this.DOM.length ; i++){
         this.DOM[i].setAttribute('contenteditable', 'true');
+        this.DOM[i].classList.add(this.options.edit_class);
     }
 }
 
@@ -84,6 +90,17 @@ Text.prototype.removeSurroundSelection = function(Node){
     }
 }
 
-// var b = document.createElement('strong');
-// a.surroundSelection(b);
-// a.removeSurroundSelection()
+/**
+ * extends two objects
+ * @param Object (the base object)
+ * @param Object
+ */
+var extendOption = function(def, set){
+    for(var n in set){
+        if(def.hasOwnProperty(n)){
+            def[n] = set[n];
+        }
+    }
+
+    return def;
+}
