@@ -8,5 +8,36 @@
 // edit background-image Attr: Edit="image-background"
 // the Name of the editable content Attr: name="<name>" (for send item data)
 
-// text
-var a = new Text();
+/**
+ * frontendEditor __constructor
+ * @param Object (plugin options)
+ */
+function frontendEditor(option){
+    this.options = extendOption({
+        classes: {
+            text: 'frontendEditor-text',
+            image: 'frontendEditor-image'
+        }
+    }, option);
+
+    this.text = new Text({
+        edit_class: this.options.classes.text    
+    });
+}
+
+/**
+ * extends two objects
+ * @param Object (the base object)
+ * @param Object
+ */
+var extendOption = function(def, set){
+    for(var n in set){
+        if(def.hasOwnProperty(n)){
+            def[n] = set[n];
+        }
+    }
+
+    return def;
+}
+
+var a = new frontendEditor();
