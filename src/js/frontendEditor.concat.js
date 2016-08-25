@@ -1,5 +1,66 @@
 /**
+ * all the editor edit button
+ * __counstructor
+ */
+function Edit_btn(){
+    return this;
+}
+
+/**
+ * bold
+ * @DOM span
+ * @CSS font-weight="bold"
+ */
+Edit_btn.prototype.bold = function(){
+    var element = document.createElement('span');
+    element.style.fontWeight = 'bold';
+
+    return element.cloneNode();
+}
+
+/**
+ * italic
+ * @DOM span
+ * @CSS font-style="italic"
+ */
+Edit_btn.prototype.italic = function(){
+    var element = document.createElement('span');
+    element.style.fontStyle = 'italic';
+
+    return element.cloneNode();
+}
+
+/**
+ * underline
+ * @DOM span
+ * @CSS text-decoration="underline"
+ */
+Edit_btn.prototype.underline = function(){
+    var element = document.createElement('span');
+    element.style.textDecoration = 'underline';
+
+    return element.cloneNode();
+}
+
+/**
+ * the editor
+ */
+
+/**
+ * __counsturcor
+ */
+function Editor(){
+    this.edit_btn = Edit_btn();
+
+    return this;
+}
+
+/**
  * edit text on the document
+ * - set text element as editable
+ * - add text element css class
+ * - get user selection
+ * - set user selection (into DOM element)
  */
 
 /**
@@ -8,7 +69,7 @@
  */
 function Text(option){
     this.DOM = null
-    this.options = extendOption({
+    this.options = window.extendOption({
         edit_class: null
     }, option);
 
@@ -68,7 +129,7 @@ Text.prototype.surroundSelection = function(Node){
    
     if(selected && selected.rangeCount){
         var range = selected.getRangeAt(0).cloneRange();
-        range.surroundContents(Node.cloneNode());
+        range.surroundContents(Node);
         selected.removeAllRanges();
         selected.addRange(range);
     }
@@ -88,21 +149,6 @@ Text.prototype.removeSurroundSelection = function(Node){
         parent.insertBefore(newText, Node);
         parent.parentElement.removeChild(Node);
     }
-}
-
-/**
- * extends two objects
- * @param Object (the base object)
- * @param Object
- */
-var extendOption = function(def, set){
-    for(var n in set){
-        if(def.hasOwnProperty(n)){
-            def[n] = set[n];
-        }
-    }
-
-    return def;
 }
 /**
  * Attribute "Edit" = DOM will be editable
@@ -129,6 +175,8 @@ function frontendEditor(option){
     this.text = new Text({
         edit_class: this.options.classes.text    
     });
+
+    this.editor = new Editor();
 }
 
 /**
@@ -136,7 +184,7 @@ function frontendEditor(option){
  * @param Object (the base object)
  * @param Object
  */
-var extendOption = function(def, set){
+window.extendOption = function(def, set){
     for(var n in set){
         if(def.hasOwnProperty(n)){
             def[n] = set[n];

@@ -23,6 +23,8 @@ function frontendEditor(option){
     this.text = new Text({
         edit_class: this.options.classes.text    
     });
+
+    this.editor = new Editor();
 }
 
 /**
@@ -30,7 +32,7 @@ function frontendEditor(option){
  * @param Object (the base object)
  * @param Object
  */
-var extendOption = function(def, set){
+window.extendOption = function(def, set){
     for(var n in set){
         if(def.hasOwnProperty(n)){
             def[n] = set[n];
