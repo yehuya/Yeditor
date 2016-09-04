@@ -66,7 +66,7 @@ export default class Selection {
         var selected = this.get();
 
         if(selected && selected.rangeCount){
-            let newText = document.createTextNode(selected.toString());
+            let newText = document.createTextNode(this.text());
             let parent = Node.parentElement;
 
             parent.insertBefore(newText, Node);

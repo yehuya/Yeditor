@@ -147,7 +147,7 @@
 	            var selected = this.get();
 
 	            if (selected && selected.rangeCount) {
-	                var newText = document.createTextNode(selected.toString());
+	                var newText = document.createTextNode(this.text());
 	                var parent = Node.parentElement;
 
 	                parent.insertBefore(newText, Node);
