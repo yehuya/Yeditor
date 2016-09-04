@@ -2,7 +2,7 @@
      entry: './src/index.js',
      output: {
          path: './src',
-         filename: 'index.bundle.js',
+         filename: '../dist/index.bundle.js',
      },
      module: {
          loaders: [{
