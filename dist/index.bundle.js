@@ -64,6 +64,9 @@
 	window.editable = new _EditableClass2.default();
 	window.editor = new _EditorClass2.default();
 
+	// usefull link
+	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
+
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
