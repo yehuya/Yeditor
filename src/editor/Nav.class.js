@@ -1,4 +1,5 @@
 import Config from './../config.js';
+import Button from './Button.class.js';
 
 export default class Nav {
 
@@ -8,19 +9,22 @@ export default class Nav {
      */
     constructor(){
         this.config = Config.nav;
-        this.create();
+        this.Button = new Button();
+        this.createTextNav();
+        this.createImageNav();
     }
 
     /**
-     * create main navigation element (DOM)
+     * create navigation element (DOM)
+     * @param String (nav id)
      * @return Object
      */
-    element(){
+    element(navId){
         var elem = document.createElement('nav');
-        elem.id = this.config.navId;
+        elem.id = navId;
         elem.classList.add(this.config.navClass);
 
-        return elem;
+        return elem.cloneNode();
     }
 
     /**
@@ -32,19 +36,56 @@ export default class Nav {
     }
 
     /**
-     * create navigation
+     * append DOM element into the nav 
+     * @param Object (nav element)
+     * @param Object (DOM element)
      */
-    create(){
-        this.appendToDocument(this.element());
+    appendToNav(nav, Node){
+        nav.appendChild(Node);
     }
 
     /**
-     * refresh the navigation
-     * remove nav
-     * create nav
+     * append edit button into nav
+     * @param Object (nav element)
+     * @param Array (buttons)
      */
-    refresh(){
-        this.element().parentNode.removeChild(this.element());
-        this.create();
+    appendEditButtons(nav, buttons){
+        var self = this;
+        buttons.forEach(function(element) {
+            self.appendToNav(nav, element);
+        });
+    }
+
+    /**
+     * create navigation
+     * @param String (nav id)
+     * @param Array (buttons element)
+     * - create nav
+     * - append edit button into nav
+     * - append nav into body
+     */
+    create(navId, buttons){
+        var nav = this.element(navId);
+
+        this.appendEditButtons(nav, buttons);
+        this.appendToDocument(nav);
+    }
+
+    /**
+     * create navigation for text area
+     */
+    createTextNav(){
+        var buttons = this.Button.btnTextElement;
+        var navId = this.config.navTextId;
+        this.create(navId, buttons);  
+    }
+
+    /**
+     * create navigation for image area
+     */
+    createImageNav(){
+        var buttons = this.Button.btnImageElement;
+        var navId = this.config.navImageId;        
+        this.create(navId, buttons);  
     }
 }
