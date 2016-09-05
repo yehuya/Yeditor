@@ -46,13 +46,23 @@
 
 	'use strict';
 
-	var Selection = __webpack_require__(1).default;
-	var Editable = __webpack_require__(2).default;
-	var Editor = __webpack_require__(4).default;
+	var _SelectionClass = __webpack_require__(1);
 
-	window.selection = new Selection();
-	window.editable = new Editable();
-	window.editor = new Editor();
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	var _EditableClass = __webpack_require__(2);
+
+	var _EditableClass2 = _interopRequireDefault(_EditableClass);
+
+	var _EditorClass = __webpack_require__(4);
+
+	var _EditorClass2 = _interopRequireDefault(_EditorClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	window.selection = new _SelectionClass2.default();
+	window.editable = new _EditableClass2.default();
+	window.editor = new _EditorClass2.default();
 
 /***/ },
 /* 1 */
@@ -313,6 +323,8 @@
 	    value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _config = __webpack_require__(3);
@@ -355,6 +367,32 @@
 	                }
 	            });
 	        }
+
+	        /**
+	         * add image button
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'addImageButton',
+	        value: function addImageButton(Object) {
+	            if ((typeof Object === 'undefined' ? 'undefined' : _typeof(Object)) == 'object') {
+	                this.btn_image.push(Object);
+	            }
+	        }
+
+	        /**
+	         * add text button
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'addTextButton',
+	        value: function addTextButton(Object) {
+	            if ((typeof Object === 'undefined' ? 'undefined' : _typeof(Object)) == 'object') {
+	                this.btn_text.push(Object);
+	            }
+	        }
 	    }]);
 
 	    return Button;
@@ -366,11 +404,53 @@
 /* 6 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var _exports = module.exports;
 
-	_exports.text = [];
+	_exports.text = [
+	/**
+	 * bold
+	 * @DOM span
+	 * @CSS font-weight="bold"
+	 */
+	{
+	    name: 'bold',
+	    node: function node() {
+	        var element = document.createElement('span');
+	        element.style.fontWeight = 'bold';
+
+	        return element.cloneNode();
+	    }
+	},
+	/**
+	 * italic
+	 * @DOM span
+	 * @CSS font-style="italic"
+	 */
+	{
+	    name: 'italic',
+	    node: function node() {
+	        var element = document.createElement('span');
+	        element.style.fontStyle = 'italic';
+
+	        return element.cloneNode();
+	    }
+	},
+	/**
+	 * underline
+	 * @DOM span
+	 * @CSS text-decoration="underline"
+	 */
+	{
+	    name: 'underline',
+	    node: function node() {
+	        var element = document.createElement('span');
+	        element.style.textDecoration = 'underline';
+
+	        return element.cloneNode();
+	    }
+	}];
 
 	_exports.image = [];
 
@@ -398,12 +478,13 @@
 
 	    /**
 	     * __construct
+	     * create navigation
 	     */
 	    function Nav() {
 	        _classCallCheck(this, Nav);
 
 	        this.config = _config2.default.nav;
-	        this.appendToDocument(this.element());
+	        this.create();
 	    }
 
 	    /**
@@ -415,11 +496,11 @@
 	    _createClass(Nav, [{
 	        key: 'element',
 	        value: function element() {
-	            var element = document.createElement('nav');
-	            element.classList.add(this.config.navClass);
-	            element.id = this.config.navId;
+	            var elem = document.createElement('nav');
+	            elem.id = this.config.navId;
+	            elem.classList.add(this.config.navClass);
 
-	            return element;
+	            return elem;
 	        }
 
 	        /**
@@ -431,6 +512,29 @@
 	        key: 'appendToDocument',
 	        value: function appendToDocument(Node) {
 	            document.body.appendChild(Node);
+	        }
+
+	        /**
+	         * create navigation
+	         */
+
+	    }, {
+	        key: 'create',
+	        value: function create() {
+	            this.appendToDocument(this.element());
+	        }
+
+	        /**
+	         * refresh the navigation
+	         * remove nav
+	         * create nav
+	         */
+
+	    }, {
+	        key: 'refresh',
+	        value: function refresh() {
+	            this.element().parentNode.removeChild(this.element());
+	            this.create();
 	        }
 	    }]);
 
