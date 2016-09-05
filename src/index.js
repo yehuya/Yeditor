@@ -1,4 +1,4 @@
-const Selection = require('./text/selection.component.js').default;
+const Selection = require('./text/selection.class.js').default;
 
 window.selection = new Selection();
 
