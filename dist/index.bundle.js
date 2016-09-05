@@ -278,8 +278,16 @@
 	 * config for editor/Nav.class.js
 	 */
 	_exports.nav = {
-	  navClass: prefix + 'area-nav',
-	  navId: prefix + 'nav'
+	  navClass: prefix + '-nav',
+	  navTextId: prefix + 'nav-text',
+	  navImageId: prefix + 'nav-image'
+	};
+
+	/**
+	 * config for editor/Button.class.js
+	 */
+	_exports.button = {
+	  btnClass: prefix + 'nav-btn'
 	};
 
 /***/ },
@@ -335,6 +343,10 @@
 
 	var _button2 = _interopRequireDefault(_button);
 
+	var _SelectionClass = __webpack_require__(1);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -346,8 +358,12 @@
 	    function Button() {
 	        _classCallCheck(this, Button);
 
+	        this.Selection = new _SelectionClass2.default();
+	        this.config = _config2.default.button;
 	        this.btn_image = _button2.default.image;
 	        this.btn_text = _button2.default.text;
+	        this.btnTextElement = this.createFromArray(this.btn_text);
+	        this.btnImageElement = this.createFromArray(this.btn_image);
 	    }
 
 	    /**
@@ -366,6 +382,51 @@
 	                    callback();
 	                }
 	            });
+	        }
+
+	        /**
+	         * create button from btn object
+	         * get btn object form btn.[image|text] and make it as DOM element
+	         * @param Object (btn object)
+	         * @return Object (DOM element)
+	         */
+
+	    }, {
+	        key: 'create',
+	        value: function create(Object) {
+	            var self = this;
+	            var name = Object.name || '?';
+	            var node = Object.node() || null;
+
+	            var elem = document.createElement('button');
+	            elem.classList.add(this.config.btnClass);
+	            elem.title = name;
+	            elem.innerText = name;
+
+	            this.click(elem, function () {
+	                self.Selection.append(node);
+	            });
+
+	            return elem;
+	        }
+
+	        /**
+	         * create elements from array
+	         * take the object of button and make it as dom element
+	         * @param Array
+	         * @return Array
+	         */
+
+	    }, {
+	        key: 'createFromArray',
+	        value: function createFromArray(array) {
+	            var self = this;
+	            var newArray = [];
+	            array.forEach(function (element) {
+	                newArray.push(self.create(element));
+	            });
+
+	            return newArray;
 	        }
 
 	        /**
@@ -470,6 +531,10 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
+	var _ButtonClass = __webpack_require__(5);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -484,23 +549,26 @@
 	        _classCallCheck(this, Nav);
 
 	        this.config = _config2.default.nav;
-	        this.create();
+	        this.Button = new _ButtonClass2.default();
+	        this.createTextNav();
+	        this.createImageNav();
 	    }
 
 	    /**
-	     * create main navigation element (DOM)
+	     * create navigation element (DOM)
+	     * @param String (nav id)
 	     * @return Object
 	     */
 
 
 	    _createClass(Nav, [{
 	        key: 'element',
-	        value: function element() {
+	        value: function element(navId) {
 	            var elem = document.createElement('nav');
-	            elem.id = this.config.navId;
+	            elem.id = navId;
 	            elem.classList.add(this.config.navClass);
 
-	            return elem;
+	            return elem.cloneNode();
 	        }
 
 	        /**
@@ -515,26 +583,72 @@
 	        }
 
 	        /**
+	         * append DOM element into the nav 
+	         * @param Object (nav element)
+	         * @param Object (DOM element)
+	         */
+
+	    }, {
+	        key: 'appendToNav',
+	        value: function appendToNav(nav, Node) {
+	            nav.appendChild(Node);
+	        }
+
+	        /**
+	         * append edit button into nav
+	         * @param Object (nav element)
+	         * @param Array (buttons)
+	         */
+
+	    }, {
+	        key: 'appendEditButtons',
+	        value: function appendEditButtons(nav, buttons) {
+	            var self = this;
+	            buttons.forEach(function (element) {
+	                self.appendToNav(nav, element);
+	            });
+	        }
+
+	        /**
 	         * create navigation
+	         * @param String (nav id)
+	         * @param Array (buttons element)
+	         * - create nav
+	         * - append edit button into nav
+	         * - append nav into body
 	         */
 
 	    }, {
 	        key: 'create',
-	        value: function create() {
-	            this.appendToDocument(this.element());
+	        value: function create(navId, buttons) {
+	            var nav = this.element(navId);
+
+	            this.appendEditButtons(nav, buttons);
+	            this.appendToDocument(nav);
 	        }
 
 	        /**
-	         * refresh the navigation
-	         * remove nav
-	         * create nav
+	         * create navigation for text area
 	         */
 
 	    }, {
-	        key: 'refresh',
-	        value: function refresh() {
-	            this.element().parentNode.removeChild(this.element());
-	            this.create();
+	        key: 'createTextNav',
+	        value: function createTextNav() {
+	            var buttons = this.Button.btnTextElement;
+	            var navId = this.config.navTextId;
+	            this.create(navId, buttons);
+	        }
+
+	        /**
+	         * create navigation for image area
+	         */
+
+	    }, {
+	        key: 'createImageNav',
+	        value: function createImageNav() {
+	            var buttons = this.Button.btnImageElement;
+	            var navId = this.config.navImageId;
+	            this.create(navId, buttons);
 	        }
 	    }]);
 
