@@ -13,7 +13,7 @@ exports.editable = {
  * config for editor/Nav.class.js
  */
 exports.nav = {
-    navClass: `${prefix}-nav`,
+    navClass: `${prefix}nav`,
     navTextId: `${prefix}nav-text`,
     navImageId: `${prefix}nav-image`
 }

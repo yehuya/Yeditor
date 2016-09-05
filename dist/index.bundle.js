@@ -278,7 +278,7 @@
 	 * config for editor/Nav.class.js
 	 */
 	_exports.nav = {
-	  navClass: prefix + '-nav',
+	  navClass: prefix + 'nav',
 	  navTextId: prefix + 'nav-text',
 	  navImageId: prefix + 'nav-image'
 	};
