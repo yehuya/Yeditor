@@ -1,5 +1,6 @@
 import Config from './../config.js';
-import btn from './button.js';
+import btnImage from './button/image.js';
+import btnText from './button/text.js';
 import Selection from './../text/Selection.class.js';
 
 /**
@@ -9,8 +10,8 @@ export default class Button {
     constructor(){
         this.Selection = new Selection();
         this.config = Config.button;
-        this.btn_image = btn.image;
-        this.btn_text = btn.text;
+        this.btn_image = btnImage.image;
+        this.btn_text = btnText.text;
         this.btnTextElement = this.createFromArray(this.btn_text);
         this.btnImageElement = this.createFromArray(this.btn_image);
     }

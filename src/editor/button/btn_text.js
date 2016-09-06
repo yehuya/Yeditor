@@ -45,4 +45,3 @@ exports.text = [
     }
 ];
 
-exports.image = [];
