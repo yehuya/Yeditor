@@ -50,7 +50,7 @@ export default class Selection {
     
         if(selected && selected.rangeCount){
             let range = selected.getRangeAt(0).cloneRange();
-            range.surroundContents(Node);
+            range.surroundContents(Node.cloneNode());
             selected.removeAllRanges();
             selected.addRange(range);
         }

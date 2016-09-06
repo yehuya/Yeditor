@@ -145,7 +145,7 @@
 
 	            if (selected && selected.rangeCount) {
 	                var range = selected.getRangeAt(0).cloneRange();
-	                range.surroundContents(Node);
+	                range.surroundContents(Node.cloneNode());
 	                selected.removeAllRanges();
 	                selected.addRange(range);
 	            }
