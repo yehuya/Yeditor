@@ -18,7 +18,7 @@ export default class Button {
     /**
      * event onClick on button
      * @param Object (button)
-     * @Param FN (callback function)
+     * @param FN (callback function)
      */
     click(button, callback){
         button.addEventListener('click', function(e){
