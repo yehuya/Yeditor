@@ -8,6 +8,16 @@ export default class Element {
         this.config = Config.editable;
     }
 
+    all(){
+        var arr = [];
+        var elements = this.get();
+        elements.forEach(function(element) {
+            arr.push(this.serialize(element));
+        }, this);
+
+        return arr;
+    }
+
     /**
      * get all editable elements
      * @return Array of Object (Node)

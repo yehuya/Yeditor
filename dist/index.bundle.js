@@ -50,7 +50,7 @@
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _EditableClass = __webpack_require__(2);
+	var _EditableClass = __webpack_require__(3);
 
 	var _EditableClass2 = _interopRequireDefault(_EditableClass);
 
@@ -74,7 +74,7 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -84,8 +84,17 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	/**
+	 * class for user selection
+	 */
 	var Selection = function () {
 
 	    /**
@@ -95,7 +104,7 @@
 	    function Selection() {
 	        _classCallCheck(this, Selection);
 
-	        return this;
+	        this.config = _config2.default.editable;
 	    }
 
 	    /**
@@ -157,6 +166,41 @@
 	        }
 
 	        /**
+	         * get parent element of user selection
+	         * @return Object
+	         */
+
+	    }, {
+	        key: 'parent',
+	        value: function parent() {
+	            return this.get().anchorNode.parentElement;
+	        }
+
+	        /**
+	         * check if the area of user selection is editable
+	         * - check if parent node is editable
+	         */
+
+	    }, {
+	        key: 'parentEditable',
+	        value: function parentEditable() {
+	            var parent = this.parent();
+	            var editable = false;
+
+	            while (parent) {
+	                console.log(parent.tagName, this.config.htmlTag);
+	                if (parent.tagName.toLowerCase() == this.config.htmlTag) {
+	                    editable = true;
+	                    break;
+	                }
+
+	                parent = parent.parentElement;
+	            }
+
+	            return editable;
+	        }
+
+	        /**
 	         * remove user selection dom element
 	         * (remove the selection parent element itself not the innerText)
 	         * the param Node need to be object that already exist in the document
@@ -185,6 +229,41 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _exports = module.exports;
+	var prefix = 'frontendEditor-';
+
+	/**
+	 * config for Editable.class.js
+	 * config for element/Element.class.js
+	 */
+	_exports.editable = {
+	  htmlTag: 'edit',
+	  nameAttr: 'name',
+	  typeAttr: 'type'
+	};
+
+	/**
+	 * config for editor/Nav.class.js
+	 */
+	_exports.nav = {
+	  navClass: prefix + 'nav',
+	  navTextId: prefix + 'nav-text',
+	  navImageId: prefix + 'nav-image'
+	};
+
+	/**
+	 * config for editor/Button.class.js
+	 */
+	_exports.button = {
+	  btnClass: prefix + 'nav-btn'
+	};
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -195,7 +274,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _config = __webpack_require__(3);
+	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -269,41 +348,6 @@
 	exports.default = Editable;
 
 /***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _exports = module.exports;
-	var prefix = 'frontendEditor-';
-
-	/**
-	 * config for Editable.class.js
-	 * config for element/Element.class.js
-	 */
-	_exports.editable = {
-	  htmlTag: 'edit',
-	  nameAttr: 'name',
-	  typeAttr: 'type'
-	};
-
-	/**
-	 * config for editor/Nav.class.js
-	 */
-	_exports.nav = {
-	  navClass: prefix + 'nav',
-	  navTextId: prefix + 'nav-text',
-	  navImageId: prefix + 'nav-image'
-	};
-
-	/**
-	 * config for editor/Button.class.js
-	 */
-	_exports.button = {
-	  btnClass: prefix + 'nav-btn'
-	};
-
-/***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -315,7 +359,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _config = __webpack_require__(3);
+	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -333,13 +377,24 @@
 	        this.config = _config2.default.editable;
 	    }
 
-	    /**
-	     * get all editable elements
-	     * @return Array of Object (Node)
-	     */
-
-
 	    _createClass(Element, [{
+	        key: 'all',
+	        value: function all() {
+	            var arr = [];
+	            var elements = this.get();
+	            elements.forEach(function (element) {
+	                arr.push(this.serialize(element));
+	            }, this);
+
+	            return arr;
+	        }
+
+	        /**
+	         * get all editable elements
+	         * @return Array of Object (Node)
+	         */
+
+	    }, {
 	        key: 'get',
 	        value: function get() {
 	            var TAG = this.config.htmlTag;
@@ -454,7 +509,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _config = __webpack_require__(3);
+	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -658,7 +713,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _config = __webpack_require__(3);
+	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 

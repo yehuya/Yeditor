@@ -1,3 +1,8 @@
+import Config from './../config.js';
+
+/**
+ * class for user selection
+ */
 export default class Selection {
     
     /**
@@ -5,7 +10,7 @@ export default class Selection {
      * @return Object (this)
      */
     constructor(){
-        return this;
+        this.config = Config.editable;
     }
 
     /**
@@ -54,6 +59,34 @@ export default class Selection {
             selected.removeAllRanges();
             selected.addRange(range);
         }
+    }
+
+    /**
+     * get parent element of user selection
+     * @return Object
+     */
+    parent(){
+        return this.get().anchorNode.parentElement;
+    }
+
+    /**
+     * check if the area of user selection is editable
+     * - check if parent node is editable
+     */
+    parentEditable(){
+        var parent = this.parent();
+        var editable = false;
+
+        while(parent){
+            if(parent.tagName.toLowerCase() == this.config.htmlTag.toLowerCase()){
+                editable = true;
+                break;
+            }
+
+            parent = parent.parentElement;
+        }
+
+        return editable;
     }
 
     /**
