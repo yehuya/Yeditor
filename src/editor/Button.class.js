@@ -22,10 +22,14 @@ export default class Button {
      * @param FN (callback function)
      */
     click(button, callback){
+        var self = this;
         button.addEventListener('click', function(e){
             e.preventDefault();
             if(typeof callback == 'function'){
-                callback();
+                // check if user selection area is editable
+                if(self.Selection.parentEditable()){
+                    callback();
+                }
             }
         });
     }

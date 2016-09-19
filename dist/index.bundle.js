@@ -188,8 +188,7 @@
 	            var editable = false;
 
 	            while (parent) {
-	                console.log(parent.tagName, this.config.htmlTag);
-	                if (parent.tagName.toLowerCase() == this.config.htmlTag) {
+	                if (parent.tagName.toLowerCase() == this.config.htmlTag.toLowerCase()) {
 	                    editable = true;
 	                    break;
 	                }
@@ -554,10 +553,14 @@
 	    _createClass(Button, [{
 	        key: 'click',
 	        value: function click(button, callback) {
+	            var self = this;
 	            button.addEventListener('click', function (e) {
 	                e.preventDefault();
 	                if (typeof callback == 'function') {
-	                    callback();
+	                    // check if user selection area is editable
+	                    if (self.Selection.parentEditable()) {
+	                        callback();
+	                    }
 	                }
 	            });
 	        }
