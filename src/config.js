@@ -25,3 +25,15 @@ exports.button = {
     btnClass: `${prefix}nav-btn`
 }
 
+/**
+ * config for ajax
+ */
+exports.ajax = {
+    // ajax/element.class.js
+    element: {
+        DOM: 'edit',
+        nameAttr: 'name',
+        typeAttr: 'type'
+    }
+}
+
