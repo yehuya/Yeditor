@@ -3,10 +3,12 @@ const prefix = 'frontendEditor-';
 
 /**
  * config for Editable.class.js
+ * config for element/Element.class.js
  */
 exports.editable = {
     htmlTag: 'edit',
-    nameAttribute: 'name'
+    nameAttr: 'name',
+    typeAttr: 'type'
 }
 
 /**
@@ -23,17 +25,5 @@ exports.nav = {
  */
 exports.button = {
     btnClass: `${prefix}nav-btn`
-}
-
-/**
- * config for ajax
- */
-exports.ajax = {
-    // ajax/element.class.js
-    element: {
-        DOM: 'edit',
-        nameAttr: 'name',
-        typeAttr: 'type'
-    }
 }
 
