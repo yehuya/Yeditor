@@ -1,4 +1,5 @@
 import Config from './config.js';
+import Element from './element/Element.class.js';
 
 /**
  * get all the editable area
@@ -11,17 +12,16 @@ export default class Editable {
      */
     constructor(){
         var config = Config.editable;
-        this.htmlTag = config.htmlTag;
-        this.nameAttribute = config.nameAttribute;
+        this.Element = new Element();
     }
     
     /**
      * get all editable area
+     * @extends from 'element/Element.class.js'
      * @return Array 
      */
     get(){
-        var allEditArea = document.querySelectorAll(this.htmlTag);
-        return allEditArea;
+        return this.Element.get();
     }
 
     /**

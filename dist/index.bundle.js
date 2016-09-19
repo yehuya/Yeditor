@@ -54,15 +54,20 @@
 
 	var _EditableClass2 = _interopRequireDefault(_EditableClass);
 
-	var _EditorClass = __webpack_require__(4);
+	var _EditorClass = __webpack_require__(5);
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
+
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.selection = new _SelectionClass2.default();
 	window.editable = new _EditableClass2.default();
 	window.editor = new _EditorClass2.default();
+	window.element = new _ElementClass2.default();
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -194,6 +199,10 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -211,12 +220,12 @@
 	        _classCallCheck(this, Editable);
 
 	        var config = _config2.default.editable;
-	        this.htmlTag = config.htmlTag;
-	        this.nameAttribute = config.nameAttribute;
+	        this.Element = new _ElementClass2.default();
 	    }
 
 	    /**
 	     * get all editable area
+	     * @extends from 'element/Element.class.js'
 	     * @return Array 
 	     */
 
@@ -224,8 +233,7 @@
 	    _createClass(Editable, [{
 	        key: 'get',
 	        value: function get() {
-	            var allEditArea = document.querySelectorAll(this.htmlTag);
-	            return allEditArea;
+	            return this.Element.get();
 	        }
 
 	        /**
@@ -271,10 +279,12 @@
 
 	/**
 	 * config for Editable.class.js
+	 * config for element/Element.class.js
 	 */
 	_exports.editable = {
 	  htmlTag: 'edit',
-	  nameAttribute: 'name'
+	  nameAttr: 'name',
+	  typeAttr: 'type'
 	};
 
 	/**
@@ -303,11 +313,117 @@
 	    value: true
 	});
 
-	var _ButtonClass = __webpack_require__(5);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * get all editable elements
+	 */
+	var Element = function () {
+	    function Element() {
+	        _classCallCheck(this, Element);
+
+	        this.config = _config2.default.editable;
+	    }
+
+	    /**
+	     * get all editable elements
+	     * @return Array of Object (Node)
+	     */
+
+
+	    _createClass(Element, [{
+	        key: 'get',
+	        value: function get() {
+	            var TAG = this.config.htmlTag;
+	            return document.querySelectorAll(TAG);
+	        }
+
+	        /**
+	         * return object of the element with:
+	         * - name
+	         * - type
+	         * - html
+	         * @param Object
+	         * return Object
+	         */
+
+	    }, {
+	        key: 'serialize',
+	        value: function serialize(elem) {
+	            return {
+	                name: this.name(elem),
+	                type: this.type(elem),
+	                html: this.innerHTML(elem)
+	            };
+	        }
+
+	        /**
+	         * get element inner html
+	         * @param Object (Node)
+	         * @return String
+	         */
+
+	    }, {
+	        key: 'innerHTML',
+	        value: function innerHTML(elem) {
+	            return elem.innerHTML;
+	        }
+
+	        /**
+	         * get element name
+	         * @param Object (Node)
+	         * @return String
+	         */
+
+	    }, {
+	        key: 'name',
+	        value: function name(elem) {
+	            var name = this.config.nameAttr;
+	            return elem.getAttribute(name);
+	        }
+
+	        /**
+	         * get element type
+	         * @param Object (Node)
+	         * @return String
+	         */
+
+	    }, {
+	        key: 'type',
+	        value: function type(elem) {
+	            var type = this.config.typeAttr;
+	            return elem.getAttribute(type);
+	        }
+	    }]);
+
+	    return Element;
+	}();
+
+	exports.default = Element;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _ButtonClass = __webpack_require__(6);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
-	var _NavClass = __webpack_require__(8);
+	var _NavClass = __webpack_require__(9);
 
 	var _NavClass2 = _interopRequireDefault(_NavClass);
 
@@ -325,7 +441,7 @@
 	exports.default = Editor;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -342,11 +458,11 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _btn_image = __webpack_require__(6);
+	var _btn_image = __webpack_require__(7);
 
 	var _btn_image2 = _interopRequireDefault(_btn_image);
 
-	var _btn_text = __webpack_require__(7);
+	var _btn_text = __webpack_require__(8);
 
 	var _btn_text2 = _interopRequireDefault(_btn_text);
 
@@ -469,7 +585,7 @@
 	exports.default = Button;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -479,7 +595,7 @@
 	_exports.image = [];
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -531,7 +647,7 @@
 	}];
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -546,7 +662,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _ButtonClass = __webpack_require__(5);
+	var _ButtonClass = __webpack_require__(6);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
