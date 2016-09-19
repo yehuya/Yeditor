@@ -1,7 +1,7 @@
-import Config from './../config.js';
+import Config from './../../config.js';
 import btnImage from './button/edit_image.js';
 import btnText from './button/edit_text.js';
-import Selection from './../text/Selection.class.js';
+import Selection from './../Selection.class.js';
 
 /**
  * editor button class

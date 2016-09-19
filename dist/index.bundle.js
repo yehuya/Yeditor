@@ -406,6 +406,12 @@
 	        this.config = _config2.default.editable;
 	    }
 
+	    /**
+	     * get all editable element - serialize
+	     * @return Array of Object
+	     */
+
+
 	    _createClass(Element, [{
 	        key: 'all',
 	        value: function all() {
@@ -518,8 +524,7 @@
 	var Editor = function Editor() {
 	    _classCallCheck(this, Editor);
 
-	    this.Button = new _ButtonClass2.default();
-	    this.Nav = new _NavClass2.default();
+	    new _NavClass2.default();
 	};
 
 	exports.default = Editor;

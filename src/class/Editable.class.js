@@ -1,5 +1,5 @@
-import Config from './config.js';
-import Element from './element/Element.class.js';
+import Config from './../config.js';
+import Element from './Element.class.js';
 
 /**
  * get all the editable area

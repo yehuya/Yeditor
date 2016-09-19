@@ -8,6 +8,10 @@ export default class Element {
         this.config = Config.editable;
     }
 
+    /**
+     * get all editable element - serialize
+     * @return Array of Object
+     */
     all(){
         var arr = [];
         var elements = this.get();

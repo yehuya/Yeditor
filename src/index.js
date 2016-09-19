@@ -1,9 +1,9 @@
-import Selection from './text/Selection.class.js';
-import Editable from './Editable.class.js';
-import Editor from './editor/Editor.class.js';
-import Element from './element/Element.class.js';
-import Ajax from './ajax/Ajax.class.js';
-import Serialize from './ajax/Serialize.class.js';
+import Selection from './class/Selection.class.js';
+import Editable from './class/Editable.class.js';
+import Editor from './class/editor/Editor.class.js';
+import Element from './class/Element.class.js';
+import Ajax from './class/ajax/Ajax.class.js';
+import Serialize from './class/ajax/Serialize.class.js';
 
 window.selection = new Selection();
 window.editable = new Editable();

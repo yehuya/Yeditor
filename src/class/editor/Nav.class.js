@@ -1,4 +1,4 @@
-import Config from './../config.js';
+import Config from './../../config.js';
 import Button from './Button.class.js';
 
 export default class Nav {
