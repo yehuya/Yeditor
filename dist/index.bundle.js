@@ -62,12 +62,22 @@
 
 	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
+	var _AjaxClass = __webpack_require__(10);
+
+	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
+
+	var _SerializeClass = __webpack_require__(11);
+
+	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.selection = new _SelectionClass2.default();
 	window.editable = new _EditableClass2.default();
 	window.editor = new _EditorClass2.default();
 	window.element = new _ElementClass2.default();
+	window.ajax = new _AjaxClass2.default();
+	window.serialize = new _SerializeClass2.default();
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -240,25 +250,45 @@
 	 * config for element/Element.class.js
 	 */
 	_exports.editable = {
-	  htmlTag: 'edit',
-	  nameAttr: 'name',
-	  typeAttr: 'type'
+	    htmlTag: 'edit',
+	    nameAttr: 'name',
+	    typeAttr: 'type'
 	};
 
 	/**
 	 * config for editor/Nav.class.js
 	 */
 	_exports.nav = {
-	  navClass: prefix + 'nav',
-	  navTextId: prefix + 'nav-text',
-	  navImageId: prefix + 'nav-image'
+	    navClass: prefix + 'nav',
+	    navTextId: prefix + 'nav-text',
+	    navImageId: prefix + 'nav-image'
 	};
 
 	/**
 	 * config for editor/Button.class.js
 	 */
 	_exports.button = {
-	  btnClass: prefix + 'nav-btn'
+	    btnClass: prefix + 'nav-btn'
+	};
+
+	/**
+	 * config for ajax/Ajax.class.js
+	 */
+	_exports.ajax = {
+	    url: 'http://localhost',
+	    method: 'GET',
+	    header: {
+	        "Content-Type": "application/x-www-form-urlencoded"
+	    },
+	    success: function success(data) {
+	        console.log(data, 'success');
+	    },
+	    done: function done(data) {
+	        console.log(data, 'done');
+	    },
+	    failed: function failed(data) {
+	        console.log(data, 'error');
+	    }
 	};
 
 /***/ },
@@ -512,13 +542,13 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _btn_image = __webpack_require__(7);
+	var _edit_image = __webpack_require__(7);
 
-	var _btn_image2 = _interopRequireDefault(_btn_image);
+	var _edit_image2 = _interopRequireDefault(_edit_image);
 
-	var _btn_text = __webpack_require__(8);
+	var _edit_text = __webpack_require__(8);
 
-	var _btn_text2 = _interopRequireDefault(_btn_text);
+	var _edit_text2 = _interopRequireDefault(_edit_text);
 
 	var _SelectionClass = __webpack_require__(1);
 
@@ -537,8 +567,8 @@
 
 	        this.Selection = new _SelectionClass2.default();
 	        this.config = _config2.default.button;
-	        this.btn_image = _btn_image2.default.image;
-	        this.btn_text = _btn_text2.default.text;
+	        this.btn_image = _edit_image2.default.image;
+	        this.btn_text = _edit_text2.default.text;
 	        this.btnTextElement = this.createFromArray(this.btn_text);
 	        this.btnImageElement = this.createFromArray(this.btn_image);
 	    }
@@ -845,6 +875,155 @@
 	}();
 
 	exports.default = Nav;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _SerializeClass = __webpack_require__(11);
+
+	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * class for ajax request
+	 */
+	var Ajax = function () {
+	    function Ajax() {
+	        _classCallCheck(this, Ajax);
+
+	        this.config = _config2.default.ajax;
+	        this.xhr;
+	    }
+
+	    /**
+	     * add header
+	     * @param Array (example: ['Content-Type', 'application/x-www-form-urlencoded'])
+	     */
+
+
+	    _createClass(Ajax, [{
+	        key: 'addHeader',
+	        value: function addHeader(arr) {
+	            this.config.header[arr[0]] = arr[1];
+	        }
+
+	        /**
+	         * create ajax request
+	         * - onreadystatechange | done
+	         * - onload | success
+	         * - onerror | failed
+	         * @param String (data for send)
+	         * @callback Object (ajax object - xhr)
+	         * @return Object (xhr)
+	         */
+
+	    }, {
+	        key: 'request',
+	        value: function request(data) {
+	            var self = this;
+	            this.xhr = new XMLHttpRequest();
+
+	            // done
+	            this.xhr.onreadystatechange = function () {
+	                if (self.xhr.readyState == 4) {
+	                    if (typeof self.config.done == 'function') {
+	                        self.config.done(self.xhr);
+	                    }
+	                }
+	            };
+
+	            // success
+	            this.xhr.onload = function () {
+	                if (typeof self.config.success == 'function') {
+	                    self.config.success(self.xhr);
+	                }
+	            };
+
+	            // failed
+	            this.xhr.onerror = function () {
+	                if (typeof self.config.failed == 'function') {
+	                    self.config.failed(self.xhr);
+	                }
+	            };
+
+	            this.xhr.open(self.config.method, self.config.url, true);
+
+	            for (var head in this.config.header) {
+	                this.xhr.setRequestHeader(head, this.config.header[head]);
+	            }
+
+	            this.xhr.send();
+	            return this.xhr;
+	        }
+	    }]);
+
+	    return Ajax;
+	}();
+
+	exports.default = Ajax;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * serialize data for ajax request
+	 */
+	var Serialize = function () {
+	    function Serialize() {
+	        _classCallCheck(this, Serialize);
+	    }
+
+	    _createClass(Serialize, [{
+	        key: 'text',
+
+
+	        /**
+	         * serialize object for sending
+	         * @param object
+	         * @return String
+	         */
+	        value: function text(obj) {
+	            var string = '';
+	            for (var key in obj) {
+	                var and = string.length > 0 ? '&' : '';
+	                string += and + key + '=' + obj[key];
+	            }
+
+	            return string;
+	        }
+	    }]);
+
+	    return Serialize;
+	}();
+
+	exports.default = Serialize;
 
 /***/ }
 /******/ ]);

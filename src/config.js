@@ -27,3 +27,16 @@ exports.button = {
     btnClass: `${prefix}nav-btn`
 }
 
+/**
+ * config for ajax/Ajax.class.js
+ */
+exports.ajax = {
+    url: 'http://localhost',
+    method: 'GET',
+    header: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    },
+    success: function(data){console.log(data, 'success')},
+    done: function(data){console.log(data, 'done')},
+    failed: function(data){console.log(data, 'error')}
+}
