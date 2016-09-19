@@ -307,7 +307,7 @@
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
-	var _NavClass = __webpack_require__(7);
+	var _NavClass = __webpack_require__(8);
 
 	var _NavClass2 = _interopRequireDefault(_NavClass);
 
@@ -342,9 +342,13 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _button = __webpack_require__(6);
+	var _btn_image = __webpack_require__(6);
 
-	var _button2 = _interopRequireDefault(_button);
+	var _btn_image2 = _interopRequireDefault(_btn_image);
+
+	var _btn_text = __webpack_require__(7);
+
+	var _btn_text2 = _interopRequireDefault(_btn_text);
 
 	var _SelectionClass = __webpack_require__(1);
 
@@ -363,8 +367,8 @@
 
 	        this.Selection = new _SelectionClass2.default();
 	        this.config = _config2.default.button;
-	        this.btn_image = _button2.default.image;
-	        this.btn_text = _button2.default.text;
+	        this.btn_image = _btn_image2.default.image;
+	        this.btn_text = _btn_text2.default.text;
 	        this.btnTextElement = this.createFromArray(this.btn_text);
 	        this.btnImageElement = this.createFromArray(this.btn_image);
 	    }
@@ -468,6 +472,16 @@
 /* 6 */
 /***/ function(module, exports) {
 
+	"use strict";
+
+	var _exports = module.exports;
+
+	_exports.image = [];
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
 	'use strict';
 
 	var _exports = module.exports;
@@ -516,10 +530,8 @@
 	    }
 	}];
 
-	_exports.image = [];
-
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
