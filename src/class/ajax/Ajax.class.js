@@ -8,6 +8,7 @@ export default class Ajax {
     constructor() {
         this.config = Config.ajax;
         this.xhr;
+        this.data = new Serialize().ajax();
     }
 
     /**
@@ -23,11 +24,10 @@ export default class Ajax {
      * - onreadystatechange | done
      * - onload | success
      * - onerror | failed
-     * @param String (data for send)
      * @callback Object (ajax object - xhr)
      * @return Object (xhr)
      */
-    request(data) {
+    request() {
         var self = this;
         this.xhr = new XMLHttpRequest();
 
@@ -54,7 +54,12 @@ export default class Ajax {
             }
         }
 
-        this.xhr.open(self.config.method, self.config.url, true);
+        //###############
+        // POST request missing
+        // now only GET work
+        //###############
+
+        this.xhr.open(self.config.method, self.config.url + '?' + this.data, true);
         
         for(var head in this.config.header){
             this.xhr.setRequestHeader(head, this.config.header[head]);

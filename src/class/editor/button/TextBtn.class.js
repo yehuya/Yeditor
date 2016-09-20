@@ -1,35 +1,31 @@
 import Config from './../../../config.js';
 import Selection from './../../Selection.class.js';
-import { text as btnText } from './btn/text.js';
+import { text as btn } from './btn/text.js';
+import Button from './Button.class.js';
 
 /**
  * class for Text edit button
  */
-export default class Text {
+export default class TextBtn extends Button {
     constructor(){
+        super();
         this.Selection = new Selection();
         this.config = Config.button;
-        this.btn = btnText;
+        this.btn = btn;
     }
 
     /**
      * create button elements from array
      * take the object of button and make it as dom element
-     * @param Array
      * @return Array
      */
     getAllButtons(){
-        var arr = [];
-        this.btn.forEach(function(element) {
-            arr.push(this.create(element));
-        }, this);
-
-        return arr;
+        return super.getAllButtons(this.btn, this);
     }
 
     /**
      * create button from btn object
-     * get btn object form btn.[image|text] and make it as DOM element
+     * get btn object form this.btn and make it as DOM element
      * @param Object (btn object)
      * @return Object (DOM element)
      */
@@ -57,8 +53,8 @@ export default class Text {
      */
     click(button, callback){
         var self = this;
-        button.addEventListener('click', function(e){
-            e.preventDefault();
+
+        return super.click(button, function(){
             if(typeof callback == 'function'){
                 // check if user selection area is editable
                 if(self.Selection.parentEditable()){
@@ -73,8 +69,6 @@ export default class Text {
      * @param Object
      */
     addButton(object){
-        if(typeof object == 'object'){
-            this.btn.push(object);
-        }
+        return super.addButton(object, this.btn);
     }
 }

@@ -43,7 +43,7 @@ export default class Element {
         return {
             name: this.name(elem),
             type: this.type(elem),
-            html: this.innerHTML(elem)
+            content: this.type(elem) == 'image' ? this.src : this.innerHTML(elem)
         }
     }
 

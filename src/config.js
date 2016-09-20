@@ -2,8 +2,9 @@ const exports = module.exports;
 const prefix = 'frontendEditor-';
 
 /**
- * config for Editable.class.js
- * config for element/Element.class.js
+ * @for Editable.class.js
+ * @for element/Element.class.js
+ * @for ajax/Serialize.class.js
  */
 exports.editable = {
     htmlTag: 'edit',
@@ -12,23 +13,24 @@ exports.editable = {
 }
 
 /**
- * config for editor/Nav.class.js
+ * @for editor/Nav.class.js
  */
 exports.nav = {
     navClass: `${prefix}nav`,
     navTextId: `${prefix}nav-text`,
-    navImageId: `${prefix}nav-image`
+    navImageId: `${prefix}nav-image`,
+    navMainId: `${prefix}nav-main`
 }
 
 /**
- * config for editor/Button.class.js
+ * @for editor/button/*.class.js
  */
 exports.button = {
     btnClass: `${prefix}nav-btn`
 }
 
 /**
- * config for ajax/Ajax.class.js
+ * @for ajax/Ajax.class.js
  */
 exports.ajax = {
     url: 'http://localhost',

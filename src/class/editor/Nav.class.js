@@ -1,5 +1,5 @@
 import Config from './../../config.js';
-import Button from './Button.class.js';
+import Btn from './Btn.class.js';
 
 export default class Nav {
 
@@ -9,8 +9,9 @@ export default class Nav {
      */
     constructor(){
         this.config = Config.nav;
-        this.Button = new Button();
+        this.Btn = new Btn();
         this.createTextNav();
+        this.createMainNav();
     }
 
     /**
@@ -74,8 +75,17 @@ export default class Nav {
      * create navigation for text area
      */
     createTextNav(){
-        var buttons = this.Button.text;
+        var buttons = this.Btn.text;
         var navId = this.config.navTextId;
         this.create(navId, buttons);  
+    }
+
+    /**
+     * create navigation for main nav
+     */
+    createMainNav(){
+        var buttons = this.Btn.nav;
+        var navId = this.config.navMainId;
+        this.create(navId, buttons);
     }
 }

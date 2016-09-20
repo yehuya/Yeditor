@@ -62,11 +62,11 @@
 
 	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
-	var _AjaxClass = __webpack_require__(10);
+	var _AjaxClass = __webpack_require__(13);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
-	var _SerializeClass = __webpack_require__(11);
+	var _SerializeClass = __webpack_require__(14);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -247,8 +247,9 @@
 	var prefix = 'frontendEditor-';
 
 	/**
-	 * config for Editable.class.js
-	 * config for element/Element.class.js
+	 * @for Editable.class.js
+	 * @for element/Element.class.js
+	 * @for ajax/Serialize.class.js
 	 */
 	_exports.editable = {
 	    htmlTag: 'edit',
@@ -257,23 +258,24 @@
 	};
 
 	/**
-	 * config for editor/Nav.class.js
+	 * @for editor/Nav.class.js
 	 */
 	_exports.nav = {
 	    navClass: prefix + 'nav',
 	    navTextId: prefix + 'nav-text',
-	    navImageId: prefix + 'nav-image'
+	    navImageId: prefix + 'nav-image',
+	    navMainId: prefix + 'nav-main'
 	};
 
 	/**
-	 * config for editor/Button.class.js
+	 * @for editor/button/*.class.js
 	 */
 	_exports.button = {
 	    btnClass: prefix + 'nav-btn'
 	};
 
 	/**
-	 * config for ajax/Ajax.class.js
+	 * @for ajax/Ajax.class.js
 	 */
 	_exports.ajax = {
 	    url: 'http://localhost',
@@ -452,7 +454,7 @@
 	            return {
 	                name: this.name(elem),
 	                type: this.type(elem),
-	                html: this.innerHTML(elem)
+	                content: this.type(elem) == 'image' ? this.src : this.innerHTML(elem)
 	            };
 	        }
 
@@ -510,11 +512,7 @@
 	    value: true
 	});
 
-	var _ButtonClass = __webpack_require__(6);
-
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
-
-	var _NavClass = __webpack_require__(9);
+	var _NavClass = __webpack_require__(6);
 
 	var _NavClass2 = _interopRequireDefault(_NavClass);
 
@@ -540,230 +538,15 @@
 	    value: true
 	});
 
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _TextClass = __webpack_require__(7);
-
-	var _TextClass2 = _interopRequireDefault(_TextClass);
-
-	var _SelectionClass = __webpack_require__(1);
-
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * editor button class
-	 */
-	var Button = function Button() {
-	    _classCallCheck(this, Button);
-
-	    var text = new _TextClass2.default();
-	    this.text = text.getAllButtons();
-	};
-
-	exports.default = Button;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(1);
+	var _BtnClass = __webpack_require__(7);
 
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
-
-	var _text = __webpack_require__(8);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * class for Text edit button
-	 */
-	var Text = function () {
-	    function Text() {
-	        _classCallCheck(this, Text);
-
-	        this.Selection = new _SelectionClass2.default();
-	        this.config = _config2.default.button;
-	        this.btn = _text.text;
-	    }
-
-	    /**
-	     * create button elements from array
-	     * take the object of button and make it as dom element
-	     * @param Array
-	     * @return Array
-	     */
-
-
-	    _createClass(Text, [{
-	        key: 'getAllButtons',
-	        value: function getAllButtons() {
-	            var arr = [];
-	            this.btn.forEach(function (element) {
-	                arr.push(this.create(element));
-	            }, this);
-
-	            return arr;
-	        }
-
-	        /**
-	         * create button from btn object
-	         * get btn object form btn.[image|text] and make it as DOM element
-	         * @param Object (btn object)
-	         * @return Object (DOM element)
-	         */
-
-	    }, {
-	        key: 'create',
-	        value: function create(Object) {
-	            var self = this;
-	            var name = Object.name || '?';
-	            var node = Object.node() || null;
-
-	            var elem = document.createElement('button');
-	            elem.classList.add(this.config.btnClass);
-	            elem.title = name;
-	            elem.innerText = name;
-
-	            this.click(elem, function () {
-	                self.Selection.append(node);
-	            });
-
-	            return elem;
-	        }
-
-	        /**
-	         * event onClick on button
-	         * @param Object (button)
-	         * @param FN (callback function)
-	         */
-
-	    }, {
-	        key: 'click',
-	        value: function click(button, callback) {
-	            var self = this;
-	            button.addEventListener('click', function (e) {
-	                e.preventDefault();
-	                if (typeof callback == 'function') {
-	                    // check if user selection area is editable
-	                    if (self.Selection.parentEditable()) {
-	                        callback();
-	                    }
-	                }
-	            });
-	        }
-
-	        /**
-	         * add button
-	         * @param Object
-	         */
-
-	    }, {
-	        key: 'addButton',
-	        value: function addButton(object) {
-	            if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) == 'object') {
-	                this.btn.push(object);
-	            }
-	        }
-	    }]);
-
-	    return Text;
-	}();
-
-	exports.default = Text;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _exports = module.exports;
-
-	_exports.text = [
-	/**
-	 * bold
-	 * @DOM span
-	 * @CSS font-weight="bold"
-	 */
-	{
-	    name: 'bold',
-	    node: function node() {
-	        var element = document.createElement('span');
-	        element.style.fontWeight = 'bold';
-
-	        return element.cloneNode();
-	    }
-	},
-	/**
-	 * italic
-	 * @DOM span
-	 * @CSS font-style="italic"
-	 */
-	{
-	    name: 'italic',
-	    node: function node() {
-	        var element = document.createElement('span');
-	        element.style.fontStyle = 'italic';
-
-	        return element.cloneNode();
-	    }
-	},
-	/**
-	 * underline
-	 * @DOM span
-	 * @CSS text-decoration="underline"
-	 */
-	{
-	    name: 'underline',
-	    node: function node() {
-	        var element = document.createElement('span');
-	        element.style.textDecoration = 'underline';
-
-	        return element.cloneNode();
-	    }
-	}];
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _ButtonClass = __webpack_require__(6);
-
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+	var _BtnClass2 = _interopRequireDefault(_BtnClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -779,8 +562,9 @@
 	        _classCallCheck(this, Nav);
 
 	        this.config = _config2.default.nav;
-	        this.Button = new _ButtonClass2.default();
+	        this.Btn = new _BtnClass2.default();
 	        this.createTextNav();
+	        this.createMainNav();
 	    }
 
 	    /**
@@ -863,8 +647,20 @@
 	    }, {
 	        key: 'createTextNav',
 	        value: function createTextNav() {
-	            var buttons = this.Button.text;
+	            var buttons = this.Btn.text;
 	            var navId = this.config.navTextId;
+	            this.create(navId, buttons);
+	        }
+
+	        /**
+	         * create navigation for main nav
+	         */
+
+	    }, {
+	        key: 'createMainNav',
+	        value: function createMainNav() {
+	            var buttons = this.Btn.nav;
+	            var navId = this.config.navMainId;
 	            this.create(navId, buttons);
 	        }
 	    }]);
@@ -875,7 +671,491 @@
 	exports.default = Nav;
 
 /***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _TextBtnClass = __webpack_require__(8);
+
+	var _TextBtnClass2 = _interopRequireDefault(_TextBtnClass);
+
+	var _NavBtnClass = __webpack_require__(11);
+
+	var _NavBtnClass2 = _interopRequireDefault(_NavBtnClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * editor button class
+	 */
+	var Btn = function Btn() {
+	    _classCallCheck(this, Btn);
+
+	    var text = new _TextBtnClass2.default();
+	    var nav = new _NavBtnClass2.default();
+	    this.text = text.getAllButtons();
+	    this.nav = nav.getAllButtons();
+	};
+
+	exports.default = Btn;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _SelectionClass = __webpack_require__(1);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	var _text = __webpack_require__(9);
+
+	var _ButtonClass = __webpack_require__(10);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * class for Text edit button
+	 */
+	var TextBtn = function (_Button) {
+	    _inherits(TextBtn, _Button);
+
+	    function TextBtn() {
+	        _classCallCheck(this, TextBtn);
+
+	        var _this = _possibleConstructorReturn(this, (TextBtn.__proto__ || Object.getPrototypeOf(TextBtn)).call(this));
+
+	        _this.Selection = new _SelectionClass2.default();
+	        _this.config = _config2.default.button;
+	        _this.btn = _text.text;
+	        return _this;
+	    }
+
+	    /**
+	     * create button elements from array
+	     * take the object of button and make it as dom element
+	     * @return Array
+	     */
+
+
+	    _createClass(TextBtn, [{
+	        key: 'getAllButtons',
+	        value: function getAllButtons() {
+	            return _get(TextBtn.prototype.__proto__ || Object.getPrototypeOf(TextBtn.prototype), 'getAllButtons', this).call(this, this.btn, this);
+	        }
+
+	        /**
+	         * create button from btn object
+	         * get btn object form this.btn and make it as DOM element
+	         * @param Object (btn object)
+	         * @return Object (DOM element)
+	         */
+
+	    }, {
+	        key: 'create',
+	        value: function create(Object) {
+	            var self = this;
+	            var name = Object.name || '?';
+	            var node = Object.node() || null;
+
+	            var elem = document.createElement('button');
+	            elem.classList.add(this.config.btnClass);
+	            elem.title = name;
+	            elem.innerText = name;
+
+	            this.click(elem, function () {
+	                self.Selection.append(node);
+	            });
+
+	            return elem;
+	        }
+
+	        /**
+	         * event onClick on button
+	         * @param Object (button)
+	         * @param FN (callback function)
+	         */
+
+	    }, {
+	        key: 'click',
+	        value: function click(button, callback) {
+	            var self = this;
+
+	            return _get(TextBtn.prototype.__proto__ || Object.getPrototypeOf(TextBtn.prototype), 'click', this).call(this, button, function () {
+	                if (typeof callback == 'function') {
+	                    // check if user selection area is editable
+	                    if (self.Selection.parentEditable()) {
+	                        callback();
+	                    }
+	                }
+	            });
+	        }
+
+	        /**
+	         * add button
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'addButton',
+	        value: function addButton(object) {
+	            return _get(TextBtn.prototype.__proto__ || Object.getPrototypeOf(TextBtn.prototype), 'addButton', this).call(this, object, this.btn);
+	        }
+	    }]);
+
+	    return TextBtn;
+	}(_ButtonClass2.default);
+
+	exports.default = TextBtn;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _exports = module.exports;
+
+	_exports.text = [
+	/**
+	 * bold
+	 * @DOM span
+	 * @CSS font-weight="bold"
+	 */
+	{
+	    name: 'bold',
+	    node: function node() {
+	        var element = document.createElement('span');
+	        element.style.fontWeight = 'bold';
+
+	        return element.cloneNode();
+	    }
+	},
+	/**
+	 * italic
+	 * @DOM span
+	 * @CSS font-style="italic"
+	 */
+	{
+	    name: 'italic',
+	    node: function node() {
+	        var element = document.createElement('span');
+	        element.style.fontStyle = 'italic';
+
+	        return element.cloneNode();
+	    }
+	},
+	/**
+	 * underline
+	 * @DOM span
+	 * @CSS text-decoration="underline"
+	 */
+	{
+	    name: 'underline',
+	    node: function node() {
+	        var element = document.createElement('span');
+	        element.style.textDecoration = 'underline';
+
+	        return element.cloneNode();
+	    }
+	}];
+
+/***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * parent class for text, image, nav
+	 * @parent
+	 */
+	var Button = function () {
+	    function Button() {
+	        _classCallCheck(this, Button);
+	    }
+
+	    _createClass(Button, [{
+	        key: 'addButton',
+
+	        /**
+	         * add button to array
+	         * @param Object (new button)
+	         * @param Array (btn array)
+	         */
+	        value: function addButton(object, array) {
+	            if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) == 'object') {
+	                array.push(object);
+	            }
+	        }
+
+	        /**
+	         * event onClick on button
+	         * @param Object (button)
+	         * @param FN (callback function)
+	         */
+
+	    }, {
+	        key: 'click',
+	        value: function click(button, callback) {
+	            var self = this;
+	            button.addEventListener('click', function (e) {
+	                e.preventDefault();
+	                callback();
+	            });
+	        }
+
+	        /**
+	         * create button elements from array
+	         * take the object of button and make it as dom element
+	         * @param Array
+	         * @param Object (this)
+	         * @return Array
+	         */
+
+	    }, {
+	        key: 'getAllButtons',
+	        value: function getAllButtons(array, self) {
+	            var arr = [];
+	            array.forEach(function (element) {
+	                arr.push(self.create(element));
+	            }, self);
+
+	            return arr;
+	        }
+	    }]);
+
+	    return Button;
+	}();
+
+	exports.default = Button;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _nav = __webpack_require__(12);
+
+	var _ButtonClass = __webpack_require__(10);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * class for main nav button
+	 */
+	var NavBtn = function (_Button) {
+	    _inherits(NavBtn, _Button);
+
+	    function NavBtn() {
+	        _classCallCheck(this, NavBtn);
+
+	        var _this = _possibleConstructorReturn(this, (NavBtn.__proto__ || Object.getPrototypeOf(NavBtn)).call(this));
+
+	        _this.btn = _nav.nav;
+	        _this.config = _config2.default.button;
+	        return _this;
+	    }
+
+	    /**
+	     * create button elements from array
+	     * take the object of button and make it as dom element
+	     * @param Array
+	     * @return Array
+	     */
+
+
+	    _createClass(NavBtn, [{
+	        key: 'getAllButtons',
+	        value: function getAllButtons() {
+	            return _get(NavBtn.prototype.__proto__ || Object.getPrototypeOf(NavBtn.prototype), 'getAllButtons', this).call(this, this.btn, this);
+	        }
+
+	        /**
+	         * create button from btn object
+	         * get btn object form this.btn and make it as DOM element
+	         * @param Object (btn object)
+	         * @return Object (DOM element)
+	         */
+
+	    }, {
+	        key: 'create',
+	        value: function create(Object) {
+	            var self = this;
+	            var name = Object.name || '?';
+
+	            var elem = document.createElement('button');
+	            elem.classList.add(this.config.btnClass);
+	            elem.title = name;
+	            elem.innerText = name;
+
+	            this.click(elem, function () {
+	                Object.event();
+	            });
+
+	            return elem;
+	        }
+
+	        /**
+	         * event onClick on button
+	         * @param Object (button)
+	         * @param FN (callback function)
+	         */
+
+	    }, {
+	        key: 'click',
+	        value: function click(button, callback) {
+	            return _get(NavBtn.prototype.__proto__ || Object.getPrototypeOf(NavBtn.prototype), 'click', this).call(this, button, callback);
+	        }
+
+	        /**
+	         * add button
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'addButton',
+	        value: function addButton(object) {
+	            return _get(NavBtn.prototype.__proto__ || Object.getPrototypeOf(NavBtn.prototype), 'addButton', this).call(this, object, this.btn);
+	        }
+	    }]);
+
+	    return NavBtn;
+	}(_ButtonClass2.default);
+
+	exports.default = NavBtn;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
+
+	var _EditableClass = __webpack_require__(3);
+
+	var _EditableClass2 = _interopRequireDefault(_EditableClass);
+
+	var _AjaxClass = __webpack_require__(13);
+
+	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.nav = [
+	/**
+	 * edit
+	 * @CLASS Editable.class.js
+	 * @FN set()
+	 */
+	{
+	    name: 'Edit',
+	    event: function event() {
+	        var editable = new _EditableClass2.default();
+	        editable.set();
+	    }
+	},
+	/**
+	 * no edit
+	 * @CLASS Editable.class.js
+	 * @FN set()
+	 */
+	{
+	    name: 'No edit',
+	    event: function event() {
+	        var editable = new _EditableClass2.default();
+	        editable.unset();
+	    }
+	},
+	/**
+	 * save
+	 * @CLASS Ajax.class.js, Serialize.class.js 
+	 * @FN set()
+	 */
+	{
+	    name: 'Save',
+	    event: function event() {
+	        var ajax = new _AjaxClass2.default();
+	        ajax.request();
+	    }
+	}];
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -890,7 +1170,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(11);
+	var _SerializeClass = __webpack_require__(14);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -907,6 +1187,7 @@
 
 	        this.config = _config2.default.ajax;
 	        this.xhr;
+	        this.data = new _SerializeClass2.default().ajax();
 	    }
 
 	    /**
@@ -926,14 +1207,13 @@
 	         * - onreadystatechange | done
 	         * - onload | success
 	         * - onerror | failed
-	         * @param String (data for send)
 	         * @callback Object (ajax object - xhr)
 	         * @return Object (xhr)
 	         */
 
 	    }, {
 	        key: 'request',
-	        value: function request(data) {
+	        value: function request() {
 	            var self = this;
 	            this.xhr = new XMLHttpRequest();
 
@@ -960,7 +1240,12 @@
 	                }
 	            };
 
-	            this.xhr.open(self.config.method, self.config.url, true);
+	            //###############
+	            // POST request missing
+	            // now only GET work
+	            //###############
+
+	            this.xhr.open(self.config.method, self.config.url + '?' + this.data, true);
 
 	            for (var head in this.config.header) {
 	                this.xhr.setRequestHeader(head, this.config.header[head]);
@@ -977,8 +1262,8 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 11 */
-/***/ function(module, exports) {
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -988,6 +1273,16 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
@@ -996,26 +1291,58 @@
 	var Serialize = function () {
 	    function Serialize() {
 	        _classCallCheck(this, Serialize);
+
+	        var elem = new _ElementClass2.default();
+	        this.elements = elem.all();
+
+	        this.config = _config2.default.editable;
+	        // this.blob = Config.ajax.blob;
 	    }
 
 	    _createClass(Serialize, [{
-	        key: 'text',
+	        key: 'makeBigObject',
+	        value: function makeBigObject() {
+	            var object = {};
 
+	            this.elements.forEach(function (elem) {
+	                var type = elem[this.config.typeAttr];
+	                if (type == 'text') {
+	                    object[elem.name] = elem.content;
+	                } else if (type == 'image') {
+	                    // if this.blob are TRUE
+	                    // object[name + '<image type>'] = this.blob(elem.content);
+	                }
+	            }, this);
+
+	            return object;
+	        }
 
 	        /**
-	         * serialize object for sending
-	         * @param object
+	         * serialize object for ajax sending
 	         * @return String
 	         */
-	        value: function text(obj) {
-	            var string = '';
-	            for (var key in obj) {
-	                var and = string.length > 0 ? '&' : '';
-	                string += and + key + '=' + obj[key];
+
+	    }, {
+	        key: 'ajax',
+	        value: function ajax() {
+	            var object = this.makeBigObject();
+	            var data = '';
+
+	            for (var key in object) {
+	                var and = data.length > 0 ? '&' : '';
+	                data += and + encodeURIComponent(key.trim()) + '=' + encodeURIComponent(object[key].trim());
 	            }
 
-	            return string;
+	            return data;
 	        }
+
+	        /**
+	         * sending base64 image as binary
+	         */
+
+	    }, {
+	        key: 'blob',
+	        value: function blob() {}
 	    }]);
 
 	    return Serialize;
