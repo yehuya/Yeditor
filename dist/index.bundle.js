@@ -177,13 +177,14 @@
 
 	        /**
 	         * get parent element of user selection
-	         * @return Object
+	         * @return Object | Null
 	         */
 
 	    }, {
 	        key: 'parent',
 	        value: function parent() {
-	            return this.get().anchorNode.parentElement;
+	            var selection = this.get().anchorNode;
+	            return selection ? selection.parentElement : null;
 	        }
 
 	        /**

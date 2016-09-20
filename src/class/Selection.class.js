@@ -63,10 +63,11 @@ export default class Selection {
 
     /**
      * get parent element of user selection
-     * @return Object
+     * @return Object | Null
      */
     parent(){
-        return this.get().anchorNode.parentElement;
+        var selection = this.get().anchorNode;
+        return selection ? selection.parentElement : null;
     }
 
     /**
