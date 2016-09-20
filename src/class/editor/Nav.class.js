@@ -11,7 +11,6 @@ export default class Nav {
         this.config = Config.nav;
         this.Button = new Button();
         this.createTextNav();
-        this.createImageNav();
     }
 
     /**
@@ -75,17 +74,8 @@ export default class Nav {
      * create navigation for text area
      */
     createTextNav(){
-        var buttons = this.Button.btnTextElement;
+        var buttons = this.Button.text;
         var navId = this.config.navTextId;
-        this.create(navId, buttons);  
-    }
-
-    /**
-     * create navigation for image area
-     */
-    createImageNav(){
-        var buttons = this.Button.btnImageElement;
-        var navId = this.config.navImageId;        
         this.create(navId, buttons);  
     }
 }

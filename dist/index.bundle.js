@@ -539,21 +539,13 @@
 	    value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _edit_image = __webpack_require__(7);
+	var _TextClass = __webpack_require__(7);
 
-	var _edit_image2 = _interopRequireDefault(_edit_image);
-
-	var _edit_text = __webpack_require__(8);
-
-	var _edit_text2 = _interopRequireDefault(_edit_text);
+	var _TextClass2 = _interopRequireDefault(_TextClass);
 
 	var _SelectionClass = __webpack_require__(1);
 
@@ -566,38 +558,72 @@
 	/**
 	 * editor button class
 	 */
-	var Button = function () {
-	    function Button() {
-	        _classCallCheck(this, Button);
+	var Button = function Button() {
+	    _classCallCheck(this, Button);
+
+	    var text = new _TextClass2.default();
+	    this.text = text.getAllButtons();
+	};
+
+	exports.default = Button;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _SelectionClass = __webpack_require__(1);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	var _text = __webpack_require__(8);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * class for Text edit button
+	 */
+	var Text = function () {
+	    function Text() {
+	        _classCallCheck(this, Text);
 
 	        this.Selection = new _SelectionClass2.default();
 	        this.config = _config2.default.button;
-	        this.btn_image = _edit_image2.default.image;
-	        this.btn_text = _edit_text2.default.text;
-	        this.btnTextElement = this.createFromArray(this.btn_text);
-	        this.btnImageElement = this.createFromArray(this.btn_image);
+	        this.btn = _text.text;
 	    }
 
 	    /**
-	     * event onClick on button
-	     * @param Object (button)
-	     * @param FN (callback function)
+	     * create button elements from array
+	     * take the object of button and make it as dom element
+	     * @param Array
+	     * @return Array
 	     */
 
 
-	    _createClass(Button, [{
-	        key: 'click',
-	        value: function click(button, callback) {
-	            var self = this;
-	            button.addEventListener('click', function (e) {
-	                e.preventDefault();
-	                if (typeof callback == 'function') {
-	                    // check if user selection area is editable
-	                    if (self.Selection.parentEditable()) {
-	                        callback();
-	                    }
-	                }
-	            });
+	    _createClass(Text, [{
+	        key: 'getAllButtons',
+	        value: function getAllButtons() {
+	            var arr = [];
+	            this.btn.forEach(function (element) {
+	                arr.push(this.create(element));
+	            }, this);
+
+	            return arr;
 	        }
 
 	        /**
@@ -627,65 +653,44 @@
 	        }
 
 	        /**
-	         * create elements from array
-	         * take the object of button and make it as dom element
-	         * @param Array
-	         * @return Array
+	         * event onClick on button
+	         * @param Object (button)
+	         * @param FN (callback function)
 	         */
 
 	    }, {
-	        key: 'createFromArray',
-	        value: function createFromArray(array) {
+	        key: 'click',
+	        value: function click(button, callback) {
 	            var self = this;
-	            var newArray = [];
-	            array.forEach(function (element) {
-	                newArray.push(self.create(element));
+	            button.addEventListener('click', function (e) {
+	                e.preventDefault();
+	                if (typeof callback == 'function') {
+	                    // check if user selection area is editable
+	                    if (self.Selection.parentEditable()) {
+	                        callback();
+	                    }
+	                }
 	            });
-
-	            return newArray;
 	        }
 
 	        /**
-	         * add image button
+	         * add button
 	         * @param Object
 	         */
 
 	    }, {
-	        key: 'addImageButton',
-	        value: function addImageButton(Object) {
-	            if ((typeof Object === 'undefined' ? 'undefined' : _typeof(Object)) == 'object') {
-	                this.btn_image.push(Object);
-	            }
-	        }
-
-	        /**
-	         * add text button
-	         * @param Object
-	         */
-
-	    }, {
-	        key: 'addTextButton',
-	        value: function addTextButton(Object) {
-	            if ((typeof Object === 'undefined' ? 'undefined' : _typeof(Object)) == 'object') {
-	                this.btn_text.push(Object);
+	        key: 'addButton',
+	        value: function addButton(object) {
+	            if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) == 'object') {
+	                this.btn.push(object);
 	            }
 	        }
 	    }]);
 
-	    return Button;
+	    return Text;
 	}();
 
-	exports.default = Button;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var _exports = module.exports;
-
-	_exports.image = [];
+	exports.default = Text;
 
 /***/ },
 /* 8 */
@@ -775,7 +780,6 @@
 	        this.config = _config2.default.nav;
 	        this.Button = new _ButtonClass2.default();
 	        this.createTextNav();
-	        this.createImageNav();
 	    }
 
 	    /**
@@ -858,20 +862,8 @@
 	    }, {
 	        key: 'createTextNav',
 	        value: function createTextNav() {
-	            var buttons = this.Button.btnTextElement;
+	            var buttons = this.Button.text;
 	            var navId = this.config.navTextId;
-	            this.create(navId, buttons);
-	        }
-
-	        /**
-	         * create navigation for image area
-	         */
-
-	    }, {
-	        key: 'createImageNav',
-	        value: function createImageNav() {
-	            var buttons = this.Button.btnImageElement;
-	            var navId = this.config.navImageId;
 	            this.create(navId, buttons);
 	        }
 	    }]);
