@@ -1,13 +1,81 @@
 <html>
-    <body>
-        <div id="test">
-            hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world
-            hello world hello world hello worldhello worldv hello world hello world hello world hello world hello world hello world
-        </div>
-        <edit name="title" type="text">
-            hello world
-        </edit>
 
-        <script src="../dist/index.bundle.js"></script>
-    </body>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test frontend-editor</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* editable dom element */
+        
+        [contenteditable="true"] {
+            outline: none;
+            display: block;
+            box-sizing: border-box;
+        }
+        /* FOCUS, HOVER */
+        
+        [contenteditable="true"]:focus,
+        [contenteditable="true"]:hover {
+            border: 1px dotted black;
+            padding: 2px;
+        }
+        /* editable element > img */
+        
+        [contenteditable="true"] img {
+            cursor: pointer;
+        }
+        /* editable element > img:FOCUS */
+        
+        [contenteditable="true"] img:active {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid text-center">
+        <h1>
+            <edit name="title" type="text">
+                Lorem Ipsum
+            </edit>
+        </h1>
+    </div>
+    <div class="container-fluid">
+        <div class="col-xs-4 text-left">
+            <edit name="content-1" type="text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ipsum quam, sollicitudin at dictum vel, congue quis purus.
+                Praesent interdum fringilla urna, vitae lacinia neque placerat sed. Ut dignissim magna nec tellus euismod
+                porta. In mollis enim ut erat pulvinar, rhoncus semper mi convallis. Duis vehicula orci non enim convallis
+                placerat. Maecenas tincidunt urna id nisl aliquam accumsan. Integer tellus mi, laoreet eu neque sit amet,
+                consectetur lacinia velit. Suspendisse hendrerit vestibulum nibh. Vivamus convallis tortor urna, sit amet
+                lobortis magna porta ut. Quisque a mattis arcu. Maecenas est nulla, pharetra eget felis vitae, facilisis
+                vestibulum ex. Praesent a enim sit amet erat pretium lobortis. Nullam blandit nisi nulla, id tempus dolor
+                placerat nec. Etiam dui massa, imperdiet euismod nulla ut, mattis dapibus leo. Suspendisse non orci elementum,
+                pellentesque neque vitae, dignissim tellus.
+            </edit>
+        </div>
+        <div class="col-xs-4 text-left">
+            <edit name="content-2" type="text">
+                Etiam hendrerit in nisi vel fermentum. Duis vel ligula elit. Etiam id lobortis mi. Vestibulum ultricies maximus odio, quis
+                <img class="pull-right" id="img" src="images/tmp.jpg" /> vulputate lacus laoreet eget. Donec aliquam sem nisl, non
+                dictum est feugiat sit amet. Fusce viverra, sapien aliquet vulputate aliquam, metus lectus elementum tellus,
+                nec facilisis nibh libero vel ipsum. Sed laoreet porta sapien non suscipit. Nam sed tellus ut urna posuere
+                rhoncus. Sed scelerisque vestibulum massa, at imperdiet est tincidunt quis.
+            </edit>
+        </div>
+        <div class="col-xs-4 text-left">
+            <edit name="content-3" type="text">
+                Sed in erat lectus. In pretium ligula nec nunc fringilla gravida. Nulla facilisi. Ut dignissim justo sed neque tristique
+                egestas. Etiam tristique neque ullamcorper, pellentesque quam ut, tincidunt lectus. In sit amet ipsum eget
+                libero sodales suscipit eu accumsan odio. Quisque lorem nisl, iaculis ac accumsan ut, luctus condimentum
+                orci. Aenean odio dolor, condimentum et nibh id, pulvinar consequat arcu. Sed non risus sem. Mauris risus
+                ligula, molestie sed arcu a, feugiat hendrerit eros. Ut posuere, ex vel lobortis suscipit, justo turpis auctor
+                nulla, a sollicitudin nibh sem faucibus arcu. Suspendisse vitae porttitor sapien.
+            </edit>
+        </div>
+    </div>
+
+    <script src="../dist/index.bundle.js"></script>
+</body>
+
 </html>
