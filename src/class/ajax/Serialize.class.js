@@ -8,12 +8,36 @@ export default class Serialize {
     constructor(){
         var elem = new Element();
         this.elements = elem.all();
-
+        this.FromData = new FormData(); // for POST method
+        this.StringData = ''; // for GET method
         this.config = Config.editable;
+        this.method = Config.ajax.method;
         // this.blob = Config.ajax.blob;
     }
 
+    /**
+     * serialize object for POST ajax method
+     * @return Object
+     */
+    POST(){
+        this.convert()
+        return this.FromData;
+    }
 
+    /**
+     * serialize object for GET
+     * @return String
+     */
+    GET(){
+        this.convert()
+        return this.StringData;
+    }
+
+    /**
+     * create object from all the editable elements
+     * make base64 image as blob (check by type of the element)
+     * @structure: {element.name : element.content}
+     */
     makeBigObject(){
         var object = {};
 
@@ -31,19 +55,28 @@ export default class Serialize {
     }
 
     /**
-     * serialize object for ajax sending
-     * @return String
+     * convert this.makeBigObject into ajax request by this.addData
      */
-    ajax(){
+    convert(){
         var object = this.makeBigObject();
-        var data = '';
-
         for(let key in object){
-            let and = data.length > 0 ? '&' : '';
-            data += and + encodeURIComponent(key.trim()) + '=' + encodeURIComponent(object[key].trim()); 
+            this.addData(key, object[key]);
         }
+    }
 
-        return data;
+    /**
+     * add key = value into this.data 
+     * for GET | POST method
+     * @param String (key)
+     * @param String (value)
+     */
+    addData(key, value){
+        if(this.method == 'GET'){
+            let and = this.StringData.length > 0 ? '&' : '';
+            this.StringData += encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
+        }else if(this.method == 'POST'){
+            this.FromData.append(key, value);
+        }
     }
 
     /**

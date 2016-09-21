@@ -8,7 +8,7 @@ export default class Ajax {
     constructor() {
         this.config = Config.ajax;
         this.xhr;
-        this.data = new Serialize().ajax();
+        this.Serialize = new Serialize();
     }
 
     /**
@@ -17,6 +17,10 @@ export default class Ajax {
      */
     addHeader(arr) {
         this.config.header[arr[0]] = arr[1];
+    }
+
+    addData(key, value){
+        this.Serialize.addData(key, value);
     }
 
     /**
@@ -29,6 +33,7 @@ export default class Ajax {
      */
     request() {
         var self = this;
+        var method = self.config.method;
         this.xhr = new XMLHttpRequest();
 
         // done
@@ -54,18 +59,27 @@ export default class Ajax {
             }
         }
 
-        //###############
-        // POST request missing
-        // now only GET work
-        //###############
-
-        this.xhr.open(self.config.method, self.config.url + '?' + this.data, true);
+        // open request
+        if(method == 'GET'){
+            this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(), true);
+            this.addHeader({"Content-Type": "application/x-www-form-urlencoded"});
+        }else if(method == 'POST'){
+            this.xhr.open(method, self.config.url, true);
+            this.addHeader({"Content-Type": "multipart/form-data"});
+        }
         
+        // headers
         for(var head in this.config.header){
             this.xhr.setRequestHeader(head, this.config.header[head]);
         }
 
-        this.xhr.send();
+        // send
+        if(method == 'GET'){
+            this.xhr.send();
+        }else if(method == 'POST'){
+            this.xhr.send(this.Serialize.POST());
+        }
+        
         return this.xhr;
     }
 
