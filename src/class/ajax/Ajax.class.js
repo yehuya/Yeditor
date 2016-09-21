@@ -19,59 +19,81 @@ export default class Ajax {
         this.config.header[arr[0]] = arr[1];
     }
 
+    /**
+     * set ajax request header
+     * setRequestHeader
+     */
+    header(){
+        for(var head in this.config.header){
+            this.xhr.setRequestHeader(head, this.config.header[head]);
+        }
+    }
+
+    /**
+     * add data to request 
+     * @param String
+     * @param String
+     */
     addData(key, value){
         this.Serialize.addData(key, value);
     }
 
     /**
+     * callback function when ajax request success (onload)
+     * @param FN (callback)
+     * @return Object (this)
+     */
+    success(callback){
+        this.xhr.onload = callback(this.xhr);
+        return this;
+    }
+
+    /**
+     * callback function when ajax request failed (onerror)
+     * @param FN (callback)
+     * @return Object (this)
+     */
+    error(callback){
+        this.xhr.onerror = callback(this.xhr);
+        return this;
+    }
+
+    /**
+     * callback function when ajax request done (readyState == 4)
+     * @param FN (callback)
+     * @return Object (this)
+     */
+    done(callback){
+        var self = this;
+        this.xhr.onreadystatechange = function () {
+            if (self.xhr.readyState == 4) {
+                callback(self.xhr);
+            }
+        }
+        return this;
+    }
+
+    /**
      * create ajax request
-     * - onreadystatechange | done
-     * - onload | success
-     * - onerror | failed
      * @callback Object (ajax object - xhr)
-     * @return Object (xhr)
+     * @return Object (this)
      */
     request() {
         var self = this;
         var method = self.config.method;
         this.xhr = new XMLHttpRequest();
 
-        // done
-        this.xhr.onreadystatechange = function () {
-            if (self.xhr.readyState == 4) {
-                if (typeof self.config.done == 'function') {
-                    self.config.done(self.xhr);
-                }
-            }
-        }
-
-        // success
-        this.xhr.onload = function () {
-            if (typeof self.config.success == 'function') {
-                self.config.success(self.xhr);
-            }
-        }
-
-        // failed
-        this.xhr.onerror = function () {
-            if (typeof self.config.failed == 'function') {
-                self.config.failed(self.xhr);
-            }
-        }
-
         // open request
         if(method == 'GET'){
             this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(), true);
-            this.addHeader({"Content-Type": "application/x-www-form-urlencoded"});
+            this.addHeader(["Content-Type", "application/x-www-form-urlencoded"]);
         }else if(method == 'POST'){
             this.xhr.open(method, self.config.url, true);
-            this.addHeader({"Content-Type": "multipart/form-data"});
+            this.addHeader(["Content-Type",  "multipart/form-data"]);
         }
-        
+
         // headers
-        for(var head in this.config.header){
-            this.xhr.setRequestHeader(head, this.config.header[head]);
-        }
+        this.header();
 
         // send
         if(method == 'GET'){
@@ -80,7 +102,7 @@ export default class Ajax {
             this.xhr.send(this.Serialize.POST());
         }
         
-        return this.xhr;
+        return this;
     }
 
 }

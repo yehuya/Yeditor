@@ -1168,7 +1168,9 @@
 	    name: 'Save',
 	    event: function event() {
 	        var ajax = new _AjaxClass2.default();
-	        ajax.request();
+	        ajax.request().done(function (xhr) {
+	            console.log('done', xhr);
+	        });
 	    }
 	}];
 
@@ -1219,6 +1221,26 @@
 	        value: function addHeader(arr) {
 	            this.config.header[arr[0]] = arr[1];
 	        }
+
+	        /**
+	         * set ajax request header
+	         * setRequestHeader
+	         */
+
+	    }, {
+	        key: 'header',
+	        value: function header() {
+	            for (var head in this.config.header) {
+	                this.xhr.setRequestHeader(head, this.config.header[head]);
+	            }
+	        }
+
+	        /**
+	         * add data to request 
+	         * @param String
+	         * @param String
+	         */
+
 	    }, {
 	        key: 'addData',
 	        value: function addData(key, value) {
@@ -1226,12 +1248,53 @@
 	        }
 
 	        /**
+	         * callback function when ajax request success (onload)
+	         * @param FN (callback)
+	         * @return Object (this)
+	         */
+
+	    }, {
+	        key: 'success',
+	        value: function success(callback) {
+	            this.xhr.onload = callback(this.xhr);
+	            return this;
+	        }
+
+	        /**
+	         * callback function when ajax request failed (onerror)
+	         * @param FN (callback)
+	         * @return Object (this)
+	         */
+
+	    }, {
+	        key: 'error',
+	        value: function error(callback) {
+	            this.xhr.onerror = callback(this.xhr);
+	            return this;
+	        }
+
+	        /**
+	         * callback function when ajax request done (readyState == 4)
+	         * @param FN (callback)
+	         * @return Object (this)
+	         */
+
+	    }, {
+	        key: 'done',
+	        value: function done(callback) {
+	            var self = this;
+	            this.xhr.onreadystatechange = function () {
+	                if (self.xhr.readyState == 4) {
+	                    callback(self.xhr);
+	                }
+	            };
+	            return this;
+	        }
+
+	        /**
 	         * create ajax request
-	         * - onreadystatechange | done
-	         * - onload | success
-	         * - onerror | failed
 	         * @callback Object (ajax object - xhr)
-	         * @return Object (xhr)
+	         * @return Object (this)
 	         */
 
 	    }, {
@@ -1241,42 +1304,17 @@
 	            var method = self.config.method;
 	            this.xhr = new XMLHttpRequest();
 
-	            // done
-	            this.xhr.onreadystatechange = function () {
-	                if (self.xhr.readyState == 4) {
-	                    if (typeof self.config.done == 'function') {
-	                        self.config.done(self.xhr);
-	                    }
-	                }
-	            };
-
-	            // success
-	            this.xhr.onload = function () {
-	                if (typeof self.config.success == 'function') {
-	                    self.config.success(self.xhr);
-	                }
-	            };
-
-	            // failed
-	            this.xhr.onerror = function () {
-	                if (typeof self.config.failed == 'function') {
-	                    self.config.failed(self.xhr);
-	                }
-	            };
-
 	            // open request
 	            if (method == 'GET') {
 	                this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(), true);
-	                this.addHeader({ "Content-Type": "application/x-www-form-urlencoded" });
+	                this.addHeader(["Content-Type", "application/x-www-form-urlencoded"]);
 	            } else if (method == 'POST') {
 	                this.xhr.open(method, self.config.url, true);
-	                this.addHeader({ "Content-Type": "multipart/form-data" });
+	                this.addHeader(["Content-Type", "multipart/form-data"]);
 	            }
 
 	            // headers
-	            for (var head in this.config.header) {
-	                this.xhr.setRequestHeader(head, this.config.header[head]);
-	            }
+	            this.header();
 
 	            // send
 	            if (method == 'GET') {
@@ -1285,7 +1323,7 @@
 	                this.xhr.send(this.Serialize.POST());
 	            }
 
-	            return this.xhr;
+	            return this;
 	        }
 	    }]);
 

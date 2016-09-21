@@ -38,7 +38,9 @@ exports.nav = [
         name: 'Save',
         event: function(){
             var ajax = new Ajax();
-            ajax.request();
+            ajax.request().done(function(xhr){
+                console.log('done', xhr);
+            });
         }
     }
 ]
