@@ -1,0 +1,23 @@
+/* editable dom element */
+[contenteditable="true"] {
+    outline: none;
+    display: block;
+    box-sizing: border-box;
+}
+/* FOCUS, HOVER */
+
+[contenteditable="true"]:focus,
+[contenteditable="true"]:hover {
+    border: 1px dotted black;
+    padding: 2px;
+}
+/* editable element > img */
+
+[contenteditable="true"] img {
+    cursor: pointer;
+}
+/* editable element > img:FOCUS */
+
+[contenteditable="true"] img:active {
+    opacity: 0.5;
+}

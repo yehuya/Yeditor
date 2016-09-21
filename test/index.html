@@ -4,32 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Test frontend-editor</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <style>
-        /* editable dom element */
-        
-        [contenteditable="true"] {
-            outline: none;
-            display: block;
-            box-sizing: border-box;
-        }
-        /* FOCUS, HOVER */
-        
-        [contenteditable="true"]:focus,
-        [contenteditable="true"]:hover {
-            border: 1px dotted black;
-            padding: 2px;
-        }
-        /* editable element > img */
-        
-        [contenteditable="true"] img {
-            cursor: pointer;
-        }
-        /* editable element > img:FOCUS */
-        
-        [contenteditable="true"] img:active {
-            opacity: 0.5;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -74,8 +49,54 @@
             </edit>
         </div>
     </div>
+    <input id="uploadImage" type="file" accept="image/*">
 
     <script src="../dist/index.bundle.js"></script>
+    <script>
+        var input = document.getElementById('uploadImage');
+        input.addEventListener('change', function(event){
+            var files = event.target.files || event.dataTransfer.files;
+            console.log(event.target.files);
+            var reader = new FileReader();
+           
+            for(var i = 0, f; f = files[i]; i++) {
+			    reader.onload = (function(file){
+                    return function(event){
+                        console.log('event',event.target.result);
+                        
+                        b64toBlob(event.target.resultb64, function(blob){
+                            var url = window.URL.createObjectURL(blob);
+                            console.log('blob',url);
+                        });
+                    }
+                })(files[0]);
+                
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        function b64toBlob(b64, onsuccess, onerror) {
+            var img = new Image();
+
+            img.onerror = onerror;
+
+            img.onload = function onload() {
+                var canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob(onsuccess);
+            };
+
+            //img.src = b64;
+        }
+
+        //### usefull link convert to base64 into binary
+        // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+    </script>
 </body>
 
 </html>
