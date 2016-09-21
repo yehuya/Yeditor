@@ -276,13 +276,12 @@
 
 	/**
 	 * @for ajax/Ajax.class.js
+	 * @for ajax/Serialize.class.js
 	 */
 	_exports.ajax = {
 	    url: 'http://localhost',
-	    method: 'GET',
-	    header: {
-	        "Content-Type": "application/x-www-form-urlencoded"
-	    },
+	    method: 'POST',
+	    header: {},
 	    success: function success(data) {
 	        console.log(data, 'success');
 	    },
@@ -565,6 +564,7 @@
 	        this.Btn = new _BtnClass2.default();
 	        this.createTextNav();
 	        this.createMainNav();
+	        this.createImageNav();
 	    }
 
 	    /**
@@ -663,6 +663,18 @@
 	            var navId = this.config.navMainId;
 	            this.create(navId, buttons);
 	        }
+
+	        /**
+	         * create navigation for image nav
+	         */
+
+	    }, {
+	        key: 'createImageNav',
+	        value: function createImageNav() {
+	            var buttons = this.Btn.image;
+	            var navId = this.config.navMainId;
+	            this.create(navId, buttons);
+	        }
 	    }]);
 
 	    return Nav;
@@ -692,6 +704,10 @@
 
 	var _NavBtnClass2 = _interopRequireDefault(_NavBtnClass);
 
+	var _ImageBtnClass = __webpack_require__(15);
+
+	var _ImageBtnClass2 = _interopRequireDefault(_ImageBtnClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -704,8 +720,10 @@
 
 	    var text = new _TextBtnClass2.default();
 	    var nav = new _NavBtnClass2.default();
+	    var image = new _ImageBtnClass2.default();
 	    this.text = text.getAllButtons();
 	    this.nav = nav.getAllButtons();
+	    this.image = image.getAllButtons();
 	};
 
 	exports.default = Btn;
@@ -1187,7 +1205,7 @@
 
 	        this.config = _config2.default.ajax;
 	        this.xhr;
-	        this.data = new _SerializeClass2.default().ajax();
+	        this.Serialize = new _SerializeClass2.default();
 	    }
 
 	    /**
@@ -1200,6 +1218,11 @@
 	        key: 'addHeader',
 	        value: function addHeader(arr) {
 	            this.config.header[arr[0]] = arr[1];
+	        }
+	    }, {
+	        key: 'addData',
+	        value: function addData(key, value) {
+	            this.Serialize.addData(key, value);
 	        }
 
 	        /**
@@ -1215,6 +1238,7 @@
 	        key: 'request',
 	        value: function request() {
 	            var self = this;
+	            var method = self.config.method;
 	            this.xhr = new XMLHttpRequest();
 
 	            // done
@@ -1240,18 +1264,27 @@
 	                }
 	            };
 
-	            //###############
-	            // POST request missing
-	            // now only GET work
-	            //###############
+	            // open request
+	            if (method == 'GET') {
+	                this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(), true);
+	                this.addHeader({ "Content-Type": "application/x-www-form-urlencoded" });
+	            } else if (method == 'POST') {
+	                this.xhr.open(method, self.config.url, true);
+	                this.addHeader({ "Content-Type": "multipart/form-data" });
+	            }
 
-	            this.xhr.open(self.config.method, self.config.url + '?' + this.data, true);
-
+	            // headers
 	            for (var head in this.config.header) {
 	                this.xhr.setRequestHeader(head, this.config.header[head]);
 	            }
 
-	            this.xhr.send();
+	            // send
+	            if (method == 'GET') {
+	                this.xhr.send();
+	            } else if (method == 'POST') {
+	                this.xhr.send(this.Serialize.POST());
+	            }
+
 	            return this.xhr;
 	        }
 	    }]);
@@ -1294,12 +1327,45 @@
 
 	        var elem = new _ElementClass2.default();
 	        this.elements = elem.all();
-
+	        this.FromData = new FormData(); // for POST method
+	        this.StringData = ''; // for GET method
 	        this.config = _config2.default.editable;
+	        this.method = _config2.default.ajax.method;
 	        // this.blob = Config.ajax.blob;
 	    }
 
+	    /**
+	     * serialize object for POST ajax method
+	     * @return Object
+	     */
+
+
 	    _createClass(Serialize, [{
+	        key: 'POST',
+	        value: function POST() {
+	            this.convert();
+	            return this.FromData;
+	        }
+
+	        /**
+	         * serialize object for GET
+	         * @return String
+	         */
+
+	    }, {
+	        key: 'GET',
+	        value: function GET() {
+	            this.convert();
+	            return this.StringData;
+	        }
+
+	        /**
+	         * create object from all the editable elements
+	         * make base64 image as blob (check by type of the element)
+	         * @structure: {element.name : element.content}
+	         */
+
+	    }, {
 	        key: 'makeBigObject',
 	        value: function makeBigObject() {
 	            var object = {};
@@ -1318,22 +1384,34 @@
 	        }
 
 	        /**
-	         * serialize object for ajax sending
-	         * @return String
+	         * convert this.makeBigObject into ajax request by this.addData
 	         */
 
 	    }, {
-	        key: 'ajax',
-	        value: function ajax() {
+	        key: 'convert',
+	        value: function convert() {
 	            var object = this.makeBigObject();
-	            var data = '';
-
 	            for (var key in object) {
-	                var and = data.length > 0 ? '&' : '';
-	                data += and + encodeURIComponent(key.trim()) + '=' + encodeURIComponent(object[key].trim());
+	                this.addData(key, object[key]);
 	            }
+	        }
 
-	            return data;
+	        /**
+	         * add key = value into this.data 
+	         * for GET | POST method
+	         * @param String (key)
+	         * @param String (value)
+	         */
+
+	    }, {
+	        key: 'addData',
+	        value: function addData(key, value) {
+	            if (this.method == 'GET') {
+	                var and = this.StringData.length > 0 ? '&' : '';
+	                this.StringData += encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
+	            } else if (this.method == 'POST') {
+	                this.FromData.append(key, value);
+	            }
 	        }
 
 	        /**
@@ -1349,6 +1427,156 @@
 	}();
 
 	exports.default = Serialize;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _SelectionClass = __webpack_require__(1);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	var _image = __webpack_require__(16);
+
+	var _ButtonClass = __webpack_require__(10);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * class for Text edit button
+	 */
+	var ImageBtn = function (_Button) {
+	    _inherits(ImageBtn, _Button);
+
+	    function ImageBtn() {
+	        _classCallCheck(this, ImageBtn);
+
+	        var _this = _possibleConstructorReturn(this, (ImageBtn.__proto__ || Object.getPrototypeOf(ImageBtn)).call(this));
+
+	        _this.Selection = new _SelectionClass2.default();
+	        _this.config = _config2.default.button;
+	        _this.btn = _image.image;
+	        return _this;
+	    }
+
+	    /**
+	     * create button elements from array
+	     * take the object of button and make it as dom element
+	     * @return Array
+	     */
+
+
+	    _createClass(ImageBtn, [{
+	        key: 'getAllButtons',
+	        value: function getAllButtons() {
+	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'getAllButtons', this).call(this, this.btn, this);
+	        }
+
+	        /**
+	         * create button from btn object
+	         * get btn object form this.btn and make it as DOM element
+	         * @param Object (btn object)
+	         * @return Object (DOM element)
+	         */
+
+	    }, {
+	        key: 'create',
+	        value: function create(Object) {
+	            var self = this;
+	            var name = Object.name || '?';
+	            var node = Object.node() || null;
+
+	            var elem = document.createElement('button');
+	            elem.classList.add(this.config.btnClass);
+	            elem.title = name;
+	            elem.innerText = name;
+
+	            this.click(elem, function () {
+	                self.Selection.append(node);
+	            });
+
+	            return elem;
+	        }
+
+	        /**
+	         * event onClick on button
+	         * @param Object (button)
+	         * @param FN (callback function)
+	         */
+
+	    }, {
+	        key: 'click',
+	        value: function click(button, callback) {
+	            var self = this;
+
+	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'click', this).call(this, button, function () {
+	                if (typeof callback == 'function') {
+	                    // check if user selection area is editable
+	                    console.log(self.Selection.get().src);
+	                    console.log(self.Selection.get().toString());
+	                    if (self.Selection.parentEditable()) {
+	                        callback();
+	                    }
+	                }
+	            });
+	        }
+
+	        /**
+	         * add button
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'addButton',
+	        value: function addButton(object) {
+	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'addButton', this).call(this, object, this.btn);
+	        }
+	    }]);
+
+	    return ImageBtn;
+	}(_ButtonClass2.default);
+
+	exports.default = ImageBtn;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _exports = module.exports;
+
+	_exports.image = [{
+	    name: 'Add image',
+	    node: function node() {
+	        var element = document.createElement('img');
+	        element.src = 'http://localhost/~yehuda/plugins/frontend-editor/test/images/tmp.jpg';
+
+	        return element.cloneNode();
+	    }
+	}];
 
 /***/ }
 /******/ ]);

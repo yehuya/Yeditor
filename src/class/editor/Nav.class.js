@@ -12,6 +12,7 @@ export default class Nav {
         this.Btn = new Btn();
         this.createTextNav();
         this.createMainNav();
+        this.createImageNav();
     }
 
     /**
@@ -85,6 +86,15 @@ export default class Nav {
      */
     createMainNav(){
         var buttons = this.Btn.nav;
+        var navId = this.config.navMainId;
+        this.create(navId, buttons);
+    }
+
+    /**
+     * create navigation for image nav
+     */
+    createImageNav(){
+        var buttons = this.Btn.image;
         var navId = this.config.navMainId;
         this.create(navId, buttons);
     }

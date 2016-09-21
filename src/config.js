@@ -31,13 +31,12 @@ exports.button = {
 
 /**
  * @for ajax/Ajax.class.js
+ * @for ajax/Serialize.class.js
  */
 exports.ajax = {
     url: 'http://localhost',
-    method: 'GET',
-    header: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    },
+    method: 'POST',
+    header: {},
     success: function(data){console.log(data, 'success')},
     done: function(data){console.log(data, 'done')},
     failed: function(data){console.log(data, 'error')}
