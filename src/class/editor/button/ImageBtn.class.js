@@ -30,10 +30,7 @@ export default class ImageBtn extends Button {
      * @return Object (DOM element)
      */
     create(Object){
-        var elem = Object.element;
-        Object.event(elem);
-
-        return elem;
+        return Object.btn();
     }
 
     /**

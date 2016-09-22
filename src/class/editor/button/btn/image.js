@@ -1,4 +1,5 @@
-import Selection from './../../../Selection.class.js';
+import Image from './../../../image/Image.class.js';
+import Base64 from './../../../image/Base64.class.js';
 const exports = module.exports;
 
 exports.image = [
@@ -13,25 +14,15 @@ exports.image = [
             return elem;
         },
         event: function(element){
-            var selection = new Selection();
+            var base64 = new Base64();
             element.addEventListener('mousedown', function(e){e.preventDefault();});
             element.addEventListener('change', function(event){          
                 var files = event.target.files || event.dataTransfer.files;
-                var reader = new FileReader();
-
-                for(var i = 0, f; f = files[i]; i++) {
-                    reader.onload = (function(file){
-                        return function(event){
-                            var result = event.target.result;
-                            var img = new Image();
-                            img.src = result;
-                            console.log(img);
-                            selection.append(img);
-                        }
-                    })(files[i]);
-
-                    reader.readAsDataURL(files[i]);
-                }
+                base64.image(files[0], function(url, file){
+                    var Img = new Image();
+                    console.log()
+                    Img.insert(url).setAttribute('alt', file.type);
+                });
             });
         },
         dom: function(){
