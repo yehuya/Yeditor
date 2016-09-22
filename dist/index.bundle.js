@@ -70,10 +70,6 @@
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
-	var _RenderClass = __webpack_require__(17);
-
-	var _RenderClass2 = _interopRequireDefault(_RenderClass);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.selection = new _SelectionClass2.default();
@@ -82,7 +78,6 @@
 	window.element = new _ElementClass2.default();
 	window.ajax = new _AjaxClass2.default();
 	window.serialize = new _SerializeClass2.default();
-	window.render = new _RenderClass2.default();
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -296,6 +291,13 @@
 	    failed: function failed(data) {
 	        console.log(data, 'error');
 	    }
+	};
+
+	/**
+	 * @for image/Image.class.js
+	 */
+	_exports.image = {
+	    upload: null
 	};
 
 /***/ },
@@ -1538,7 +1540,8 @@
 	        }
 
 	        /**
-	         * get button from btn object
+	         * create button from btn object
+	         * get btn object form this.btn and make it as DOM element
 	         * @param Object (btn object)
 	         * @return Object (DOM element)
 	         */
@@ -1546,8 +1549,7 @@
 	    }, {
 	        key: 'create',
 	        value: function create(Object) {
-	            var elem = Object.btn();
-	            return elem;
+	            return Object.btn();
 	        }
 
 	        /**
@@ -1564,8 +1566,6 @@
 	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'click', this).call(this, button, function () {
 	                if (typeof callback == 'function') {
 	                    // check if user selection area is editable
-	                    console.log(self.Selection.get().src);
-	                    console.log(self.Selection.get().toString());
 	                    if (self.Selection.parentEditable()) {
 	                        callback();
 	                    }
@@ -1596,9 +1596,13 @@
 
 	'use strict';
 
-	var _SelectionClass = __webpack_require__(1);
+	var _ImageClass = __webpack_require__(17);
 
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+	var _ImageClass2 = _interopRequireDefault(_ImageClass);
+
+	var _Base64Class = __webpack_require__(18);
+
+	var _Base64Class2 = _interopRequireDefault(_Base64Class);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1616,28 +1620,17 @@
 	        return elem;
 	    },
 	    event: function event(element) {
-	        var selection = new _SelectionClass2.default();
+	        var base64 = new _Base64Class2.default();
 	        element.addEventListener('mousedown', function (e) {
 	            e.preventDefault();
 	        });
 	        element.addEventListener('change', function (event) {
 	            var files = event.target.files || event.dataTransfer.files;
-	            var reader = new FileReader();
-
-	            console.log(event);
-	            for (var i = 0, f; f = files[i]; i++) {
-	                reader.onload = function (file) {
-	                    return function (event) {
-	                        var result = event.target.result;
-	                        var img = new Image();
-	                        img.src = result;
-	                        console.log(img);
-	                        selection.append(img);
-	                    };
-	                }(files[i]);
-
-	                reader.readAsDataURL(files[i]);
-	            }
+	            base64.image(files[0], function (url, file) {
+	                var Img = new _ImageClass2.default();
+	                console.log();
+	                Img.insert(url).setAttribute('alt', file.type);
+	            });
 	        });
 	    },
 	    dom: function dom() {
@@ -1658,6 +1651,74 @@
 
 /***/ },
 /* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _SelectionClass = __webpack_require__(1);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * image class
+	 */
+	var Image = function () {
+	    function Image() {
+	        _classCallCheck(this, Image);
+
+	        this.config = _config2.default.image;
+	        this.create();
+	    }
+
+	    /**
+	     * create image element
+	     * @return Object (this.img)
+	     */
+
+
+	    _createClass(Image, [{
+	        key: 'create',
+	        value: function create() {
+	            return this.img = document.createElement('img').cloneNode();
+	        }
+
+	        /**
+	         * append this.img into user selection
+	         * @param String (url)
+	         * @return Object (this.img) 
+	         */
+
+	    }, {
+	        key: 'insert',
+	        value: function insert(url) {
+	            var selection = new _SelectionClass2.default();
+	            this.img.src = url;
+	            selection.append(this.img);
+	            return this.img;
+	        }
+	    }]);
+
+	    return Image;
+	}();
+
+	exports.default = Image;
+
+/***/ },
+/* 18 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1671,51 +1732,47 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/**
-	 * render image object
+	 * create image src as base64
+	 * set base64 as binary
 	 */
-	var Render = function () {
-	    function Render() {
-	        _classCallCheck(this, Render);
-
-	        this.change();
+	var Base64 = function () {
+	    function Base64() {
+	        _classCallCheck(this, Base64);
 	    }
 
 	    /**
-	     * create Image object
+	     * clean base64 string from "data:image/*;base64,"
+	     * @param String
 	     */
 
 
-	    _createClass(Render, [{
-	        key: 'create',
-	        value: function create() {
-	            var img = new Image();
-	            return img;
+	    _createClass(Base64, [{
+	        key: 'clean',
+	        value: function clean(b64) {
+	            return b64.substring(b64.indexOf(',') + 1);
 	        }
 
 	        /**
-	         * add prototype fn to html INPUT element
-	         * @event change 
-	         * @param FN (callback)
+	         * get image file and return it as base64 data url
+	         * @param Object (file)
+	         * @param FN (callback: url: String, file: Object)
 	         */
 
 	    }, {
-	        key: 'change',
-	        value: function change(callback) {
-	            HTMLInputElement.prototype.change = function (callback) {
-	                this.addEventListener('change', callback);
+	        key: 'image',
+	        value: function image(file, callback) {
+	            var reader = new FileReader();
+	            reader.onload = function (event) {
+	                callback(event.target.result, file);
 	            };
+	            reader.readAsDataURL(file);
 	        }
-
-	        /**
-	         * render image
-	         */
-
 	    }]);
 
-	    return Render;
+	    return Base64;
 	}();
 
-	exports.default = Render;
+	exports.default = Base64;
 
 /***/ }
 /******/ ]);
