@@ -30,18 +30,8 @@ export default class ImageBtn extends Button {
      * @return Object (DOM element)
      */
     create(Object){
-        var self = this;
-        var name = Object.name || '?';
-        var node = Object.node() || null;
-
-        var elem = document.createElement('button');
-        elem.classList.add(this.config.btnClass);
-        elem.title = name;
-        elem.innerText = name;
-
-        this.click(elem, function(){
-            self.Selection.append(node);
-        });
+        var elem = Object.element;
+        Object.event(elem);
 
         return elem;
     }
@@ -57,8 +47,6 @@ export default class ImageBtn extends Button {
         return super.click(button, function(){
             if(typeof callback == 'function'){
                 // check if user selection area is editable
-                console.log(self.Selection.get().src);
-                console.log(self.Selection.get().toString());
                 if(self.Selection.parentEditable()){
                     callback();
                 }

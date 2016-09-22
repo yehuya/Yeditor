@@ -70,6 +70,10 @@
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
+	var _RenderClass = __webpack_require__(17);
+
+	var _RenderClass2 = _interopRequireDefault(_RenderClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.selection = new _SelectionClass2.default();
@@ -78,6 +82,7 @@
 	window.element = new _ElementClass2.default();
 	window.ajax = new _AjaxClass2.default();
 	window.serialize = new _SerializeClass2.default();
+	window.render = new _RenderClass2.default();
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -1533,8 +1538,7 @@
 	        }
 
 	        /**
-	         * create button from btn object
-	         * get btn object form this.btn and make it as DOM element
+	         * get button from btn object
 	         * @param Object (btn object)
 	         * @return Object (DOM element)
 	         */
@@ -1542,19 +1546,7 @@
 	    }, {
 	        key: 'create',
 	        value: function create(Object) {
-	            var self = this;
-	            var name = Object.name || '?';
-	            var node = Object.node() || null;
-
-	            var elem = document.createElement('button');
-	            elem.classList.add(this.config.btnClass);
-	            elem.title = name;
-	            elem.innerText = name;
-
-	            this.click(elem, function () {
-	                self.Selection.append(node);
-	            });
-
+	            var elem = Object.btn();
 	            return elem;
 	        }
 
@@ -1600,21 +1592,130 @@
 
 /***/ },
 /* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _SelectionClass = __webpack_require__(1);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.image = [
+	/**
+	 * add image
+	 */
+	{
+	    btn: function btn() {
+	        var elem = this.dom();
+	        this.event(elem);
+
+	        return elem;
+	    },
+	    event: function event(element) {
+	        var selection = new _SelectionClass2.default();
+	        element.addEventListener('mousedown', function (e) {
+	            e.preventDefault();
+	        });
+	        element.addEventListener('change', function (event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            var reader = new FileReader();
+
+	            console.log(event);
+	            for (var i = 0, f; f = files[i]; i++) {
+	                reader.onload = function (file) {
+	                    return function (event) {
+	                        var result = event.target.result;
+	                        var img = new Image();
+	                        img.src = result;
+	                        console.log(img);
+	                        selection.append(img);
+	                    };
+	                }(files[i]);
+
+	                reader.readAsDataURL(files[i]);
+	            }
+	        });
+	    },
+	    dom: function dom() {
+	        var label = document.createElement('label');
+	        var span = document.createElement('span');
+	        span.innerText = 'IMAGE';
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(span);
+	        label.appendChild(input);
+
+	        return label.cloneNode(true);
+	    }
+	}];
+
+/***/ },
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
 
-	var _exports = module.exports;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	_exports.image = [{
-	    name: 'Add image',
-	    node: function node() {
-	        var element = document.createElement('img');
-	        element.src = 'http://localhost/~yehuda/plugins/frontend-editor/test/images/tmp.jpg';
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	        return element.cloneNode();
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * render image object
+	 */
+	var Render = function () {
+	    function Render() {
+	        _classCallCheck(this, Render);
+
+	        this.change();
 	    }
-	}];
+
+	    /**
+	     * create Image object
+	     */
+
+
+	    _createClass(Render, [{
+	        key: 'create',
+	        value: function create() {
+	            var img = new Image();
+	            return img;
+	        }
+
+	        /**
+	         * add prototype fn to html INPUT element
+	         * @event change 
+	         * @param FN (callback)
+	         */
+
+	    }, {
+	        key: 'change',
+	        value: function change(callback) {
+	            HTMLInputElement.prototype.change = function (callback) {
+	                this.addEventListener('change', callback);
+	            };
+	        }
+
+	        /**
+	         * render image
+	         */
+
+	    }]);
+
+	    return Render;
+	}();
+
+	exports.default = Render;
 
 /***/ }
 /******/ ]);

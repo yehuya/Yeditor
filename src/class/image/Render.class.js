@@ -2,7 +2,9 @@
  * render image object
  */
 export default class Render {
-    constructor(){}
+    constructor(){
+        this.change();
+    }
 
     /**
      * create Image object
@@ -10,6 +12,17 @@ export default class Render {
     create(){
         var img = new Image();
         return img;
+    }
+
+    /**
+     * add prototype fn to html INPUT element
+     * @event change 
+     * @param FN (callback)
+     */
+    change(callback){
+        HTMLInputElement.prototype.change = function(callback){
+            this.addEventListener('change', callback);
+        } 
     }
 
     /**
