@@ -41,3 +41,10 @@ exports.ajax = {
     done: function(data){console.log(data, 'done')},
     failed: function(data){console.log(data, 'error')}
 }
+
+/**
+ * @for image/Image.class.js
+ */
+exports.image = {
+    upload: null,
+}
