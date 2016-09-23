@@ -1,5 +1,4 @@
 import Config from './../config.js';
-import Element from './Element.class.js';
 
 /**
  * get all the editable area
@@ -8,39 +7,68 @@ export default class Editable {
     
     /**
      * __construct
-     * set param from config file
+     * get editable area options and extends them with the default optinos
+     * this.set()
      */
-    constructor(){
-        var config = Config.editable;
-        this.Element = new Element();
-    }
-    
-    /**
-     * get all editable area
-     * @extends from 'element/Element.class.js'
-     * @return Array 
-     */
-    get(){
-        return this.Element.get();
+    constructor(options, element){
+        this.config = Config.editable;
+        this.attrs = this.config.attribute;
+        this.element = element;
+        this.options = Config.extends(this.config.default, options);
+
+        this.set();
+        return this;
     }
 
     /**
-     * set 'editable area' as editable
+     * add element attribute
+     * @param String
+     * @param String
+     */
+    addAttr(name, value){
+        this.element.setAttribute(name, value);
+    }
+
+    /**
+     * remove element attribute
+     * @param String
+     * @param String
+     */
+    removeAttr(name){
+        this.element.removeAttribute(name);
+    }
+
+    /**
+     * set editable area attribute
+     * - check if has attribure for this options 
      */
     set(){
-        var allEditArea = this.get();
-        allEditArea.forEach(function(element) {
-            element.setAttribute('contenteditable', 'true');
-        }, this);
+        this.addAttr(this.attrs.plugin, this.attrs.plugin);
+        this.addAttr('contenteditable', 'true');
+        for(let key in this.options){
+            if(this.attrs.hasOwnProperty(key)){
+                this.addAttr(this.attrs[key], this.options[key]);
+            }
+        }
     }
 
     /**
-     * unset 'editable area' as editable 
+     * set contenteditable = fales
      */
     unset(){
-        var allEditArea = this.get();
-        allEditArea.forEach(function(element) {
-            element.removeAttribute('contenteditable');
-        }, this);
+        this.addAttr('contenteditable', 'false');
+    }
+
+    /**
+     * remove all editable area attribure include contenteditable
+     */
+    destroy(){
+        this.removeAttr(this.attrs.plugin);
+        this.removeAttr('contenteditable');
+        for(let key in this.options){
+            if(this.attrs.hasOwnProperty(key)){
+                this.removeAttr(this.attrs[key]);
+            }
+        }
     }
 }

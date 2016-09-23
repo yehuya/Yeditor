@@ -7,12 +7,12 @@ import Config from './../../config.js';
 export default class Serialize {
     constructor(){
         var elem = new Element();
-        this.elements = elem.all();
+        this.elements = elem.getAll();
+        console.log(this.elements);
         this.FromData = new FormData(); // for POST method
         this.StringData = ''; // for GET method
         this.config = Config.editable;
         this.method = Config.ajax.method;
-        // this.blob = Config.ajax.blob;
     }
 
     /**
@@ -35,20 +35,15 @@ export default class Serialize {
 
     /**
      * create object from all the editable elements
-     * make base64 image as blob (check by type of the element)
      * @structure: {element.name : element.content}
      */
     makeBigObject(){
         var object = {};
 
         this.elements.forEach(function(elem) {
-            let type = elem[this.config.typeAttr];
-            if(type == 'text'){
-                object[elem.name] = elem.content;
-            }else if(type == 'image'){
-                // if this.blob are TRUE
-                // object[name + '<image type>'] = this.blob(elem.content);
-            }
+            console.log(elem);
+            console.log(elem.innerHTML);
+            object[elem.getAttribute(this.config.attribute.name)] = elem.innerHTML;
         }, this);
 
         return object;
@@ -78,9 +73,4 @@ export default class Serialize {
             this.FromData.append(key, value);
         }
     }
-
-    /**
-     * sending base64 image as binary
-     */
-    blob(){}
 } 

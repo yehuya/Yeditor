@@ -1,6 +1,6 @@
-import Element from './../../../Element.class.js';
-import Editable from './../../../Editable.class.js';
-import Ajax from './../../../ajax/Ajax.class.js';
+import Element from './../../Element.class.js';
+import Editable from './../../Editable.class.js';
+import Ajax from './../../ajax/Ajax.class.js';
 
 const exports = module.exports;
 

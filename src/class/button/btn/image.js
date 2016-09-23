@@ -1,5 +1,5 @@
-import Image from './../../../image/Image.class.js';
-import Base64 from './../../../image/Base64.class.js';
+import Image from './../../image/Image.class.js';
+import Base64 from './../../image/Base64.class.js';
 const exports = module.exports;
 
 exports.image = [

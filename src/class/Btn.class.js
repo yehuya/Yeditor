@@ -1,4 +1,4 @@
-import Config from './../../config.js';
+import Config from './../config.js';
 import Text from './button/TextBtn.class.js';
 import Nav from './button/NavBtn.class.js';
 import Image from './button/ImageBtn.class.js';

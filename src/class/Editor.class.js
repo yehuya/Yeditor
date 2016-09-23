@@ -1,13 +1,22 @@
+import Config from './../config.js';
+import Editable from './Editable.class.js';
+import Element from './Element.class.js';
+import Navigation from './Navigation.class.js';
+
 /**
  * Editor main class
- * #### EXAMPLE ####
  */
 export default class Editor {
+    /**
+     * __construct
+     * add element editable prototype
+     * add editor navigation
+     */
     constructor(options){
-        // add editable fn into document.element
-        Element.prototype.editable = this.editable(options);
-        // create all the editor navigation 
-        createNavigation();
+        var element = new Element();
+        element.prototype(Config.editable.prototype, this.editable);
+        
+        new Navigation();
     }
 
     /**
@@ -15,7 +24,9 @@ export default class Editor {
      * add all the data attribute
      * @param Object (editable area options)
      */
-    editable(options){}    
+    editable(options){
+        return new Editable(options, this);
+    }    
     
     /**
      * add input into editor navigation

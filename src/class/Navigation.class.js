@@ -1,7 +1,7 @@
-import Config from './../../config.js';
+import Config from './../config.js';
 import Btn from './Btn.class.js';
 
-export default class Nav {
+export default class Navigation {
 
     /**
      * __construct

@@ -1,5 +1,5 @@
-import Config from './../../../config.js';
-import Selection from './../../Selection.class.js';
+import Config from './../../config.js';
+import Selection from './../Selection.class.js';
 import { image as btn } from './btn/image.js';
 import Button from './Button.class.js';
 

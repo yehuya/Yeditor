@@ -79,7 +79,8 @@ export default class Selection {
         var editable = false;
 
         while(parent){
-            if(parent.tagName.toLowerCase() == this.config.htmlTag.toLowerCase()){
+            if(parent.getAttribute('contenteditable') == 'true' 
+            && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin){
                 editable = true;
                 break;
             }

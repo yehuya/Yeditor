@@ -1,32 +1,70 @@
 const exports = module.exports;
-const prefix = 'frontendEditor-';
+const prefix = 'frontendEditor';
 
 /**
+ * concat two objects
+ * @param Object (def)
+ * @param Object (set)
+ * @return Object (def with new value of set)
+ */
+exports.extends = function(def, set){
+    for(let key in set){
+        if(def.hasOwnProperty(key)){
+            def[key] = set[key];
+        }
+    }
+
+    return def;
+}
+
+/**
+ * @for Editor.class.js
  * @for Editable.class.js
- * @for element/Element.class.js
+ * @for Element.class.js
  * @for ajax/Serialize.class.js
  */
 exports.editable = {
-    htmlTag: 'edit',
-    nameAttr: 'name',
-    typeAttr: 'type'
+    prototype: 'editable',
+    attribute: {
+        name: `${prefix}-name`,
+        background: `${prefix}-bg`,
+        bgExists: `${prefix}-bg-exists`,
+        image: `${prefix}-image`,
+        html: `${prefix}-html`,
+        /**
+        * attribute says - this is our plugin editable area 
+        * toLowerCase - prevent bug: the browser render attribute name as lowercase
+        * @for Selection.class.js 
+        * @for Editable.class.js 
+        * @for Element.class.js
+        */
+        plugin: prefix.toLowerCase() 
+    },
+    default: {
+        name: null,
+        type: 'inline',
+        background: true,
+        bgExists: true, // background editable only if bg element allready exists
+        image: true,
+        html: false
+    }
 }
 
 /**
  * @for editor/Nav.class.js
  */
 exports.nav = {
-    navClass: `${prefix}nav`,
-    navTextId: `${prefix}nav-text`,
-    navImageId: `${prefix}nav-image`,
-    navMainId: `${prefix}nav-main`
+    navClass: `${prefix}-nav`,
+    navTextId: `${prefix}-nav-text`,
+    navImageId: `${prefix}-nav-image`,
+    navMainId: `${prefix}-nav-main`
 }
 
 /**
  * @for editor/button/*.class.js
  */
 exports.button = {
-    btnClass: `${prefix}nav-btn`
+    btnClass: `${prefix}-nav-btn`
 }
 
 /**
