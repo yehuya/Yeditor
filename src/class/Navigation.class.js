@@ -1,5 +1,7 @@
 import Config from './../config.js';
-import Btn from './Btn.class.js';
+import Text from './button/TextBtn.class.js';
+import Nav from './button/NavBtn.class.js';
+import Image from './button/ImageBtn.class.js';
 
 export default class Navigation {
 
@@ -9,7 +11,13 @@ export default class Navigation {
      */
     constructor(){
         this.config = Config.nav;
-        this.Btn = new Btn();
+
+        this.Btn = {
+            text: new Text().getAllButtons(),
+            image: new Image().getAllButtons(),
+            nav: new Nav().getAllButtons()
+        }
+
         this.createTextNav();
         this.createMainNav();
         this.createImageNav();
