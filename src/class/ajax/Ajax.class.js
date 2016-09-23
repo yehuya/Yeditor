@@ -1,5 +1,6 @@
 import Config from './../../config.js';
 import Serialize from './Serialize.class.js';
+import Element from './../Element.class.js'
 
 /**
  * class for ajax request
@@ -75,17 +76,19 @@ export default class Ajax {
 
     /**
      * create ajax request
+     * - get editable element data
      * @callback Object (ajax object - xhr)
      * @return Object (this)
      */
     request() {
         var self = this;
+        var elements = new Element().getAll();
         var method = self.config.method;
         this.xhr = new XMLHttpRequest();
 
         // open request
         if(method == 'GET'){
-            this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(), true);
+            this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(elements), true);
             this.addHeader(["Content-Type", "application/x-www-form-urlencoded"]);
         }else if(method == 'POST'){
             this.xhr.open(method, self.config.url, true);
@@ -99,7 +102,7 @@ export default class Ajax {
         if(method == 'GET'){
             this.xhr.send();
         }else if(method == 'POST'){
-            this.xhr.send(this.Serialize.POST());
+            this.xhr.send(this.Serialize.POST(elements));
         }
         
         return this;

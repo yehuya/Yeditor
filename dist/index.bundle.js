@@ -407,7 +407,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -424,30 +424,36 @@
 	 * all about the Element
 	 */
 	var Element = function () {
-	    function Element() {
-	        _classCallCheck(this, Element);
+	  function Element() {
+	    _classCallCheck(this, Element);
+	  }
+
+	  /**
+	   * create element prototype
+	   * @param String (prototype.name)
+	   * @param All (prototype.name = value)
+	   */
+
+
+	  _createClass(Element, [{
+	    key: 'prototype',
+	    value: function prototype(key, value) {
+	      window.Element.prototype[key] = value;
 	    }
 
 	    /**
-	     * create element prototype
-	     * @param String (prototype.name)
-	     * @param All (prototype.name = value)
+	     * get all element with plugin attribute (editable area)
+	     * @return Array Of Object (element)
 	     */
 
+	  }, {
+	    key: 'getAll',
+	    value: function getAll() {
+	      return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
+	    }
+	  }]);
 
-	    _createClass(Element, [{
-	        key: 'prototype',
-	        value: function prototype(key, value) {
-	            window.Element.prototype[key] = value;
-	        }
-	    }, {
-	        key: 'getAll',
-	        value: function getAll() {
-	            return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
-	        }
-	    }]);
-
-	    return Element;
+	  return Element;
 	}();
 
 	exports.default = Element;
@@ -468,9 +474,17 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _BtnClass = __webpack_require__(6);
+	var _TextBtnClass = __webpack_require__(6);
 
-	var _BtnClass2 = _interopRequireDefault(_BtnClass);
+	var _TextBtnClass2 = _interopRequireDefault(_TextBtnClass);
+
+	var _NavBtnClass = __webpack_require__(10);
+
+	var _NavBtnClass2 = _interopRequireDefault(_NavBtnClass);
+
+	var _ImageBtnClass = __webpack_require__(14);
+
+	var _ImageBtnClass2 = _interopRequireDefault(_ImageBtnClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -486,7 +500,13 @@
 	        _classCallCheck(this, Navigation);
 
 	        this.config = _config2.default.nav;
-	        this.Btn = new _BtnClass2.default();
+
+	        this.Btn = {
+	            text: new _TextBtnClass2.default().getAllButtons(),
+	            image: new _ImageBtnClass2.default().getAllButtons(),
+	            nav: new _NavBtnClass2.default().getAllButtons()
+	        };
+
 	        this.createTextNav();
 	        this.createMainNav();
 	        this.createImageNav();
@@ -617,52 +637,6 @@
 	    value: true
 	});
 
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _TextBtnClass = __webpack_require__(7);
-
-	var _TextBtnClass2 = _interopRequireDefault(_TextBtnClass);
-
-	var _NavBtnClass = __webpack_require__(11);
-
-	var _NavBtnClass2 = _interopRequireDefault(_NavBtnClass);
-
-	var _ImageBtnClass = __webpack_require__(15);
-
-	var _ImageBtnClass2 = _interopRequireDefault(_ImageBtnClass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * editor button class
-	 */
-	var Btn = function Btn() {
-	    _classCallCheck(this, Btn);
-
-	    var text = new _TextBtnClass2.default();
-	    var nav = new _NavBtnClass2.default();
-	    var image = new _ImageBtnClass2.default();
-	    this.text = text.getAllButtons();
-	    this.nav = nav.getAllButtons();
-	    this.image = image.getAllButtons();
-	};
-
-	exports.default = Btn;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
@@ -671,13 +645,13 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(8);
+	var _SelectionClass = __webpack_require__(7);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _text = __webpack_require__(9);
+	var _text = __webpack_require__(8);
 
-	var _ButtonClass = __webpack_require__(10);
+	var _ButtonClass = __webpack_require__(9);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
@@ -784,7 +758,7 @@
 	exports.default = TextBtn;
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -939,7 +913,7 @@
 	exports.default = Selection;
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -991,7 +965,7 @@
 	}];
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1077,7 +1051,7 @@
 	exports.default = Button;
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1094,9 +1068,9 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _nav = __webpack_require__(12);
+	var _nav = __webpack_require__(11);
 
-	var _ButtonClass = __webpack_require__(10);
+	var _ButtonClass = __webpack_require__(9);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
@@ -1193,7 +1167,7 @@
 	exports.default = NavBtn;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1206,7 +1180,7 @@
 
 	var _EditableClass2 = _interopRequireDefault(_EditableClass);
 
-	var _AjaxClass = __webpack_require__(13);
+	var _AjaxClass = __webpack_require__(12);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
@@ -1255,7 +1229,7 @@
 	}];
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1270,9 +1244,13 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(14);
+	var _SerializeClass = __webpack_require__(13);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
+
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1373,6 +1351,7 @@
 
 	        /**
 	         * create ajax request
+	         * - get editable element data
 	         * @callback Object (ajax object - xhr)
 	         * @return Object (this)
 	         */
@@ -1381,12 +1360,13 @@
 	        key: 'request',
 	        value: function request() {
 	            var self = this;
+	            var elements = new _ElementClass2.default().getAll();
 	            var method = self.config.method;
 	            this.xhr = new XMLHttpRequest();
 
 	            // open request
 	            if (method == 'GET') {
-	                this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(), true);
+	                this.xhr.open(method, self.config.url + '?' + this.Serialize.GET(elements), true);
 	                this.addHeader(["Content-Type", "application/x-www-form-urlencoded"]);
 	            } else if (method == 'POST') {
 	                this.xhr.open(method, self.config.url, true);
@@ -1400,7 +1380,7 @@
 	            if (method == 'GET') {
 	                this.xhr.send();
 	            } else if (method == 'POST') {
-	                this.xhr.send(this.Serialize.POST());
+	                this.xhr.send(this.Serialize.POST(elements));
 	            }
 
 	            return this;
@@ -1413,7 +1393,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1423,10 +1403,6 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _ElementClass = __webpack_require__(4);
-
-	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
 	var _config = __webpack_require__(2);
 
@@ -1443,9 +1419,6 @@
 	    function Serialize() {
 	        _classCallCheck(this, Serialize);
 
-	        var elem = new _ElementClass2.default();
-	        this.elements = elem.getAll();
-	        console.log(this.elements);
 	        this.FromData = new FormData(); // for POST method
 	        this.StringData = ''; // for GET method
 	        this.config = _config2.default.editable;
@@ -1453,43 +1426,44 @@
 	    }
 
 	    /**
-	     * serialize object for POST ajax method
+	     * serialize array of elements for POST ajax method
+	     * @param Array of Object (elements)
 	     * @return Object
 	     */
 
 
 	    _createClass(Serialize, [{
 	        key: 'POST',
-	        value: function POST() {
-	            this.convert();
+	        value: function POST(ArrayOfElements) {
+	            this.convert(ArrayOfElements);
 	            return this.FromData;
 	        }
 
 	        /**
-	         * serialize object for GET
+	         * serialize array of elements for GET
+	         * @param Array of Object (elements)
 	         * @return String
 	         */
 
 	    }, {
 	        key: 'GET',
-	        value: function GET() {
-	            this.convert();
+	        value: function GET(ArrayOfElements) {
+	            this.convert(ArrayOfElements);
 	            return this.StringData;
 	        }
 
 	        /**
 	         * create object from all the editable elements
+	         * @param Array of Object
 	         * @structure: {element.name : element.content}
 	         */
 
 	    }, {
 	        key: 'makeBigObject',
-	        value: function makeBigObject() {
+	        value: function makeBigObject(ArrayOfElements) {
 	            var object = {};
 
-	            this.elements.forEach(function (elem) {
-	                console.log(elem);
-	                console.log(elem.innerHTML);
+	            ArrayOfElements.forEach(function (elem) {
 	                object[elem.getAttribute(this.config.attribute.name)] = elem.innerHTML;
 	            }, this);
 
@@ -1498,12 +1472,13 @@
 
 	        /**
 	         * convert this.makeBigObject into ajax request by this.addData
+	         * @param Array of Object
 	         */
 
 	    }, {
 	        key: 'convert',
-	        value: function convert() {
-	            var object = this.makeBigObject();
+	        value: function convert(ArrayOfElements) {
+	            var object = this.makeBigObject(ArrayOfElements);
 	            for (var key in object) {
 	                this.addData(key, object[key]);
 	            }
@@ -1534,7 +1509,7 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1551,13 +1526,13 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(8);
+	var _SelectionClass = __webpack_require__(7);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _image = __webpack_require__(16);
+	var _image = __webpack_require__(15);
 
-	var _ButtonClass = __webpack_require__(10);
+	var _ButtonClass = __webpack_require__(9);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
@@ -1651,16 +1626,16 @@
 	exports.default = ImageBtn;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _ImageClass = __webpack_require__(17);
+	var _ImageClass = __webpack_require__(16);
 
 	var _ImageClass2 = _interopRequireDefault(_ImageClass);
 
-	var _Base64Class = __webpack_require__(18);
+	var _Base64Class = __webpack_require__(17);
 
 	var _Base64Class2 = _interopRequireDefault(_Base64Class);
 
@@ -1710,7 +1685,7 @@
 	}];
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1725,7 +1700,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(8);
+	var _SelectionClass = __webpack_require__(7);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
@@ -1778,7 +1753,7 @@
 	exports.default = Image;
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';

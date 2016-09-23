@@ -1,4 +1,3 @@
-import Element from './../Element.class.js';
 import Config from './../../config.js';
 
 /**
@@ -6,9 +5,6 @@ import Config from './../../config.js';
  */
 export default class Serialize {
     constructor(){
-        var elem = new Element();
-        this.elements = elem.getAll();
-        console.log(this.elements);
         this.FromData = new FormData(); // for POST method
         this.StringData = ''; // for GET method
         this.config = Config.editable;
@@ -16,33 +12,34 @@ export default class Serialize {
     }
 
     /**
-     * serialize object for POST ajax method
+     * serialize array of elements for POST ajax method
+     * @param Array of Object (elements)
      * @return Object
      */
-    POST(){
-        this.convert()
+    POST(ArrayOfElements){
+        this.convert(ArrayOfElements)
         return this.FromData;
     }
 
     /**
-     * serialize object for GET
+     * serialize array of elements for GET
+     * @param Array of Object (elements)
      * @return String
      */
-    GET(){
-        this.convert()
+    GET(ArrayOfElements){
+        this.convert(ArrayOfElements)
         return this.StringData;
     }
 
     /**
      * create object from all the editable elements
+     * @param Array of Object
      * @structure: {element.name : element.content}
      */
-    makeBigObject(){
+    makeBigObject(ArrayOfElements){
         var object = {};
 
-        this.elements.forEach(function(elem) {
-            console.log(elem);
-            console.log(elem.innerHTML);
+        ArrayOfElements.forEach(function(elem) {
             object[elem.getAttribute(this.config.attribute.name)] = elem.innerHTML;
         }, this);
 
@@ -51,9 +48,10 @@ export default class Serialize {
 
     /**
      * convert this.makeBigObject into ajax request by this.addData
+     * @param Array of Object
      */
-    convert(){
-        var object = this.makeBigObject();
+    convert(ArrayOfElements){
+        var object = this.makeBigObject(ArrayOfElements);
         for(let key in object){
             this.addData(key, object[key]);
         }
