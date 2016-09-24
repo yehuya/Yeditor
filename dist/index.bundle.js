@@ -56,15 +56,6 @@
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
-	// import Selection from './class/Selection.class.js';
-	// import Element from './class/Element.class.js';
-	// import Ajax from './class/ajax/Ajax.class.js';
-	// import Serialize from './class/ajax/Serialize.class.js';
-
-	// window.selection = new Selection();
-	// window.element = new Element();
-	// window.ajax = new Ajax();
-	// window.serialize = new Serialize();
 
 /***/ },
 /* 1 */
@@ -245,17 +236,16 @@
 	 * @for editor/Nav.class.js
 	 */
 	_exports.nav = {
-	    navClass: prefix + '-nav',
-	    navTextId: prefix + '-nav-text',
-	    navImageId: prefix + '-nav-image',
-	    navMainId: prefix + '-nav-main'
+	    class: prefix + '-nav',
+	    id: prefix + '-nav'
 	};
 
 	/**
 	 * @for editor/button/*.class.js
 	 */
 	_exports.button = {
-	    btnClass: prefix + '-nav-btn'
+	    class: prefix + '-nav-btn',
+	    tagName: 'button'
 	};
 
 	/**
@@ -447,8 +437,8 @@
 	     */
 
 	  }, {
-	    key: 'getAll',
-	    value: function getAll() {
+	    key: 'getAllEditable',
+	    value: function getAllEditable() {
 	      return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
 	    }
 	  }]);
@@ -474,17 +464,9 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _TextBtnClass = __webpack_require__(6);
+	var _ButtonClass = __webpack_require__(6);
 
-	var _TextBtnClass2 = _interopRequireDefault(_TextBtnClass);
-
-	var _NavBtnClass = __webpack_require__(10);
-
-	var _NavBtnClass2 = _interopRequireDefault(_NavBtnClass);
-
-	var _ImageBtnClass = __webpack_require__(14);
-
-	var _ImageBtnClass2 = _interopRequireDefault(_ImageBtnClass);
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -500,16 +482,7 @@
 	        _classCallCheck(this, Navigation);
 
 	        this.config = _config2.default.nav;
-
-	        this.Btn = {
-	            text: new _TextBtnClass2.default().getAllButtons(),
-	            image: new _ImageBtnClass2.default().getAllButtons(),
-	            nav: new _NavBtnClass2.default().getAllButtons()
-	        };
-
-	        this.createTextNav();
-	        this.createMainNav();
-	        this.createImageNav();
+	        this.create(this.config.id, new _ButtonClass2.default().get());
 	    }
 
 	    /**
@@ -524,7 +497,7 @@
 	        value: function element(navId) {
 	            var elem = document.createElement('nav');
 	            elem.id = navId;
-	            elem.classList.add(this.config.navClass);
+	            elem.classList.add(this.config.class);
 
 	            return elem.cloneNode();
 	        }
@@ -584,42 +557,6 @@
 	            this.appendEditButtons(nav, buttons);
 	            this.appendToDocument(nav);
 	        }
-
-	        /**
-	         * create navigation for text area
-	         */
-
-	    }, {
-	        key: 'createTextNav',
-	        value: function createTextNav() {
-	            var buttons = this.Btn.text;
-	            var navId = this.config.navTextId;
-	            this.create(navId, buttons);
-	        }
-
-	        /**
-	         * create navigation for main nav
-	         */
-
-	    }, {
-	        key: 'createMainNav',
-	        value: function createMainNav() {
-	            var buttons = this.Btn.nav;
-	            var navId = this.config.navMainId;
-	            this.create(navId, buttons);
-	        }
-
-	        /**
-	         * create navigation for image nav
-	         */
-
-	    }, {
-	        key: 'createImageNav',
-	        value: function createImageNav() {
-	            var buttons = this.Btn.image;
-	            var navId = this.config.navMainId;
-	            this.create(navId, buttons);
-	        }
 	    }]);
 
 	    return Navigation;
@@ -637,128 +574,248 @@
 	    value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(7);
+	var _imageArray = __webpack_require__(7);
 
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+	var _navArray = __webpack_require__(11);
 
-	var _text = __webpack_require__(8);
-
-	var _ButtonClass = __webpack_require__(9);
-
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+	var _textArray = __webpack_require__(14);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	var Button = function () {
+	    function Button() {
+	        _classCallCheck(this, Button);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	/**
-	 * class for Text edit button
-	 */
-	var TextBtn = function (_Button) {
-	    _inherits(TextBtn, _Button);
-
-	    function TextBtn() {
-	        _classCallCheck(this, TextBtn);
-
-	        var _this = _possibleConstructorReturn(this, (TextBtn.__proto__ || Object.getPrototypeOf(TextBtn)).call(this));
-
-	        _this.Selection = new _SelectionClass2.default();
-	        _this.config = _config2.default.button;
-	        _this.btn = _text.text;
-	        return _this;
+	        this.config = _config2.default.button;
+	        this.btn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
 	    }
 
 	    /**
-	     * create button elements from array
-	     * take the object of button and make it as dom element
-	     * @return Array
+	     * get all button elements
+	     * @return Array of Object
 	     */
 
 
-	    _createClass(TextBtn, [{
-	        key: 'getAllButtons',
-	        value: function getAllButtons() {
-	            return _get(TextBtn.prototype.__proto__ || Object.getPrototypeOf(TextBtn.prototype), 'getAllButtons', this).call(this, this.btn, this);
+	    _createClass(Button, [{
+	        key: 'get',
+	        value: function get() {
+	            var arr = [];
+	            this.btn.forEach(function (button) {
+	                arr.push(this.create(button));
+	            }, this);
+
+	            return arr;
 	        }
 
 	        /**
-	         * create button from btn object
-	         * get btn object form this.btn and make it as DOM element
-	         * @param Object (btn object)
-	         * @return Object (DOM element)
+	         * create btn from object 
+	         * @property name, description, class, text, id, element, event 
+	         * @param Object
+	         * @return Object
 	         */
 
 	    }, {
 	        key: 'create',
-	        value: function create(Object) {
-	            var self = this;
-	            var name = Object.name || '?';
-	            var node = Object.node() || null;
+	        value: function create(btn) {
+	            var element = _typeof(btn.element) == 'object' ? btn.element : this.element();
+	            element.classList.add(this.config.class + (btn.class || ''));
+	            element.title = btn.description || '';
+	            element.id = btn.id || '';
+	            if (btn.text.length > 0) element.appendChild(document.createTextNode(btn.text));
 
-	            var elem = document.createElement('button');
-	            elem.classList.add(this.config.btnClass);
-	            elem.title = name;
-	            elem.innerText = name;
+	            this.event(btn.event, element);
 
-	            this.click(elem, function () {
-	                self.Selection.append(node);
-	            });
-
-	            return elem;
+	            return element;
 	        }
 
 	        /**
-	         * event onClick on button
-	         * @param Object (button)
-	         * @param FN (callback function)
+	         * default button element
+	         * @return Object (dom element)
 	         */
 
 	    }, {
-	        key: 'click',
-	        value: function click(button, callback) {
-	            var self = this;
-
-	            return _get(TextBtn.prototype.__proto__ || Object.getPrototypeOf(TextBtn.prototype), 'click', this).call(this, button, function () {
-	                if (typeof callback == 'function') {
-	                    // check if user selection area is editable
-	                    if (self.Selection.parentEditable()) {
-	                        callback();
-	                    }
-	                }
-	            });
+	        key: 'element',
+	        value: function element() {
+	            return document.createElement(this.config.tagName).cloneNode();
 	        }
 
 	        /**
-	         * add button
-	         * @param Object
+	         * create button events
+	         * @param Array of Object || Object (events)
+	         * @param Object (dom element)
 	         */
 
 	    }, {
-	        key: 'addButton',
-	        value: function addButton(object) {
-	            return _get(TextBtn.prototype.__proto__ || Object.getPrototypeOf(TextBtn.prototype), 'addButton', this).call(this, object, this.btn);
+	        key: 'event',
+	        value: function event(events, element) {
+	            if (Array.isArray(events)) {
+	                events.forEach(function (event) {
+	                    element.addEventListener(event.name, event.fn);
+	                }, this);
+	            } else {
+	                element.addEventListener(events.name, events.fn);
+	            }
 	        }
 	    }]);
 
-	    return TextBtn;
-	}(_ButtonClass2.default);
+	    return Button;
+	}();
 
-	exports.default = TextBtn;
+	/* ## EXAMPLE of button object
+	{
+	    name: 'test', // btn name
+	    description: 'test btn', // btn description - for title tag - optional
+	    class: 'test-btn', // add class to this btn - optional
+	    text: 'test', // insert text into the btn - optional
+	    id: 'test-btn', // add id to this btn - optional
+	    element: document.createElement('button').cloneNode(), // btn element - optional
+	    event: [
+	        {
+	            name: 'click',
+	            fn: function(){
+	                console.log('test');
+	            }
+	        }
+	    ],// btn event || for multiple event use []
+	}
+	*/
+
+
+	exports.default = Button;
 
 /***/ },
 /* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _ImageClass = __webpack_require__(8);
+
+	var _ImageClass2 = _interopRequireDefault(_ImageClass);
+
+	var _Base = __webpack_require__(10);
+
+	var _Base2 = _interopRequireDefault(_Base);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.image = [
+	/**
+	 * add image
+	 */
+	{
+	    name: 'Add image',
+	    text: 'Add image',
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            _Base2.default.image(files[0], function (url, file) {
+	                var Img = new _ImageClass2.default();
+	                Img.insert(url).setAttribute('alt', file.type);
+	            });
+	        }
+	    }]
+	}];
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _SelectionClass = __webpack_require__(9);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * image class
+	 */
+	var Image = function () {
+	    function Image() {
+	        _classCallCheck(this, Image);
+
+	        this.config = _config2.default.image;
+	        this.create();
+	    }
+
+	    /**
+	     * create image element
+	     * @return Object (this.img)
+	     */
+
+
+	    _createClass(Image, [{
+	        key: 'create',
+	        value: function create() {
+	            return this.img = document.createElement('img').cloneNode();
+	        }
+
+	        /**
+	         * append this.img into user selection
+	         * @param String (url)
+	         * @return Object (this.img) 
+	         */
+
+	    }, {
+	        key: 'insert',
+	        value: function insert(url) {
+	            var selection = new _SelectionClass2.default();
+	            this.img.src = url;
+	            selection.append(this.img);
+	            return this.img;
+	        }
+	    }]);
+
+	    return Image;
+	}();
+
+	exports.default = Image;
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -913,272 +970,39 @@
 	exports.default = Selection;
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
 
 	var _exports = module.exports;
 
-	_exports.text = [
 	/**
-	 * bold
-	 * @DOM span
-	 * @CSS font-weight="bold"
+	 * clean base64 string from "data:image/*;base64,"
+	 * @param String
 	 */
-	{
-	    name: 'bold',
-	    node: function node() {
-	        var element = document.createElement('span');
-	        element.style.fontWeight = 'bold';
-
-	        return element.cloneNode();
-	    }
-	},
-	/**
-	 * italic
-	 * @DOM span
-	 * @CSS font-style="italic"
-	 */
-	{
-	    name: 'italic',
-	    node: function node() {
-	        var element = document.createElement('span');
-	        element.style.fontStyle = 'italic';
-
-	        return element.cloneNode();
-	    }
-	},
-	/**
-	 * underline
-	 * @DOM span
-	 * @CSS text-decoration="underline"
-	 */
-	{
-	    name: 'underline',
-	    node: function node() {
-	        var element = document.createElement('span');
-	        element.style.textDecoration = 'underline';
-
-	        return element.cloneNode();
-	    }
-	}];
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	_exports.clean = function (b64) {
+	    return b64.substring(b64.indexOf(',') + 1);
+	};
 
 	/**
-	 * parent class for text, image, nav
-	 * @parent
+	 * get image file and return it as base64 data url
+	 * @param Object (file)
+	 * @param FN (callback: url: String, file: Object)
 	 */
-	var Button = function () {
-	    function Button() {
-	        _classCallCheck(this, Button);
-	    }
-
-	    _createClass(Button, [{
-	        key: 'addButton',
-
-	        /**
-	         * add button to array
-	         * @param Object (new button)
-	         * @param Array (btn array)
-	         */
-	        value: function addButton(object, array) {
-	            if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) == 'object') {
-	                array.push(object);
-	            }
-	        }
-
-	        /**
-	         * event onClick on button
-	         * @param Object (button)
-	         * @param FN (callback function)
-	         */
-
-	    }, {
-	        key: 'click',
-	        value: function click(button, callback) {
-	            var self = this;
-	            button.addEventListener('click', function (e) {
-	                e.preventDefault();
-	                callback();
-	            });
-	        }
-
-	        /**
-	         * create button elements from array
-	         * take the object of button and make it as dom element
-	         * @param Array
-	         * @param Object (this)
-	         * @return Array
-	         */
-
-	    }, {
-	        key: 'getAllButtons',
-	        value: function getAllButtons(array, self) {
-	            var arr = [];
-	            array.forEach(function (element) {
-	                arr.push(self.create(element));
-	            }, self);
-
-	            return arr;
-	        }
-	    }]);
-
-	    return Button;
-	}();
-
-	exports.default = Button;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _nav = __webpack_require__(11);
-
-	var _ButtonClass = __webpack_require__(9);
-
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	/**
-	 * class for main nav button
-	 */
-	var NavBtn = function (_Button) {
-	    _inherits(NavBtn, _Button);
-
-	    function NavBtn() {
-	        _classCallCheck(this, NavBtn);
-
-	        var _this = _possibleConstructorReturn(this, (NavBtn.__proto__ || Object.getPrototypeOf(NavBtn)).call(this));
-
-	        _this.btn = _nav.nav;
-	        _this.config = _config2.default.button;
-	        return _this;
-	    }
-
-	    /**
-	     * create button elements from array
-	     * take the object of button and make it as dom element
-	     * @param Array
-	     * @return Array
-	     */
-
-
-	    _createClass(NavBtn, [{
-	        key: 'getAllButtons',
-	        value: function getAllButtons() {
-	            return _get(NavBtn.prototype.__proto__ || Object.getPrototypeOf(NavBtn.prototype), 'getAllButtons', this).call(this, this.btn, this);
-	        }
-
-	        /**
-	         * create button from btn object
-	         * get btn object form this.btn and make it as DOM element
-	         * @param Object (btn object)
-	         * @return Object (DOM element)
-	         */
-
-	    }, {
-	        key: 'create',
-	        value: function create(Object) {
-	            var self = this;
-	            var name = Object.name || '?';
-
-	            var elem = document.createElement('button');
-	            elem.classList.add(this.config.btnClass);
-	            elem.title = name;
-	            elem.innerText = name;
-
-	            this.click(elem, function () {
-	                Object.event();
-	            });
-
-	            return elem;
-	        }
-
-	        /**
-	         * event onClick on button
-	         * @param Object (button)
-	         * @param FN (callback function)
-	         */
-
-	    }, {
-	        key: 'click',
-	        value: function click(button, callback) {
-	            return _get(NavBtn.prototype.__proto__ || Object.getPrototypeOf(NavBtn.prototype), 'click', this).call(this, button, callback);
-	        }
-
-	        /**
-	         * add button
-	         * @param Object
-	         */
-
-	    }, {
-	        key: 'addButton',
-	        value: function addButton(object) {
-	            return _get(NavBtn.prototype.__proto__ || Object.getPrototypeOf(NavBtn.prototype), 'addButton', this).call(this, object, this.btn);
-	        }
-	    }]);
-
-	    return NavBtn;
-	}(_ButtonClass2.default);
-
-	exports.default = NavBtn;
+	_exports.image = function (file, callback) {
+	    var reader = new FileReader();
+	    reader.onload = function (event) {
+	        callback(event.target.result, file);
+	    };
+	    reader.readAsDataURL(file);
+	};
 
 /***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	var _ElementClass = __webpack_require__(4);
-
-	var _ElementClass2 = _interopRequireDefault(_ElementClass);
-
-	var _EditableClass = __webpack_require__(3);
-
-	var _EditableClass2 = _interopRequireDefault(_EditableClass);
 
 	var _AjaxClass = __webpack_require__(12);
 
@@ -1190,41 +1014,21 @@
 
 	_exports.nav = [
 	/**
-	 * edit
-	 * @CLASS Editable.class.js
-	 * @FN set()
-	 */
-	{
-	    name: 'Edit',
-	    event: function event() {
-	        var editable = new _EditableClass2.default();
-	        editable.set();
-	    }
-	},
-	/**
-	 * no edit
-	 * @CLASS Editable.class.js
-	 * @FN set()
-	 */
-	{
-	    name: 'No edit',
-	    event: function event() {
-	        var editable = new _EditableClass2.default();
-	        editable.unset();
-	    }
-	},
-	/**
 	 * save
 	 * @CLASS Ajax.class.js, Serialize.class.js 
 	 * @FN set()
 	 */
 	{
-	    name: 'Save',
-	    event: function event() {
-	        var ajax = new _AjaxClass2.default();
-	        ajax.request().done(function (xhr) {
-	            console.log('done', xhr);
-	        });
+	    name: 'save',
+	    text: 'Save',
+	    event: {
+	        name: 'click',
+	        fn: function fn() {
+	            var ajax = new _AjaxClass2.default();
+	            ajax.request().done(function (xhr) {
+	                console.log('done', xhr);
+	            });
+	        }
 	    }
 	}];
 
@@ -1352,6 +1156,7 @@
 	        /**
 	         * create ajax request
 	         * - get editable element data
+	         * - serialize data
 	         * @callback Object (ajax object - xhr)
 	         * @return Object (this)
 	         */
@@ -1360,7 +1165,7 @@
 	        key: 'request',
 	        value: function request() {
 	            var self = this;
-	            var elements = new _ElementClass2.default().getAll();
+	            var elements = new _ElementClass2.default().getAllEditable();
 	            var method = self.config.method;
 	            this.xhr = new XMLHttpRequest();
 
@@ -1514,300 +1319,71 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _SelectionClass = __webpack_require__(7);
+	var _SelectionClass = __webpack_require__(9);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _image = __webpack_require__(15);
-
-	var _ButtonClass = __webpack_require__(9);
-
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	/**
-	 * class for Text edit button
-	 */
-	var ImageBtn = function (_Button) {
-	    _inherits(ImageBtn, _Button);
-
-	    function ImageBtn() {
-	        _classCallCheck(this, ImageBtn);
-
-	        var _this = _possibleConstructorReturn(this, (ImageBtn.__proto__ || Object.getPrototypeOf(ImageBtn)).call(this));
-
-	        _this.Selection = new _SelectionClass2.default();
-	        _this.config = _config2.default.button;
-	        _this.btn = _image.image;
-	        return _this;
-	    }
-
-	    /**
-	     * create button elements from array
-	     * take the object of button and make it as dom element
-	     * @return Array
-	     */
-
-
-	    _createClass(ImageBtn, [{
-	        key: 'getAllButtons',
-	        value: function getAllButtons() {
-	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'getAllButtons', this).call(this, this.btn, this);
-	        }
-
-	        /**
-	         * create button from btn object
-	         * get btn object form this.btn and make it as DOM element
-	         * @param Object (btn object)
-	         * @return Object (DOM element)
-	         */
-
-	    }, {
-	        key: 'create',
-	        value: function create(Object) {
-	            return Object.btn();
-	        }
-
-	        /**
-	         * event onClick on button
-	         * @param Object (button)
-	         * @param FN (callback function)
-	         */
-
-	    }, {
-	        key: 'click',
-	        value: function click(button, callback) {
-	            var self = this;
-
-	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'click', this).call(this, button, function () {
-	                if (typeof callback == 'function') {
-	                    // check if user selection area is editable
-	                    if (self.Selection.parentEditable()) {
-	                        callback();
-	                    }
-	                }
-	            });
-	        }
-
-	        /**
-	         * add button
-	         * @param Object
-	         */
-
-	    }, {
-	        key: 'addButton',
-	        value: function addButton(object) {
-	            return _get(ImageBtn.prototype.__proto__ || Object.getPrototypeOf(ImageBtn.prototype), 'addButton', this).call(this, object, this.btn);
-	        }
-	    }]);
-
-	    return ImageBtn;
-	}(_ButtonClass2.default);
-
-	exports.default = ImageBtn;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _ImageClass = __webpack_require__(16);
-
-	var _ImageClass2 = _interopRequireDefault(_ImageClass);
-
-	var _Base64Class = __webpack_require__(17);
-
-	var _Base64Class2 = _interopRequireDefault(_Base64Class);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	var selection = new _SelectionClass2.default();
 	var _exports = module.exports;
 
-	_exports.image = [
+	_exports.text = [
 	/**
-	 * add image
+	 * bold
+	 * @DOM span
+	 * @CSS font-weight="bold"
 	 */
 	{
-	    btn: function btn() {
-	        var elem = this.dom();
-	        this.event(elem);
+	    name: 'bold',
+	    text: 'B',
+	    event: {
+	        name: 'click',
+	        fn: function fn() {
+	            var element = document.createElement('span');
+	            element.style.fontWeight = 'bold';
+	            console.log('click');
+	            console.log(selection);
+	            selection.append(element.cloneNode());
+	        }
+	    }
+	},
+	/**
+	 * italic
+	 * @DOM span
+	 * @CSS font-style="italic"
+	 */
+	{
+	    name: 'italic',
+	    text: 'I',
+	    event: {
+	        name: 'click',
+	        fn: function fn() {
+	            var element = document.createElement('span');
+	            element.style.fontStyle = 'italic';
 
-	        return elem;
-	    },
-	    event: function event(element) {
-	        var base64 = new _Base64Class2.default();
-	        element.addEventListener('mousedown', function (e) {
-	            e.preventDefault();
-	        });
-	        element.addEventListener('change', function (event) {
-	            var files = event.target.files || event.dataTransfer.files;
-	            base64.image(files[0], function (url, file) {
-	                var Img = new _ImageClass2.default();
-	                console.log();
-	                Img.insert(url).setAttribute('alt', file.type);
-	            });
-	        });
-	    },
-	    dom: function dom() {
-	        var label = document.createElement('label');
-	        var span = document.createElement('span');
-	        span.innerText = 'IMAGE';
-	        var input = document.createElement('input');
-	        input.type = 'file';
-	        input.accept = 'image/*';
-	        input.style.display = 'none';
+	            selection.append(element.cloneNode());
+	        }
+	    }
+	},
+	/**
+	 * underline
+	 * @DOM span
+	 * @CSS text-decoration="underline"
+	 */
+	{
+	    name: 'underline',
+	    text: 'U',
+	    event: {
+	        name: 'click',
+	        fn: function fn() {
+	            var element = document.createElement('span');
+	            element.style.textDecoration = 'underline';
 
-	        label.appendChild(span);
-	        label.appendChild(input);
-
-	        return label.cloneNode(true);
+	            selection.append(element.cloneNode());
+	        }
 	    }
 	}];
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _SelectionClass = __webpack_require__(7);
-
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * image class
-	 */
-	var Image = function () {
-	    function Image() {
-	        _classCallCheck(this, Image);
-
-	        this.config = _config2.default.image;
-	        this.create();
-	    }
-
-	    /**
-	     * create image element
-	     * @return Object (this.img)
-	     */
-
-
-	    _createClass(Image, [{
-	        key: 'create',
-	        value: function create() {
-	            return this.img = document.createElement('img').cloneNode();
-	        }
-
-	        /**
-	         * append this.img into user selection
-	         * @param String (url)
-	         * @return Object (this.img) 
-	         */
-
-	    }, {
-	        key: 'insert',
-	        value: function insert(url) {
-	            var selection = new _SelectionClass2.default();
-	            this.img.src = url;
-	            selection.append(this.img);
-	            return this.img;
-	        }
-	    }]);
-
-	    return Image;
-	}();
-
-	exports.default = Image;
-
-/***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * create image src as base64
-	 * set base64 as binary
-	 */
-	var Base64 = function () {
-	    function Base64() {
-	        _classCallCheck(this, Base64);
-	    }
-
-	    /**
-	     * clean base64 string from "data:image/*;base64,"
-	     * @param String
-	     */
-
-
-	    _createClass(Base64, [{
-	        key: 'clean',
-	        value: function clean(b64) {
-	            return b64.substring(b64.indexOf(',') + 1);
-	        }
-
-	        /**
-	         * get image file and return it as base64 data url
-	         * @param Object (file)
-	         * @param FN (callback: url: String, file: Object)
-	         */
-
-	    }, {
-	        key: 'image',
-	        value: function image(file, callback) {
-	            var reader = new FileReader();
-	            reader.onload = function (event) {
-	                callback(event.target.result, file);
-	            };
-	            reader.readAsDataURL(file);
-	        }
-	    }]);
-
-	    return Base64;
-	}();
-
-	exports.default = Base64;
 
 /***/ }
 /******/ ]);

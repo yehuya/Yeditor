@@ -77,12 +77,13 @@ export default class Ajax {
     /**
      * create ajax request
      * - get editable element data
+     * - serialize data
      * @callback Object (ajax object - xhr)
      * @return Object (this)
      */
     request() {
         var self = this;
-        var elements = new Element().getAll();
+        var elements = new Element().getAllEditable();
         var method = self.config.method;
         this.xhr = new XMLHttpRequest();
 

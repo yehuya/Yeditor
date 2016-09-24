@@ -19,7 +19,7 @@ export default class Element {
      * get all element with plugin attribute (editable area)
      * @return Array Of Object (element)
      */
-    getAll(){
+    getAllEditable(){
         return document.querySelectorAll('[' + Config.editable.attribute.plugin + ']');
     }
 } 

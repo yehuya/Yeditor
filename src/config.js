@@ -54,17 +54,16 @@ exports.editable = {
  * @for editor/Nav.class.js
  */
 exports.nav = {
-    navClass: `${prefix}-nav`,
-    navTextId: `${prefix}-nav-text`,
-    navImageId: `${prefix}-nav-image`,
-    navMainId: `${prefix}-nav-main`
+    class: `${prefix}-nav`,
+    id: `${prefix}-nav`,
 }
 
 /**
  * @for editor/button/*.class.js
  */
 exports.button = {
-    btnClass: `${prefix}-nav-btn`
+    class: `${prefix}-nav-btn`,
+    tagName: 'button'
 }
 
 /**

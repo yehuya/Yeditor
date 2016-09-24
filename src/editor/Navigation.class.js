@@ -1,7 +1,5 @@
 import Config from './../config.js';
-import Text from './button/TextBtn.class.js';
-import Nav from './button/NavBtn.class.js';
-import Image from './button/ImageBtn.class.js';
+import Button from './Button.class.js';
 
 export default class Navigation {
 
@@ -11,16 +9,7 @@ export default class Navigation {
      */
     constructor(){
         this.config = Config.nav;
-
-        this.Btn = {
-            text: new Text().getAllButtons(),
-            image: new Image().getAllButtons(),
-            nav: new Nav().getAllButtons()
-        }
-
-        this.createTextNav();
-        this.createMainNav();
-        this.createImageNav();
+        this.create(this.config.id, new Button().get());  
     }
 
     /**
@@ -31,7 +20,7 @@ export default class Navigation {
     element(navId){
         var elem = document.createElement('nav');
         elem.id = navId;
-        elem.classList.add(this.config.navClass);
+        elem.classList.add(this.config.class);
 
         return elem.cloneNode();
     }
@@ -78,32 +67,5 @@ export default class Navigation {
 
         this.appendEditButtons(nav, buttons);
         this.appendToDocument(nav);
-    }
-
-    /**
-     * create navigation for text area
-     */
-    createTextNav(){
-        var buttons = this.Btn.text;
-        var navId = this.config.navTextId;
-        this.create(navId, buttons);  
-    }
-
-    /**
-     * create navigation for main nav
-     */
-    createMainNav(){
-        var buttons = this.Btn.nav;
-        var navId = this.config.navMainId;
-        this.create(navId, buttons);
-    }
-
-    /**
-     * create navigation for image nav
-     */
-    createImageNav(){
-        var buttons = this.Btn.image;
-        var navId = this.config.navMainId;
-        this.create(navId, buttons);
     }
 }
