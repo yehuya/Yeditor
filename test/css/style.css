@@ -21,3 +21,9 @@
 [contenteditable="true"] img:active {
     opacity: 0.5;
 }
+
+.frontendEditor-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
