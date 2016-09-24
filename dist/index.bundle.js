@@ -631,7 +631,7 @@
 	            element.classList.add(this.config.class + (btn.class || ''));
 	            element.title = btn.description || '';
 	            element.id = btn.id || '';
-	            if (btn.text.length > 0) element.appendChild(document.createTextNode(btn.text));
+	            if (btn.text && btn.text.length > 0) element.appendChild(document.createTextNode(btn.text));
 
 	            this.event(btn.event, element);
 
