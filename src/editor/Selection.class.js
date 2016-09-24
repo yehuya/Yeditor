@@ -67,7 +67,10 @@ export default class Selection {
      */
     parent(){
         var selection = this.get().anchorNode;
-        return selection ? selection.parentElement : null;
+        // prevent '#text' node as element
+        if(selection && selection.nodeType == 3) selection = selection.parentElement; 
+        
+        return selection ? selection : null;
     }
 
     /**

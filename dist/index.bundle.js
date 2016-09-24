@@ -50,9 +50,15 @@
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
 
+	var _SelectionClass = __webpack_require__(9);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.Editor = new _EditorClass2.default();
+
+	window.Selection = new _SelectionClass2.default();
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -916,7 +922,10 @@
 	        key: 'parent',
 	        value: function parent() {
 	            var selection = this.get().anchorNode;
-	            return selection ? selection.parentElement : null;
+	            // prevent '#text' node as element
+	            if (selection && selection.nodeType == 3) selection = selection.parentElement;
+
+	            return selection ? selection : null;
 	        }
 
 	        /**
@@ -1340,11 +1349,10 @@
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
-	            var element = document.createElement('span');
-	            element.style.fontWeight = 'bold';
-	            console.log('click');
-	            console.log(selection);
-	            selection.append(element.cloneNode());
+	            // var element = document.createElement('span');
+	            // element.style.fontWeight = 'bold';
+	            // selection.append(element.cloneNode());
+	            document.execCommand('bold', false);
 	        }
 	    }
 	},
@@ -1359,10 +1367,11 @@
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
-	            var element = document.createElement('span');
-	            element.style.fontStyle = 'italic';
+	            // var element = document.createElement('span');
+	            // element.style.fontStyle = 'italic';
 
-	            selection.append(element.cloneNode());
+	            // selection.append(element.cloneNode());
+	            document.execCommand('italic', false);
 	        }
 	    }
 	},
@@ -1377,10 +1386,11 @@
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
-	            var element = document.createElement('span');
-	            element.style.textDecoration = 'underline';
+	            // var element = document.createElement('span');
+	            // element.style.textDecoration = 'underline';
 
-	            selection.append(element.cloneNode());
+	            // selection.append(element.cloneNode());
+	            document.execCommand('underline', false);
 	        }
 	    }
 	}];

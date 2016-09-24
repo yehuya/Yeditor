@@ -36,7 +36,7 @@
             Sed in erat lectus. In pretium ligula nec nunc fringilla gravida. Nulla facilisi. Ut dignissim justo sed neque tristique
             egestas. Etiam tristique neque ullamcorper, pellentesque quam ut, tincidunt lectus. In sit amet ipsum eget
             libero sodales suscipit eu accumsan odio. Quisque lorem nisl, iaculis ac accumsan ut, luctus condimentum
-            orci. Aenean odio dolor, condimentum et nibh id, pulvinar consequat arcu. Sed non risus sem. Mauris risus
+            orci. <span style="color:blue;" id="parent"><span id="child">Aenean</span> odio dolor</span>, condimentum et nibh id, pulvinar consequat arcu. Sed non risus sem. Mauris risus
             ligula, molestie sed arcu a, feugiat hendrerit eros. Ut posuere, ex vel lobortis suscipit, justo turpis auctor
             nulla, a sollicitudin nibh sem faucibus arcu. Suspendisse vitae porttitor sapien.
         </div>
@@ -56,6 +56,45 @@
                 name: 'text-' + i
             });
         }
+
+        var select = function(){
+            var s = window.getSelection();
+            if(s.isCollapsed) return alert('Select some text');
+            var range = s.getRangeAt(0);
+
+            var start = range.startContainer;
+            var end = range.endContainer;
+            var sOffset = range.startOffset;
+            var eOffset = range.endOffset;
+
+            s.removeAllRanges();
+
+            spanFrom(start, sOffset, null)
+            return range;
+         }
+
+         var spanFrom = function(node, from, to){
+             var text = node.textContent;
+             var parent = node.parentElement;
+             var nextSibling = node.nextSibling;
+
+             if(to == null) to = text.length;
+
+             var arr = [
+                 text.substring(0, from),
+                 text.substring(from, to) + 'YES',
+                 text.substring(to, text.length)
+             ];
+
+             parent.removeChild(node);
+
+             for(var i = 0 ; i < arr.lenght ; i++){
+                 if(arr[i].length > 0) parent.insertBefore(arr[i], nextSibling);
+             }
+         }
+
+
+
 
         // var input = document.getElementById('uploadImage');
         // input.change(function(event){

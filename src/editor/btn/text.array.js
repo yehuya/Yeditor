@@ -15,11 +15,10 @@ exports.text = [
         event: {
             name: 'click',
             fn: function(){
-                var element = document.createElement('span');
-                element.style.fontWeight = 'bold';
-                console.log('click');
-                console.log(selection);
-                selection.append(element.cloneNode());
+                // var element = document.createElement('span');
+                // element.style.fontWeight = 'bold';
+                // selection.append(element.cloneNode());
+                document.execCommand('bold', false);
             }
         }
     },
@@ -34,10 +33,11 @@ exports.text = [
         event: {
             name: 'click',
             fn: function(){
-                var element = document.createElement('span');
-                element.style.fontStyle = 'italic';
+                // var element = document.createElement('span');
+                // element.style.fontStyle = 'italic';
 
-                selection.append(element.cloneNode());
+                // selection.append(element.cloneNode());
+                document.execCommand('italic', false);
             }
         }
     },
@@ -52,10 +52,11 @@ exports.text = [
         event: {
             name: 'click',
             fn: function(){
-                var element = document.createElement('span');
-                element.style.textDecoration = 'underline';
+                // var element = document.createElement('span');
+                // element.style.textDecoration = 'underline';
 
-                selection.append(element.cloneNode());
+                // selection.append(element.cloneNode());
+                document.execCommand('underline', false);
             }
         }
     }

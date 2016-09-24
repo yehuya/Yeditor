@@ -3,13 +3,13 @@
     outline: none;
     display: block;
     box-sizing: border-box;
+    transition: background 250ms linear;
 }
 /* FOCUS, HOVER */
 
 [contenteditable="true"]:focus,
 [contenteditable="true"]:hover {
-    border: 1px dotted black;
-    padding: 2px;
+    background: #efefef;
 }
 /* editable element > img */
 
