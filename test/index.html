@@ -36,7 +36,7 @@
             Sed in erat lectus. In pretium ligula nec nunc fringilla gravida. Nulla facilisi. Ut dignissim justo sed neque tristique
             egestas. Etiam tristique neque ullamcorper, pellentesque quam ut, tincidunt lectus. In sit amet ipsum eget
             libero sodales suscipit eu accumsan odio. Quisque lorem nisl, iaculis ac accumsan ut, luctus condimentum
-            orci. <span style="color:blue;" id="parent"><span id="child">Aenean</span> odio dolor</span>, condimentum et nibh id, pulvinar consequat arcu. Sed non risus sem. Mauris risus
+            orci. <span style="color:blue;" id="parent"> orem nisl odio <span style="color:green;" id="child">Aenea</span> condimentumn dolor</span>, condimentum et nibh id, pulvinar consequat arcu. Sed non risus sem. Mauris risus
             ligula, molestie sed arcu a, feugiat hendrerit eros. Ut posuere, ex vel lobortis suscipit, justo turpis auctor
             nulla, a sollicitudin nibh sem faucibus arcu. Suspendisse vitae porttitor sapien.
         </div>
@@ -57,45 +57,154 @@
             });
         }
 
-        var select = function(){
-            var s = window.getSelection();
-            if(s.isCollapsed) return alert('Select some text');
-            var range = s.getRangeAt(0);
+/**
+ * 1. one element: 1 - 1
+ * 2. two element, the second in the end: 1, 2
+ * 3. one element inside the second: 1, 2, 1
+ * 4. multiple element: 1,2,3,4
+ * 5. multiple element inside the second element: 1,[1,2,3]
+ */
+
+        function run(){
+            var range = selection();
 
             var start = range.startContainer;
             var end = range.endContainer;
-            var sOffset = range.startOffset;
-            var eOffset = range.endOffset;
 
+            var offset = {start: range.startOffset, end: range.endOffset}
+
+            process(start, end, offset, range);
+        }
+
+        function selection(){
+            var s = window.getSelection();
+            if(s.isCollapsed) return alert('Select some text');
+            var range = s.getRangeAt(0);
             s.removeAllRanges();
 
-            spanFrom(start, sOffset, null)
             return range;
-         }
+        }
 
-         var spanFrom = function(node, from, to){
-             var text = node.textContent;
-             var parent = node.parentElement;
-             var nextSibling = node.nextSibling;
+        function process(start, end, offset, range){
+            if(end == start){
+                // 1
+                appendFromTo(start, offset.start, offset.end);
+            }else{
+                // 2
+                appendFromTo(start, offset.start, null);
+                appendFromTo(end, null, offset.end);
 
-             if(to == null) to = text.length;
+                var prev = range.endContainer.previousSibling;
+                var next = range.startContainer.nextSibling;
 
-             var arr = [
-                 text.substring(0, from),
-                 text.substring(from, to) + 'YES',
-                 text.substring(to, text.length)
-             ];
+                console.log(range, prev, next);
+                if(next == prev){
+                    // console.log(startSibling);
+                    append(next);
+                }else{
+                    // console.log(startSibling, endSibling);
+                    while(next == prev){
+                        append(next);
+                        next = next.nextSibling;
+                    }
+                }
+            }
+        }
 
-             parent.removeChild(node);
+        function append(node){
+            appendFromTo(node, null, null);
+        }  
 
-             for(var i = 0 ; i < arr.lenght ; i++){
-                 if(arr[i].length > 0) parent.insertBefore(arr[i], nextSibling);
-             }
-         }
+        function appendFromTo(node, from, to){
+            var text = node.textContent;
+            var parent = node.parentElement;
+            var nextSibling = node.nextSibling;
+
+            if(to == null) to = text.length;
+            if(from == null) from = 0;
+
+            var p1 = text.substring(0, from);
+            var p2 = text.substring(from, to);
+            var p3 = text.substring(to, text.length);
+
+            parent.removeChild(node);
+
+            if(p1.length > 0 ) parent.insertBefore(createTextNode(p1), nextSibling);
+            if(p2.length > 0 ) parent.insertBefore(appendTextToSpan(p2), nextSibling);
+            if(p3.length > 0 ) parent.insertBefore(createTextNode(p3), nextSibling);             
+        }
+
+        function createTextNode(text){
+            return document.createTextNode(text).cloneNode(true);
+        }
+
+        function appendTextToSpan(text){
+            var span = document.createElement('span');
+            span.style.fontWeight = 'bold';
+
+            var textNode = createTextNode(text);
+            span.appendChild(textNode);
+
+            return span.cloneNode(true)
+        }
 
 
+        // var select = function(){
+            // select text in one element
+        //     if(start == end){
+        //         From(start, sOffset, eOffset);
 
+        //     // select text in two element
+        //     }else{
+        //         From(start, sOffset, null);
+        //         From(end, null, eOffset);
+        //     }
 
+        //     // there is element between the selection
+        //     if(epreviousSibling == snextSibling){
+        //         From(snextSibling,null,null);
+        //     }
+
+        //     // there is multiple element in the between selection
+        //     if(epreviousSibling != snextSibling){
+        //         // var run = snextSibling;
+        //         // while(run != epreviousSibling){
+        //         //     From(run, null, null);
+        //         //     run = run.nextSibling;
+        //         // }
+        //     }
+
+        //     return range;
+        //  }
+
+        //  var Cilderen = function(node){
+        //      var childNode = node.firstChild;
+        //      if(!childNode);
+        //          From(node, null, null);
+        //          return;
+        //      }
+
+        //      while(childNode){
+        //          From(childNode, null, null);
+        //          childNode = childNode.nextSibling;
+        //      }
+        //  }
+
+        //  var createSpan = function(text){
+        //      var a = document.createElement('span');
+        //      a.style.fontWeight = 'bold';
+
+        //      var b = document.createTextNode(text).cloneNode();
+        //      a.appendChild(b);
+        //      return a.cloneNode(true);
+        //  }
+
+        //  var createTextNode = function(text){
+        //      var a = document.createTextNode(text);
+        //      return a.cloneNode(true);
+        //  }
+
+//##########
         // var input = document.getElementById('uploadImage');
         // input.change(function(event){
         //     var files = event.target.files || event.dataTransfer.files;
