@@ -15,7 +15,7 @@
     </div>
     <div class="container-fluid">
         <div class="col-xs-4 text-left">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ipsum quam, sollicitudin at dictum vel, congue quis purus.
+            Lorem <span id="s1">ipsum dolor</span> sit <span id="s2">amet, <span id="s3">consectetur <span id="s5">a</span></span> adipiscing <span id="s4">elit.</span> Donec</span> ipsum quam, sollicitudin at dictum vel, congue quis purus.
             Praesent interdum fringilla urna, vitae lacinia neque placerat sed. Ut dignissim magna nec tellus euismod
             porta. In mollis enim ut erat pulvinar, rhoncus semper mi convallis. Duis vehicula orci non enim convallis
             placerat. Maecenas tincidunt urna id nisl aliquam accumsan. Integer tellus mi, laoreet eu neque sit amet,
@@ -64,90 +64,6 @@
  * 4. multiple element: 1,2,3,4
  * 5. multiple element inside the second element: 1,[1,2,3]
  */
-
-        function run(){
-            var range = selection();
-
-            var start = range.startContainer;
-            var end = range.endContainer;
-
-            var offset = {start: range.startOffset, end: range.endOffset}
-
-            process(start, end, offset, range);
-        }
-
-        function selection(){
-            var s = window.getSelection();
-            if(s.isCollapsed) return alert('Select some text');
-            var range = s.getRangeAt(0);
-            s.removeAllRanges();
-
-            return range;
-        }
-
-        function process(start, end, offset, range){
-            if(end == start){
-                // 1
-                appendFromTo(start, offset.start, offset.end);
-            }else{
-                // 2
-                appendFromTo(start, offset.start, null);
-                appendFromTo(end, null, offset.end);
-
-                var prev = range.endContainer.previousSibling;
-                var next = range.startContainer.nextSibling;
-
-                console.log(range, prev, next);
-                if(next == prev){
-                    // console.log(startSibling);
-                    append(next);
-                }else{
-                    // console.log(startSibling, endSibling);
-                    while(next == prev){
-                        append(next);
-                        next = next.nextSibling;
-                    }
-                }
-            }
-        }
-
-        function append(node){
-            appendFromTo(node, null, null);
-        }  
-
-        function appendFromTo(node, from, to){
-            var text = node.textContent;
-            var parent = node.parentElement;
-            var nextSibling = node.nextSibling;
-
-            if(to == null) to = text.length;
-            if(from == null) from = 0;
-
-            var p1 = text.substring(0, from);
-            var p2 = text.substring(from, to);
-            var p3 = text.substring(to, text.length);
-
-            parent.removeChild(node);
-
-            if(p1.length > 0 ) parent.insertBefore(createTextNode(p1), nextSibling);
-            if(p2.length > 0 ) parent.insertBefore(appendTextToSpan(p2), nextSibling);
-            if(p3.length > 0 ) parent.insertBefore(createTextNode(p3), nextSibling);             
-        }
-
-        function createTextNode(text){
-            return document.createTextNode(text).cloneNode(true);
-        }
-
-        function appendTextToSpan(text){
-            var span = document.createElement('span');
-            span.style.fontWeight = 'bold';
-
-            var textNode = createTextNode(text);
-            span.appendChild(textNode);
-
-            return span.cloneNode(true)
-        }
-
 
         // var select = function(){
             // select text in one element
@@ -265,6 +181,8 @@
         //### usefull link convert to base64 into binary
         // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
     </script>
+
+    <script src="js/script.js"></script>
 </body>
 
 </html>
