@@ -2,7 +2,7 @@ import Editor from './editor/Editor.class.js';
 
 window.Editor = new Editor();
 
-import Selection from './editor/Selection.class.js';
+import Selection from './editor/Selection.test.js';
 window.Selection = new Selection();
 
 // usefull link

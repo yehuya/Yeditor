@@ -50,15 +50,15 @@
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
 
-	var _SelectionClass = __webpack_require__(9);
+	var _SelectionTest = __webpack_require__(15);
 
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+	var _SelectionTest2 = _interopRequireDefault(_SelectionTest);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.Editor = new _EditorClass2.default();
 
-	window.Selection = new _SelectionClass2.default();
+	window.Selection = new _SelectionTest2.default();
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -403,7 +403,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -420,36 +420,113 @@
 	 * all about the Element
 	 */
 	var Element = function () {
-	  function Element() {
-	    _classCallCheck(this, Element);
-	  }
-
-	  /**
-	   * create element prototype
-	   * @param String (prototype.name)
-	   * @param All (prototype.name = value)
-	   */
-
-
-	  _createClass(Element, [{
-	    key: 'prototype',
-	    value: function prototype(key, value) {
-	      window.Element.prototype[key] = value;
+	    function Element() {
+	        _classCallCheck(this, Element);
 	    }
 
 	    /**
-	     * get all element with plugin attribute (editable area)
-	     * @return Array Of Object (element)
+	     * create element prototype
+	     * @param String (prototype.name)
+	     * @param All (prototype.name = value)
 	     */
 
-	  }, {
-	    key: 'getAllEditable',
-	    value: function getAllEditable() {
-	      return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
-	    }
-	  }]);
 
-	  return Element;
+	    _createClass(Element, [{
+	        key: 'prototype',
+	        value: function prototype(key, value) {
+	            window.Element.prototype[key] = value;
+	        }
+
+	        /**
+	         * get all element with plugin attribute (editable area)
+	         * @return Array Of Object (element)
+	         */
+
+	    }, {
+	        key: 'getAllEditable',
+	        value: function getAllEditable() {
+	            return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
+	        }
+
+	        /**
+	         * get all element children and call fn on each child
+	         * @param Object (node)
+	         * @param FN (callback)
+	         */
+
+	    }, {
+	        key: 'childrenFN',
+	        value: function childrenFN(node, FN) {
+	            var child = node.childNodes;
+
+	            child.forEach(function (elem) {
+	                elem.children ? this.children(elem, FN) : FN(elem);
+	            }, this);
+
+	            return child.length > 0 ? child : false;
+	        }
+
+	        /**
+	         * get text inside element and surround it with new element
+	         * @param Object (Node)
+	         * @param Number || null (offset start or null for 0)
+	         * @param Number || null (offset end or null for node.length)
+	         * @param FN (param: text , take this text and append it in new element)
+	         * @return Object (Node)
+	         */
+
+	    }, {
+	        key: 'appendFromTo',
+	        value: function appendFromTo(node, from, to, FN) {
+	            var text = node.textContent || '';
+	            var parent = node.parentElement || null;
+	            var nextSibling = node.nextSibling;
+
+	            if (to == null) to = text.length;
+	            if (from == null) from = 0;
+
+	            var before = text.substring(0, from);
+	            var main = text.substring(from, to);
+	            var after = text.substring(to, text.length);
+
+	            parent.removeChild(node);
+	            console.log(FN(main));
+	            main = main.length > 0 ? FN(main) : null;
+
+	            if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
+	            if (main.length > 0) parent.insertBefore(main, nextSibling);
+	            if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
+
+	            return main;
+	        }
+
+	        /**
+	         * prevent empty: nextSibling, previousSibling 
+	         * @param Object (node)
+	         * @return Object || null 
+	         */
+
+	    }, {
+	        key: 'preventEmptySibling',
+	        value: function preventEmptySibling(sibling) {
+	            if (sibling.nodeType == 3 && sibling.data && sibling.data.trim().length == 0) return null;
+	            return sibling;
+	        }
+
+	        /**
+	         * create text node
+	         * @param String
+	         * @return Object
+	         */
+
+	    }, {
+	        key: 'createTextNode',
+	        value: function createTextNode(string) {
+	            return document.createTextNode(string).cloneNode(true);
+	        }
+	    }]);
+
+	    return Element;
 	}();
 
 	exports.default = Element;
@@ -1394,6 +1471,210 @@
 	        }
 	    }
 	}];
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * class for user selection
+	 */
+	var SelectionTest = function () {
+
+	    /**
+	     * __construct
+	     * @return Object (this)
+	     */
+	    function SelectionTest() {
+	        _classCallCheck(this, SelectionTest);
+
+	        this.config = _config2.default.editable;
+	        this.element = new _ElementClass2.default();
+	    }
+
+	    /**
+	     * return user selection 
+	     * @return Object || Boolean
+	     */
+
+
+	    _createClass(SelectionTest, [{
+	        key: 'get',
+	        value: function get() {
+	            if (window.getSelection && window.getSelection().toString()) {
+	                return window.getSelection();
+	            }
+
+	            if (document.getSelection && document.getSelection.toString()) {
+	                return document.getSelection();
+	            }
+
+	            var selection = document.selection && document.selection.createRange();
+	            if (typeof selection !== 'undefined' && selection.text && selection.text.toString()) {
+	                return selection.text;
+	            }
+
+	            return false;
+	        }
+
+	        /**
+	         * get user selection text
+	         * @return String
+	         */
+
+	    }, {
+	        key: 'text',
+	        value: function text() {
+	            var selected = this.get();
+	            return selected ? selected.toString() : null;
+	        }
+
+	        /**
+	         * insert selected text into DOM (node)
+	         * @param Object (Node | DOM)
+	         */
+
+	    }, {
+	        key: 'append',
+	        value: function append(FN) {
+	            var selection = this.get();
+	            var range = selection.getRangeAt(0);
+	            var start = range.startContainer;
+	            var end = range.endContainer;
+	            var offset = { start: range.startOffset, end: range.endOffset };
+	            var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling };
+
+	            this.appendProcess(start, end, sibling, offset, range, FN);
+	        }
+	    }, {
+	        key: 'appendProcess',
+	        value: function appendProcess(start, end, sibling, offset, range, FN) {
+	            var startElement, endElement;
+
+	            // same element
+	            if (start == end) return this.element.appendFromTo(start, offset.start, offset.end, FN);
+
+	            // not the same element
+	            startElement = this.element.appendFromTo(start, offset.start, null, FN);
+	            endElement = this.element.appendFromTo(end, null, offset.end, FN);
+
+	            // refresh sibling after the first appendFromTo fn
+	            // prevent junk sibling
+	            if (sibling.start == null) sibling.start = this.element.preventEmptySibling(range.startContainer.nextSibling);
+	            if (sibling.end == null) sibling.end = this.element.preventEmptySibling(range.endContainer.previousSibling);
+
+	            // previousSibling of endContainer is startContainer after append
+	            if (sibling.end == startElement) return;
+
+	            // only 'one' element between end & start
+	            if (sibling.start == sibling.end && sibling.start != null) {
+	                var siblingStartChild = this.element.childrenFN(sibling.start, function (elem) {
+	                    this.appendFullElement(elem, FN);
+	                });
+
+	                if (!siblingStartChild) this.appendFullElement(elem, FN);
+	                return;
+	            }
+
+	            // get all the element between
+	            this.allElementBetween(sibling, offset, FN);
+	        }
+	    }, {
+	        key: 'allElementBetween',
+	        value: function allElementBetween(sibling, offset, FN) {
+	            var next = sibling.start;
+	            var child, end;
+
+	            while (next) {
+	                // ### children
+	                end = false;
+	                child = this.element.childrenFN(next, function (elem) {
+	                    if (!end) this.appendFullElement(elem, FN);
+	                    if (elem == sibling.end) end = true;
+	                });
+
+	                // ### no children
+	                if (!child && !end) next = this.appendFullElement(elem, FN);
+
+	                // ### break
+	                if (next == sibling.end.toString()) {
+	                    if (end.textContent.toString().substring(0, offset.end) == next.textContent) break;
+	                }
+	                if (next == sibling.end || end) break;
+
+	                // ### next while
+	                next = next.nextSibling;
+	            }
+	        }
+	    }, {
+	        key: 'appendFullElement',
+	        value: function appendFullElement(node, FN) {
+	            return this.element.appendFromTo(node, null, null, FN);
+	        }
+
+	        /**
+	         * get parent element of user selection
+	         * @return Object | Null
+	         */
+
+	    }, {
+	        key: 'parent',
+	        value: function parent() {
+	            var selection = this.get().anchorNode;
+	            // prevent '#text' node as element
+	            if (selection && selection.nodeType == 3) selection = selection.parentElement;
+
+	            return selection ? selection : null;
+	        }
+
+	        /**
+	         * check if the area of user selection is editable
+	         * - check if parent node is editable
+	         */
+
+	    }, {
+	        key: 'parentEditable',
+	        value: function parentEditable() {
+	            var parent = this.parent();
+	            var editable = false;
+
+	            while (parent) {
+	                if (parent.getAttribute('contenteditable') == 'true' && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin) {
+	                    editable = true;
+	                    break;
+	                }
+
+	                parent = parent.parentElement;
+	            }
+
+	            return editable;
+	        }
+	    }]);
+
+	    return SelectionTest;
+	}();
+
+	exports.default = SelectionTest;
 
 /***/ }
 /******/ ]);

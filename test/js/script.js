@@ -26,10 +26,10 @@ function process2(start, end, sibling, offset, range) {
 
     // same element
     if (start == end) {
-        startElement = appendFromTo(start, offset.start, offset.end);
         console.log('1');
+        return appendFromTo(start, offset.start, offset.end);
 
-    // not the same element
+        // not the same element
     } else {
         startElement = appendFromTo(start, offset.start, null);
         endElement = appendFromTo(end, null, offset.end);
@@ -41,10 +41,22 @@ function process2(start, end, sibling, offset, range) {
     if (sibling.start == null) sibling.start = preventEmptySibling(range.startContainer.nextSibling);
     if (sibling.end == null) sibling.end = preventEmptySibling(range.endContainer.previousSibling);
 
+    if (sibling.end == startElement) {
+        console.log('2.1');
+        return;
+    }
+
     // only 'one' element between end & start
     if (sibling.start == sibling.end && sibling.start != null) {
         console.log('3', sibling.start);
-        return append(sibling.start);
+
+        var siblingStartChild = children(sibling.start, function (elem) {
+            append(elem);
+            console.log('3.1');
+        });
+
+        if(!siblingStartChild) append(sibling.start) ,console.log('3.2');
+        return;
     }
 
     // get all the element between
@@ -142,11 +154,12 @@ function process(start, end, sibling, offset, range) {
 // get all element - children
 function children(node, callback) {
     var child = node.childNodes;
+    console.log('---',node, child);
     if (child.length == 0) return false;
 
     for (var i = 0; i < child.length; i++) {
         if (child[i].children) {
-            callback(child[i]);
+            // callback(child[i]);
             children(child[i], callback);
         } else {
             callback(child[i]);
@@ -201,12 +214,8 @@ function appendTextToSpan(text) {
 // prevent empty sibling 
 // set theme as null
 function preventEmptySibling(elem) {
-    if (elem.nodeType == 3) {
-        if (elem.data) {
-            if (elem.data.trim().length == 0) {
-                return null;
-            }
-        }
+    if (elem.nodeType == 3 && elem.data && elem.data.trim().length == 0) {
+        return null;
     }
     return elem;
 }
