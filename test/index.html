@@ -42,7 +42,7 @@
         </div>
     </div>
     <input id="uploadImage" type="file" accept="image/*">
-    <br /><button style="position: absolute;top:0;left:0;" class="btn btn-success" onclick="detect()">Detect</button>
+    <button style="position: fixed;top: 0;left: 0;outline:none;" class="btn btn-success" onclick="detect()">B</button>
 
     <script src="../dist/index.bundle.js"></script>
     <script>
@@ -57,127 +57,6 @@
                 name: 'text-' + i
             });
         }
-
-/**
- * 1. one element: 1 - 1
- * 2. two element, the second in the end: 1, 2
- * 3. one element inside the second: 1, 2, 1
- * 4. multiple element: 1,2,3,4
- * 5. multiple element inside the second element: 1,[1,2,3]
- */
-
-        // var select = function(){
-            // select text in one element
-        //     if(start == end){
-        //         From(start, sOffset, eOffset);
-
-        //     // select text in two element
-        //     }else{
-        //         From(start, sOffset, null);
-        //         From(end, null, eOffset);
-        //     }
-
-        //     // there is element between the selection
-        //     if(epreviousSibling == snextSibling){
-        //         From(snextSibling,null,null);
-        //     }
-
-        //     // there is multiple element in the between selection
-        //     if(epreviousSibling != snextSibling){
-        //         // var run = snextSibling;
-        //         // while(run != epreviousSibling){
-        //         //     From(run, null, null);
-        //         //     run = run.nextSibling;
-        //         // }
-        //     }
-
-        //     return range;
-        //  }
-
-        //  var Cilderen = function(node){
-        //      var childNode = node.firstChild;
-        //      if(!childNode);
-        //          From(node, null, null);
-        //          return;
-        //      }
-
-        //      while(childNode){
-        //          From(childNode, null, null);
-        //          childNode = childNode.nextSibling;
-        //      }
-        //  }
-
-        //  var createSpan = function(text){
-        //      var a = document.createElement('span');
-        //      a.style.fontWeight = 'bold';
-
-        //      var b = document.createTextNode(text).cloneNode();
-        //      a.appendChild(b);
-        //      return a.cloneNode(true);
-        //  }
-
-        //  var createTextNode = function(text){
-        //      var a = document.createTextNode(text);
-        //      return a.cloneNode(true);
-        //  }
-
-//##########
-        // var input = document.getElementById('uploadImage');
-        // input.change(function(event){
-        //     var files = event.target.files || event.dataTransfer.files;
-        //     console.log(event.target.files);
-        //     var reader = new FileReader();
-
-           
-        //     for(var i = 0, f; f = files[i]; i++) {
-		// 	    reader.onload = (function(file){
-        //             return function(event){
-        //                 console.log(event);
-        //                 // var type = file.type;
-        //                 // var result = event.target.result;
-        //                 // var clean = result.substring(result.indexOf(',') + 1);
-        //                 // var blob = b64toBlob(clean, type);
-        //                 // var img = new Image();
-        //                 // img.src = result;//window.URL.createObjectURL(blob);
-        //                 // document.body.appendChild(img);
-
-        //                 // var a = window.ajax;
-        //                 // a.addData('blob', blob);
-        //                 // a.request().done(function(xhr){
-        //                 //     console.log(xhr)
-        //                 // });
-        //             }
-        //         })(files[0]);
-        //         reader.readAsBinaryString(files[0]);
-        //         // reader.readAsDataURL(files[0]);
-        //     }
-        // });
-
-        // function b64toBlob(b64Data, contentType, sliceSize) {
-        //     contentType = contentType || '';
-        //     sliceSize = sliceSize || 512;
-
-        //     var byteCharacters = atob(b64Data);
-        //     var byteArrays = [];
-
-        //     for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        //         var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        //         var byteNumbers = new Array(slice.length);
-        //         for (var i = 0; i < slice.length; i++) {
-        //         byteNumbers[i] = slice.charCodeAt(i);
-        //         }
-
-        //         console.log(byteNumbers);
-
-        //         var byteArray = new Uint8Array(byteNumbers);
-        //         console.log(byteArray);
-        //         byteArrays.push(byteArray);
-        //     }
-
-        //     var blob = new Blob(byteArrays, {type: contentType});
-        //     return blob;
-        // }
 
         //### usefull link convert to base64 into binary
         // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
