@@ -1,0 +1,27 @@
+<!--/**
+ * proccess of User Selection
+ * 1: same element
+ * 2: element right after element
+ * 3: one element between them
+ * 4: one element with children between them
+ * 5: start element is elment inside element
+ * 6: end elment is element inside element
+ * 7: multiple element between them
+ */-->
+
+<!--// 1-->
+<div>Start blabla blabla blabla End</div>
+<!--//2-->
+<div>Start</div><div>End</div>
+<!--//3-->
+<div>Start <span>blabla</span>  End</div>
+<!--//4-->
+<div>Start <span>blabla<span>blabla</span>blabla</span>  End</div>
+<!--//5-->
+<div>blabla <span>Start</span></div><div>End</div>
+<!--//6-->
+<div>Start</div><div> blabla<span>End</span></div>
+<!--//7-->
+<div>Start</div><div> blabla</div><div>blabla<span>blabla</span></div>blabla End</div>
+
+

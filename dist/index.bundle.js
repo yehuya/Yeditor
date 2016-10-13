@@ -50,15 +50,15 @@
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
 
-	var _SelectionTest = __webpack_require__(15);
+	var _SelectionClass = __webpack_require__(16);
 
-	var _SelectionTest2 = _interopRequireDefault(_SelectionTest);
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.Editor = new _EditorClass2.default();
 
-	window.Selection = new _SelectionTest2.default();
+	window.Selection = _SelectionClass2.default;
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -1763,6 +1763,413 @@
 	}();
 
 	exports.default = SelectionTest;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _selectionAppend = __webpack_require__(17);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * class for user selection
+	 */
+	var Selection = function () {
+	    function Selection() {
+	        _classCallCheck(this, Selection);
+
+	        this.selected = this.get();
+	    }
+
+	    /**
+	     * get user selection
+	     * @return Object || Boolean
+	     */
+
+
+	    _createClass(Selection, [{
+	        key: 'get',
+	        value: function get() {
+	            if (window.getSelection && window.getSelection().toString()) {
+	                return window.getSelection();
+	            }
+
+	            if (document.getSelection && document.getSelection.toString()) {
+	                return document.getSelection();
+	            }
+
+	            var selection = document.selection && document.selection.createRange();
+	            if (typeof selection !== 'undefined' && selection.text && selection.text.toString()) {
+	                return selection.text;
+	            }
+
+	            return false;
+	        }
+
+	        /**
+	         * get selected text
+	         */
+
+	    }, {
+	        key: 'text',
+	        value: function text() {
+	            return this.selected ? this.selected.toString() : null;
+	        }
+
+	        /**
+	         * insert user selection into new element
+	         * and remove the old selection
+	         * @param FN (what to do with the selection text)
+	         */
+
+	    }, {
+	        key: 'append',
+	        value: function append(FN) {
+	            if (this.selected) (0, _selectionAppend.append)(this.selected, FN);
+	        }
+
+	        /**
+	         * remove selected element
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'remove',
+	        value: function remove(element) {}
+	    }]);
+
+	    return Selection;
+	}();
+
+	exports.default = Selection;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var _exports = module.exports;
+
+	/**
+	 * get user selection and insert it in new element
+	 * @param Object (window.getSelection())
+	 * @param FN (what to do with selected text)
+	 */
+	_exports.append = function (selection, FN) {
+	    if (selection.isCollapsed) return;
+
+	    var range = selection.getRangeAt(0);
+	    var start = range.startContainer;
+	    var end = range.endContainer;
+	    var offset = { start: range.startOffset, end: range.endOffset };
+	    var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling };
+
+	    process(start, end, sibling, offset, range, FN);
+	};
+
+	function process(start, end, sibling, offset, range, FN) {
+	    var startElement, endElement;
+
+	    // same element
+	    if (start == end) return appendFromTo(start, offset.start, offset.end, FN);
+
+	    // not the same element
+	    startElement = appendFromTo(start, offset.start, null, FN);
+	    endElement = appendFromTo(end, null, offset.end, FN);
+
+	    // refresh sibling after the first appendFromTo fn
+	    // prevent junk sibling
+	    if (sibling.start == null) sibling.start = preventEmptySibling(range.startContainer.nextSibling);
+	    if (sibling.end == null) sibling.end = preventEmptySibling(range.endContainer.previousSibling);
+
+	    if (sibling.end == startElement) return;
+
+	    // only 'one' element between end & start
+	    if (sibling.start == sibling.end && sibling.start != null) {
+	        var siblingStartChild = children(sibling.start, function (elem) {
+	            append(elem, FN);
+	        });
+
+	        if (!siblingStartChild) append(sibling.start, FN);
+	        return;
+	    }
+
+	    getAllElementBetween(sibling, offset, end, FN);
+	}
+
+	// get all the element between
+	function getAllElementBetween(sibling, offset, end, FN) {
+	    var next = sibling.start;
+	    var child, isTheEndContainer;
+
+	    while (next) {
+
+	        // ### children
+	        isTheEndContainer = false;
+	        child = children(next, function (elem) {
+	            if (!isTheEndContainer) append(elem, FN);
+	            if (elem == sibling.end) isTheEndContainer = true;
+	        });
+
+	        // ### no children
+	        if (!child && !isTheEndContainer) next = append(next, FN);
+
+	        // ### break
+	        if (next == sibling.end.toString()) {
+	            if (end.textContent.toString().substring(0, offset.end) == next.textContent) break;
+	        }
+	        if (next == sibling.end || isTheEndContainer) break;
+
+	        // ### next while
+	        next = next.nextSibling;
+	    }
+	}
+
+	function append(node, FN) {
+	    return appendFromTo(node, null, null, FN);
+	}
+
+	// @param Object (node)
+	// @return Object (the element with his parent - span);
+	function appendFromTo(node, from, to, FN) {
+	    var text = node.textContent || '';
+	    var parent = node.parentElement || null;
+	    var nextSibling = node.nextSibling;
+
+	    if (to == null) to = text.length;
+	    if (from == null) from = 0;
+
+	    var before = text.substring(0, from);
+	    var main = text.substring(from, to);
+	    var after = text.substring(to, text.length);
+
+	    parent.removeChild(node);
+
+	    main = main.length > 0 ? FN(main) : null;
+
+	    if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
+	    if (main) parent.insertBefore(main, nextSibling);
+	    if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
+
+	    return main;
+	}
+
+	function createTextNode(text) {
+	    return document.createTextNode(text).cloneNode(true);
+	}
+
+	// prevent empty sibling 
+	// set theme as null
+	function preventEmptySibling(elem) {
+	    return elem.nodeType == 3 && elem.data && elem.data.trim().length == 0 ? null : elem;
+	}
+
+	// get all element - children
+	function children(node, callback) {
+	    var child = node.childNodes;
+	    child.forEach(function (element) {
+	        element.children ? children(element, callback) : callback(element);
+	    }, this);
+
+	    return child.length > 0 ? child : false;
+	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+	var process = module.exports = {};
+
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
 
 /***/ }
 /******/ ]);
