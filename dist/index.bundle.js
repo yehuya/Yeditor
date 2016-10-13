@@ -449,7 +449,7 @@
 	        }
 
 	        /**
-	         * get all element children and call fn on each child
+	         * get all the element children and call fn on each child
 	         * @param Object (node)
 	         * @param FN (callback)
 	         */
@@ -460,7 +460,7 @@
 	            var child = node.childNodes;
 
 	            child.forEach(function (elem) {
-	                elem.children ? this.children(elem, FN) : FN(elem);
+	                elem.children ? this.childrenFN(elem, FN) : FN(elem);
 	            }, this);
 
 	            return child.length > 0 ? child : false;
@@ -490,11 +490,11 @@
 	            var after = text.substring(to, text.length);
 
 	            parent.removeChild(node);
-	            console.log(FN(main));
+
 	            main = main.length > 0 ? FN(main) : null;
 
 	            if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
-	            if (main.length > 0) parent.insertBefore(main, nextSibling);
+	            if (main) parent.insertBefore(main, nextSibling);
 	            if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
 
 	            return main;
@@ -509,8 +509,7 @@
 	    }, {
 	        key: 'preventEmptySibling',
 	        value: function preventEmptySibling(sibling) {
-	            if (sibling.nodeType == 3 && sibling.data && sibling.data.trim().length == 0) return null;
-	            return sibling;
+	            return sibling && sibling.nodeType == 3 && sibling.data && sibling.data.trim().length == 0 ? null : sibling;
 	        }
 
 	        /**
@@ -1405,13 +1404,18 @@
 
 	'use strict';
 
-	var _SelectionClass = __webpack_require__(9);
+	var _SelectionTest = __webpack_require__(15);
 
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+	var _SelectionTest2 = _interopRequireDefault(_SelectionTest);
+
+	var _ElementClass = __webpack_require__(4);
+
+	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var selection = new _SelectionClass2.default();
+	var editorElement = new _ElementClass2.default();
+	var selection = new _SelectionTest2.default();
 	var _exports = module.exports;
 
 	_exports.text = [
@@ -1426,10 +1430,32 @@
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
-	            // var element = document.createElement('span');
-	            // element.style.fontWeight = 'bold';
-	            // selection.append(element.cloneNode());
-	            document.execCommand('bold', false);
+	            var bold = function bold(text) {
+	                var b = document.createElement('span');
+	                b.style.fontWeight = 'bold';
+
+	                text = editorElement.createTextNode(text);
+	                b.appendChild(text);
+
+	                return b.cloneNode(true);
+	            };
+
+	            var unbold = function unbold(text) {
+	                var b = document.createElement('span');
+	                b.style.fontWeight = 'normal';
+
+	                text = editorElement.createTextNode(text);
+	                b.appendChild(text);
+
+	                return b.cloneNode(true);
+	            };
+
+	            var parent = selection.parent();
+	            if (parent && parent.style.fontWeight == 'bold') {
+	                if (parent.textContent.trim() == selection.text().trim()) return parent.style.fontWeight = 'normal';
+	                return selection.append(unbold);
+	            }
+	            selection.append(bold);
 	        }
 	    }
 	},
@@ -1444,11 +1470,32 @@
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
-	            // var element = document.createElement('span');
-	            // element.style.fontStyle = 'italic';
+	            var italic = function italic(text) {
+	                var i = document.createElement('span');
+	                i.style.fontStyle = 'italic';
 
-	            // selection.append(element.cloneNode());
-	            document.execCommand('italic', false);
+	                text = editorElement.createTextNode(text);
+	                i.appendChild(text);
+
+	                return i.cloneNode(true);
+	            };
+
+	            var unitalic = function unitalic(text) {
+	                var i = document.createElement('span');
+	                i.style.fontStyle = 'normal';
+
+	                text = editorElement.createTextNode(text);
+	                i.appendChild(text);
+
+	                return i.cloneNode(true);
+	            };
+
+	            var parent = selection.parent();
+	            if (parent && parent.style.fontStyle == 'italic') {
+	                if (parent.textContent.trim() == selection.text().trim()) return parent.style.fontStyle = 'normal';
+	                return selection.append(unitalic);
+	            }
+	            selection.append(italic);
 	        }
 	    }
 	},
@@ -1463,11 +1510,33 @@
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
-	            // var element = document.createElement('span');
-	            // element.style.textDecoration = 'underline';
+	            var underline = function underline(text) {
+	                var u = document.createElement('span');
+	                u.style.textDecoration = 'underline';
 
-	            // selection.append(element.cloneNode());
-	            document.execCommand('underline', false);
+	                text = editorElement.createTextNode(text);
+	                u.appendChild(text);
+
+	                return u.cloneNode(true);
+	            };
+
+	            var ununderline = function ununderline(text) {
+	                var u = document.createElement('span');
+	                u.style.textDecoration = 'none';
+
+	                text = editorElement.createTextNode(text);
+	                u.appendChild(text);
+
+	                return u.cloneNode(true);
+	            };
+
+	            var parent = selection.parent();
+	            if (parent && parent.style.textDecoration == 'underline') {
+	                if (parent.textContent.trim() == selection.text().trim()) return parent.style.textDecoration = 'none';
+	                return selection.append(ununderline);
+	            }
+
+	            selection.append(underline);
 	        }
 	    }
 	}];
@@ -1557,7 +1626,11 @@
 	    }, {
 	        key: 'append',
 	        value: function append(FN) {
+	            if (!this.parentEditable()) return;
+
 	            var selection = this.get();
+	            if (selection.isCollapsed) return;
+
 	            var range = selection.getRangeAt(0);
 	            var start = range.startContainer;
 	            var end = range.endContainer;
@@ -1565,10 +1638,24 @@
 	            var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling };
 
 	            this.appendProcess(start, end, sibling, offset, range, FN);
+
+	            selection.removeAllRanges();
 	        }
+
+	        /**
+	         * the proccess of this.append()
+	         * @param Object (range.startContainer)
+	         * @param Object (range.endContainer)
+	         * @param Object (range start && end sibling)
+	         * @param Object (range start && end offset)
+	         * @param Object (range)
+	         * @param FN (what to do with the selected text)
+	         */
+
 	    }, {
 	        key: 'appendProcess',
 	        value: function appendProcess(start, end, sibling, offset, range, FN) {
+	            var self = this;
 	            var startElement, endElement;
 
 	            // same element
@@ -1589,38 +1676,39 @@
 	            // only 'one' element between end & start
 	            if (sibling.start == sibling.end && sibling.start != null) {
 	                var siblingStartChild = this.element.childrenFN(sibling.start, function (elem) {
-	                    this.appendFullElement(elem, FN);
+	                    self.appendFullElement(elem, FN);
 	                });
 
-	                if (!siblingStartChild) this.appendFullElement(elem, FN);
+	                if (!siblingStartChild) this.appendFullElement(sibling.start, FN);
 	                return;
 	            }
 
 	            // get all the element between
-	            this.allElementBetween(sibling, offset, FN);
+	            this.allElementBetween(sibling, offset, end, FN);
 	        }
 	    }, {
 	        key: 'allElementBetween',
-	        value: function allElementBetween(sibling, offset, FN) {
+	        value: function allElementBetween(sibling, offset, end, FN) {
+	            var self = this;
 	            var next = sibling.start;
-	            var child, end;
+	            var child, isTheEndContainer;
 
 	            while (next) {
 	                // ### children
-	                end = false;
+	                isTheEndContainer = false;
 	                child = this.element.childrenFN(next, function (elem) {
-	                    if (!end) this.appendFullElement(elem, FN);
-	                    if (elem == sibling.end) end = true;
+	                    if (!end) self.appendFullElement(elem, FN);
+	                    if (elem == sibling.end) isTheEndContainer = true;
 	                });
 
 	                // ### no children
-	                if (!child && !end) next = this.appendFullElement(elem, FN);
+	                if (!child && !isTheEndContainer) next = this.appendFullElement(next, FN);
 
 	                // ### break
 	                if (next == sibling.end.toString()) {
 	                    if (end.textContent.toString().substring(0, offset.end) == next.textContent) break;
 	                }
-	                if (next == sibling.end || end) break;
+	                if (next == sibling.end || isTheEndContainer) break;
 
 	                // ### next while
 	                next = next.nextSibling;

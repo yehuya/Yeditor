@@ -50,7 +50,11 @@ export default class SelectionTest {
      * @param Object (Node | DOM)
      */
     append(FN) {
+        if(!this.parentEditable()) return;
+
         var selection = this.get();
+        if(selection.isCollapsed) return;
+
         var range = selection.getRangeAt(0);
         var start = range.startContainer;
         var end = range.endContainer;
@@ -58,9 +62,21 @@ export default class SelectionTest {
         var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling }
 
         this.appendProcess(start, end, sibling, offset, range, FN);
+
+        selection.removeAllRanges();
     }
 
+    /**
+     * the proccess of this.append()
+     * @param Object (range.startContainer)
+     * @param Object (range.endContainer)
+     * @param Object (range start && end sibling)
+     * @param Object (range start && end offset)
+     * @param Object (range)
+     * @param FN (what to do with the selected text)
+     */
     appendProcess(start, end, sibling, offset, range, FN) {
+        var self = this;
         var startElement, endElement;
 
         // same element
@@ -81,37 +97,38 @@ export default class SelectionTest {
         // only 'one' element between end & start
         if (sibling.start == sibling.end && sibling.start != null) {
             var siblingStartChild = this.element.childrenFN(sibling.start, function (elem) {
-                this.appendFullElement(elem, FN);
+                self.appendFullElement(elem, FN);
             });
 
-            if (!siblingStartChild) this.appendFullElement(elem, FN);
+            if (!siblingStartChild) this.appendFullElement(sibling.start, FN);
             return;
         }
 
         // get all the element between
-        this.allElementBetween(sibling, offset, FN);
+        this.allElementBetween(sibling, offset, end, FN);
     }
 
-    allElementBetween(sibling, offset, FN) {
+    allElementBetween(sibling, offset, end, FN) {
+        var self = this;
         var next = sibling.start;
-        var child, end;
+        var child, isTheEndContainer;
 
         while (next) {
             // ### children
-            end = false;
+            isTheEndContainer = false;
             child = this.element.childrenFN(next, function (elem) {
-                if (!end) this.appendFullElement(elem, FN);
-                if (elem == sibling.end) end = true;
+                if (!end) self.appendFullElement(elem, FN);
+                if (elem == sibling.end) isTheEndContainer = true;
             });
 
             // ### no children
-            if (!child && !end) next = this.appendFullElement(elem, FN);
+            if (!child && !isTheEndContainer) next = this.appendFullElement(next, FN);
 
             // ### break
             if (next == sibling.end.toString()) {
                 if (end.textContent.toString().substring(0, offset.end) == next.textContent) break;
             }
-            if (next == sibling.end || end) break;
+            if (next == sibling.end || isTheEndContainer) break;
 
             // ### next while
             next = next.nextSibling;

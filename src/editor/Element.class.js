@@ -24,7 +24,7 @@ export default class Element {
     }
 
     /**
-     * get all element children and call fn on each child
+     * get all the element children and call fn on each child
      * @param Object (node)
      * @param FN (callback)
      */
@@ -32,7 +32,7 @@ export default class Element {
         var child = node.childNodes;
 
         child.forEach(function(elem){
-            elem.children ? this.children(elem, FN): FN(elem);
+            elem.children ? this.childrenFN(elem, FN): FN(elem);
         }, this);
 
         return child.length > 0 ? child : false;
@@ -59,11 +59,11 @@ export default class Element {
         let after = text.substring(to, text.length);
 
         parent.removeChild(node);
-        console.log(FN(main));
+
         main = main.length > 0 ? FN(main) : null;
 
         if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
-        if (main.length > 0) parent.insertBefore(main, nextSibling);
+        if (main) parent.insertBefore(main, nextSibling);
         if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
 
         return main;
@@ -75,8 +75,7 @@ export default class Element {
      * @return Object || null 
      */
     preventEmptySibling(sibling) {
-        if (sibling.nodeType == 3 && sibling.data && sibling.data.trim().length == 0) return null;
-        return sibling;
+        return (sibling && sibling.nodeType == 3 && sibling.data && sibling.data.trim().length == 0) ? null : sibling;
     }
 
     /**

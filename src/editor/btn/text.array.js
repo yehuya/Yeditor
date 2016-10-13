@@ -1,5 +1,6 @@
-import Selection from '../Selection.class.js';
-
+import Selection from '../Selection.test.js';
+import Element from '../Element.class.js'
+const editorElement = new Element()
 const selection = new Selection();
 const exports = module.exports;
 
@@ -15,10 +16,32 @@ exports.text = [
         event: {
             name: 'click',
             fn: function(){
-                // var element = document.createElement('span');
-                // element.style.fontWeight = 'bold';
-                // selection.append(element.cloneNode());
-                document.execCommand('bold', false);
+                var bold = function(text){
+                    var b = document.createElement('span');
+                    b.style.fontWeight = 'bold';
+
+                    text = editorElement.createTextNode(text);
+                    b.appendChild(text);
+                    
+                    return b.cloneNode(true); 
+                }
+
+                var unbold = function(text){
+                    var b = document.createElement('span');
+                    b.style.fontWeight = 'normal';
+
+                    text = editorElement.createTextNode(text);
+                    b.appendChild(text);
+                    
+                    return b.cloneNode(true); 
+                }
+
+                var parent = selection.parent();
+                if(parent && parent.style.fontWeight == 'bold'){
+                    if(parent.textContent.trim() == selection.text().trim()) return parent.style.fontWeight = 'normal';
+                    return selection.append(unbold);
+                }
+                selection.append(bold);
             }
         }
     },
@@ -33,11 +56,32 @@ exports.text = [
         event: {
             name: 'click',
             fn: function(){
-                // var element = document.createElement('span');
-                // element.style.fontStyle = 'italic';
+                var italic = function(text){
+                    var i = document.createElement('span');
+                    i.style.fontStyle = 'italic';
 
-                // selection.append(element.cloneNode());
-                document.execCommand('italic', false);
+                    text = editorElement.createTextNode(text);
+                    i.appendChild(text);
+                    
+                    return i.cloneNode(true); 
+                }
+
+                var unitalic = function(text){
+                    var i = document.createElement('span');
+                    i.style.fontStyle = 'normal';
+
+                    text = editorElement.createTextNode(text);
+                    i.appendChild(text);
+                    
+                    return i.cloneNode(true); 
+                }
+
+                var parent = selection.parent();
+                if(parent && parent.style.fontStyle == 'italic'){
+                    if(parent.textContent.trim() == selection.text().trim()) return parent.style.fontStyle = 'normal';
+                    return selection.append(unitalic);
+                }
+                selection.append(italic);
             }
         }
     },
@@ -52,11 +96,33 @@ exports.text = [
         event: {
             name: 'click',
             fn: function(){
-                // var element = document.createElement('span');
-                // element.style.textDecoration = 'underline';
+                var underline = function(text){
+                    var u = document.createElement('span');
+                    u.style.textDecoration = 'underline';
 
-                // selection.append(element.cloneNode());
-                document.execCommand('underline', false);
+                    text = editorElement.createTextNode(text);
+                    u.appendChild(text);
+                    
+                    return u.cloneNode(true); 
+                }
+
+                var ununderline = function(text){
+                    var u = document.createElement('span');
+                    u.style.textDecoration = 'none';
+
+                    text = editorElement.createTextNode(text);
+                    u.appendChild(text);
+                    
+                    return u.cloneNode(true); 
+                }
+
+                var parent = selection.parent();
+                if(parent && parent.style.textDecoration == 'underline'){
+                    if(parent.textContent.trim() == selection.text().trim()) return parent.style.textDecoration = 'none';
+                    return selection.append(ununderline);
+                }
+
+                selection.append(underline);
             }
         }
     }

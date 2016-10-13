@@ -42,7 +42,8 @@
         </div>
     </div>
     <input id="uploadImage" type="file" accept="image/*">
-    <button style="position: fixed;top: 0;left: 0;outline:none;" class="btn btn-success" onclick="detect()">B</button>
+    <button style="position: fixed;top: 0;left: 0;outline:none;" class="btn btn-success" onclick="detect(bold)">B</button>
+    <button style="position: fixed;top: 0;left: 35px;outline:none;" class="btn btn-success" onclick="detect(underline)">U</button>
 
     <script src="../dist/index.bundle.js"></script>
     <script>
@@ -52,7 +53,7 @@
         });
 
         var text = document.getElementsByClassName('col-xs-4');
-        for(var i = 0 ; i < text.length ; i++){
+        for(var i = 0 ; i < text.length - 1 ; i++){
             text[i].editable({
                 name: 'text-' + i
             });
@@ -62,7 +63,7 @@
         // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
     </script>
 
-    <script src="js/script.js"></script>
+    <script src="js/script1.js"></script>
 </body>
 
 </html>
