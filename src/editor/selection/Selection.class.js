@@ -45,6 +45,9 @@ export default class Selection {
         if(this.selected) selectionAppend(this.selected, FN);
     }
 
+    // ##### add or remove like Element.classList.toggle()
+    appendToggle(FN){}
+
     /**
      * remove selected element
      * @param Object
