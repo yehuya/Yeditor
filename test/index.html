@@ -15,7 +15,7 @@
     </div>
     <div class="container-fluid">
         <div class="col-xs-4 text-left">
-            Lorem <span id="s1">ipsum dolor</span> sit <span id="s2">amet, <span id="s3">consectetur <span id="s5">a</span></span> adipiscing <span id="s4">elit.</span> Donec</span> ipsum quam, sollicitudin at dictum vel, congue quis purus.
+            Lorem <span id="s1">ipsum dolor</span> sit <div id="s2">amet, <span id="s3">consectetur <span id="s5">a</span></span> adipiscing <span id="s4">elit.</span> Donec</div> ipsum quam, sollicitudin at dictum vel, congue quis purus.
             Praesent interdum fringilla urna, vitae lacinia neque placerat sed. Ut dignissim magna nec tellus euismod
             porta. In mollis enim ut erat pulvinar, rhoncus semper mi convallis. Duis vehicula orci non enim convallis
             placerat. Maecenas tincidunt urna id nisl aliquam accumsan. Integer tellus mi, laoreet eu neque sit amet,
@@ -42,6 +42,7 @@
         </div>
     </div>
     <input id="uploadImage" type="file" accept="image/*">
+    <br /><button style="position: absolute;top:0;left:0;" class="btn btn-success" onclick="detect()">Detect</button>
 
     <script src="../dist/index.bundle.js"></script>
     <script>

@@ -7,12 +7,11 @@ function detect() {
     var start = range.startContainer;
     var end = range.endContainer;
     var offset = { start: range.startOffset, end: range.endOffset }
-    var sibling = {start: range.startContainer.nextSibling ,end: range.endContainer.previousSibling}
+    var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling }
 
     process(start, end, sibling, offset, range);
-    console.info('end process');
-    console.log('sibling start', sibling.start);
-    console.log('sibling end', sibling.end);
+
+    selection.removeAllRanges();
 }
 
 function selection() {
@@ -27,39 +26,49 @@ function selection() {
 function process(start, end, sibling, offset, range) {
     if (start == end) {
         appendFromTo(start, offset.start, offset.end);
+        console.log(0);
+        if (sibling.start == sibling.end) {
+            console.log(1);
+        } else {
+            console.log(2);
+        }
     } else {
         appendFromTo(start, offset.start, null);
         appendFromTo(end, null, offset.end);
+
+        console.log(3);
 
         if (sibling.start == sibling.end) {
             append(sibling.start);
         } else {
             var next = sibling.start;
-
+            console.log(5);
             while (next) {
+                console.log(6);
                 var b = false;
+                var c = false;
                 var a = children(next, function (elem) {
+                    console.log(7);
                     append(elem);
-                    console.log('children',elem);
-                    if (elem == sibling.end) b = true;
+                    if (elem == end) b = true;
                 });
 
-                if(!a){
-                    console.log('no children');
-                    var c = append(next);
-                    // next = c;
-                    // console.log('test', next, next.nextSibling);
-                }else{
-                    console.log('has children');
+                if (!a) {
+                    c = append(next);
+                    console.log(8);
                 }
 
-                if (b || next == sibling.end) {
+                if (b || next == sibling.end || c == sibling.end) {
+                    
                     break;
                 }
 
-                console.log('current', next)
-                next = next.nextSibling;
-                console.log('end while - the next', next);
+                if(c){
+                    console.log(c, c.nextSibling);
+                    next = c.nextSibling;
+                }else{
+                    next = next.nextSibling;
+                }
             }
         }
     }
@@ -68,7 +77,8 @@ function process(start, end, sibling, offset, range) {
 // get all element - children
 function children(node, callback) {
     var child = node.childNodes;
-    if(child.length == 0) return false;
+    console.log(node,child);
+    if (child.length == 0) return false;
 
     for (var i = 0; i < child.length; i++) {
         if (child[i].children) {
