@@ -1,5 +1,5 @@
 import Config from './../config.js';
-import Button from './Button.class.js';
+import Button from './button/Button.class.js';
 
 export default class Navigation {
 

@@ -1,7 +1,4 @@
-import Selection from '../Selection.test.js';
-import Element from '../Element.class.js'
-const editorElement = new Element()
-const selection = new Selection();
+import Selection from '../selection/Selection.class.js';
 const exports = module.exports;
 
 exports.text = [
@@ -20,7 +17,7 @@ exports.text = [
                     var b = document.createElement('span');
                     b.style.fontWeight = 'bold';
 
-                    text = editorElement.createTextNode(text);
+                    text = document.createTextNode(text).cloneNode(true);
                     b.appendChild(text);
                     
                     return b.cloneNode(true); 
@@ -30,12 +27,14 @@ exports.text = [
                     var b = document.createElement('span');
                     b.style.fontWeight = 'normal';
 
-                    text = editorElement.createTextNode(text);
+                    text = document.createTextNode(text).cloneNode(true);
                     b.appendChild(text);
                     
                     return b.cloneNode(true); 
                 }
 
+                var selection = new Selection();
+                
                 var parent = selection.parent();
                 if(parent && parent.style.fontWeight == 'bold'){
                     if(parent.textContent.trim() == selection.text().trim()) return parent.style.fontWeight = 'normal';
@@ -60,7 +59,7 @@ exports.text = [
                     var i = document.createElement('span');
                     i.style.fontStyle = 'italic';
 
-                    text = editorElement.createTextNode(text);
+                    text = document.createTextNode(text).cloneNode(true);
                     i.appendChild(text);
                     
                     return i.cloneNode(true); 
@@ -70,11 +69,13 @@ exports.text = [
                     var i = document.createElement('span');
                     i.style.fontStyle = 'normal';
 
-                    text = editorElement.createTextNode(text);
+                    text = document.createTextNode(text).cloneNode(true);
                     i.appendChild(text);
                     
                     return i.cloneNode(true); 
                 }
+
+                var selection = new Selection();
 
                 var parent = selection.parent();
                 if(parent && parent.style.fontStyle == 'italic'){
@@ -100,7 +101,7 @@ exports.text = [
                     var u = document.createElement('span');
                     u.style.textDecoration = 'underline';
 
-                    text = editorElement.createTextNode(text);
+                    text = document.createTextNode(text).cloneNode(true);
                     u.appendChild(text);
                     
                     return u.cloneNode(true); 
@@ -110,11 +111,13 @@ exports.text = [
                     var u = document.createElement('span');
                     u.style.textDecoration = 'none';
 
-                    text = editorElement.createTextNode(text);
+                    text = document.createTextNode(text).cloneNode(true);
                     u.appendChild(text);
                     
                     return u.cloneNode(true); 
                 }
+
+                var selection = new Selection();
 
                 var parent = selection.parent();
                 if(parent && parent.style.textDecoration == 'underline'){

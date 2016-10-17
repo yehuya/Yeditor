@@ -1,4 +1,6 @@
-import { append as selectionAppend } from './selectionAppend.js';
+"use strict";
+
+import { process } from './process.js';
 
 /**
  * class for user selection
@@ -39,18 +41,57 @@ export default class Selection {
     /**
      * insert user selection into new element
      * and remove the old selection
-     * @param FN (what to do with the selection text)
+     * @param Object (Node element)
      */
     append(FN){
-        if(this.selected) selectionAppend(this.selected, FN);
+        if(!this.selected) return;
+        var range = this.selected.getRangeAt(0);
+        
+        process(range, FN);
     }
 
-    // ##### add or remove like Element.classList.toggle()
-    appendToggle(FN){}
+    /**
+     * remove user selection text and element
+     * @return Object (DocumentFragment)
+     */
+    remove(){
+        if(!this.selected) return;
+        var range = this.selected.getRangeAt(0);
+        var content = range.extractContents();
+
+        return content;
+    }
 
     /**
-     * remove selected element
-     * @param Object
+     * get parent element of user selection
+     * @return Object | Null
      */
-    remove(element){}
+    parent(){
+        var selection = this.selected.anchorNode;
+        // prevent '#text' node as element
+        if(selection && selection.nodeType == 3) selection = selection.parentElement; 
+        
+        return selection ? selection : null;
+    }
+
+    /**
+     * check if the area of user selection is editable
+     * - check if parent node is editable
+     */
+    parentEditable(){
+        var parent = this.parent();
+        var editable = false;
+
+        while(parent){
+            if(parent.getAttribute('contenteditable') == 'true' 
+            && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin){
+                editable = true;
+                break;
+            }
+
+            parent = parent.parentElement;
+        }
+
+        return editable;
+    }
 }

@@ -1,5 +1,5 @@
 import Config from './../../config.js';
-import Selection from './../Selection.class.js';
+import Selection from './../selection/Selection.class.js';
 
 /**
  * image class

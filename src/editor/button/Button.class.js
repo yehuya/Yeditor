@@ -1,7 +1,7 @@
-import Config from './../config.js';
-import { image as btn_image } from './btn/image.array.js';
-import { nav as btn_nav } from './btn/nav.array.js';
-import { text as btn_text } from './btn/text.array.js';
+import Config from './../../config.js';
+import { image as btn_image } from './image.array.js';
+import { nav as btn_nav } from './nav.array.js';
+import { text as btn_text } from './text.array.js';
 
 export default class Button {
     constructor(){

@@ -1,27 +1,10 @@
-"use strict";
-
-const exports = module.exports;
-
-/**
- * helper fn for appendFromTo
- * insert all the element into new element (@from = null, @to = null)
- * @param Object (Node)
- * @param FN (append the element)
- * @return Object (Node)
- */
-exports.append = function(node, FN) {
+function append(node, FN) {
     return appendFromTo(node, null, null, FN);
 }
 
-/**
- * append part from element into new element
- * @param Object (Node)
- * @param Number || Null (offset start, null = 0)
- * @param Number || Null (offset end, null = node.length)
- * @param FN (append the important part into new element - this happend in FN)
- * @return Object (the important part - Node)
- */
-exports.appendFromTo = function(node, from, to, FN) {
+// @param Object (node)
+// @return Object (the element with his parent - span);
+function appendFromTo(node, from, to, FN) {
     var text = node.textContent || '';
     var parent = node.parentElement || null;
     var nextSibling = node.nextSibling;
@@ -44,11 +27,22 @@ exports.appendFromTo = function(node, from, to, FN) {
     return main;
 }
 
-/**
- * create Text node
- * @param String 
- * @return Object (text node)
- */
 function createTextNode(text) {
     return document.createTextNode(text).cloneNode(true);
+}
+
+// prevent empty sibling 
+// set theme as null
+function preventEmptySibling(elem) {
+    return (elem && elem.nodeType == 3 && elem.data && elem.data.trim().length == 0) ? null : elem;
+}
+
+// get all element - children
+function children(node, callback) {
+    var child = node.childNodes;
+    child.forEach(function (element) {
+        element.children ? children(element, callback) : callback(element);
+    }, this);
+
+    return child.length > 0 ? child : false;
 }

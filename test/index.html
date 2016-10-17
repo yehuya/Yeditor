@@ -13,7 +13,7 @@
             Lorem Ipsum
         </h1>
     </div>
-    <div class="container-fluid" style="display:none;">
+    <div class="container-fluid" style="display:block;">
         <div class="col-xs-4 text-left">
             Lorem <span id="s1">ipsum dolor</span> sit
             <div id="s2">amet, <span id="s3">consectetur <span id="s5">a</span></span> adipiscing <span id="s4">elit.</span> Donec</div>
@@ -60,7 +60,7 @@
             <div>End</div>
             <!--//6-->6
             <div>Start</div>
-            <div> blabla<span>End</span></div>
+            <div> blabla <span>End</span></div>
             <!--//7-->7
             <div>Start</div>
             <div> blabla</div>
@@ -69,10 +69,7 @@
         </div>
     </div>
     <input id="uploadImage" type="file" accept="image/*">
-    <button style="position: fixed;top: 0;left: 0;outline:none;" class="btn btn-success" onclick="detect(bold)">B</button>
-    <button style="position: fixed;top: 0;left: 40px;outline:none;" class="btn btn-success" onclick="detect(underline)">U</button>
-    <button style="position: fixed;top: 0;left: 80px;outline:none;" class="btn btn-warning" onclick="selected(bold)">B</button>
-    <button style="position: fixed;top: 0;left: 120px;outline:none;" class="btn btn-info" onclick="detectQA(bold)">B</button>
+        <button style="position: fixed;top: 0;left: 10px;outline:none;width: 100px;" class="btn btn-info" onclick="testQA(bold)">Bold</button>
 
     <script src="../dist/index.bundle.js"></script>
     <script>
@@ -97,9 +94,9 @@
         // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
     </script>
 
-    <script src="js/append.test.js"></script>
-    <script src="js/selection.test.js"></script>
-    <script src="js/newAppend.test.js"></script>
+    <script src="js/append.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/process.js"></script>
 </body>
 
 </html>

@@ -50,7 +50,7 @@
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
 
-	var _SelectionClass = __webpack_require__(16);
+	var _SelectionClass = __webpack_require__(9);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
@@ -403,7 +403,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -420,112 +420,36 @@
 	 * all about the Element
 	 */
 	var Element = function () {
-	    function Element() {
-	        _classCallCheck(this, Element);
+	  function Element() {
+	    _classCallCheck(this, Element);
+	  }
+
+	  /**
+	   * create element prototype
+	   * @param String (prototype.name)
+	   * @param All (prototype.name = value)
+	   */
+
+
+	  _createClass(Element, [{
+	    key: 'prototype',
+	    value: function prototype(key, value) {
+	      window.Element.prototype[key] = value;
 	    }
 
 	    /**
-	     * create element prototype
-	     * @param String (prototype.name)
-	     * @param All (prototype.name = value)
+	     * get all element with plugin attribute (editable area)
+	     * @return Array Of Object (element)
 	     */
 
+	  }, {
+	    key: 'getAllEditable',
+	    value: function getAllEditable() {
+	      return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
+	    }
+	  }]);
 
-	    _createClass(Element, [{
-	        key: 'prototype',
-	        value: function prototype(key, value) {
-	            window.Element.prototype[key] = value;
-	        }
-
-	        /**
-	         * get all element with plugin attribute (editable area)
-	         * @return Array Of Object (element)
-	         */
-
-	    }, {
-	        key: 'getAllEditable',
-	        value: function getAllEditable() {
-	            return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
-	        }
-
-	        /**
-	         * get all the element children and call fn on each child
-	         * @param Object (node)
-	         * @param FN (callback)
-	         */
-
-	    }, {
-	        key: 'childrenFN',
-	        value: function childrenFN(node, FN) {
-	            var child = node.childNodes;
-
-	            child.forEach(function (elem) {
-	                elem.children ? this.childrenFN(elem, FN) : FN(elem);
-	            }, this);
-
-	            return child.length > 0 ? child : false;
-	        }
-
-	        /**
-	         * get text inside element and surround it with new element
-	         * @param Object (Node)
-	         * @param Number || null (offset start or null for 0)
-	         * @param Number || null (offset end or null for node.length)
-	         * @param FN (param: text , take this text and append it in new element)
-	         * @return Object (Node)
-	         */
-
-	    }, {
-	        key: 'appendFromTo',
-	        value: function appendFromTo(node, from, to, FN) {
-	            var text = node.textContent || '';
-	            var parent = node.parentElement || null;
-	            var nextSibling = node.nextSibling;
-
-	            if (to == null) to = text.length;
-	            if (from == null) from = 0;
-
-	            var before = text.substring(0, from);
-	            var main = text.substring(from, to);
-	            var after = text.substring(to, text.length);
-
-	            parent.removeChild(node);
-
-	            main = main.length > 0 ? FN(main) : null;
-
-	            if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
-	            if (main) parent.insertBefore(main, nextSibling);
-	            if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
-
-	            return main;
-	        }
-
-	        /**
-	         * prevent empty: nextSibling, previousSibling 
-	         * @param Object (node)
-	         * @return Object || null 
-	         */
-
-	    }, {
-	        key: 'preventEmptySibling',
-	        value: function preventEmptySibling(sibling) {
-	            return sibling && sibling.nodeType == 3 && sibling.data && sibling.data.trim().length == 0 ? null : sibling;
-	        }
-
-	        /**
-	         * create text node
-	         * @param String
-	         * @return Object
-	         */
-
-	    }, {
-	        key: 'createTextNode',
-	        value: function createTextNode(string) {
-	            return document.createTextNode(string).cloneNode(true);
-	        }
-	    }]);
-
-	    return Element;
+	  return Element;
 	}();
 
 	exports.default = Element;
@@ -666,9 +590,9 @@
 
 	var _imageArray = __webpack_require__(7);
 
-	var _navArray = __webpack_require__(11);
+	var _navArray = __webpack_require__(13);
 
-	var _textArray = __webpack_require__(14);
+	var _textArray = __webpack_require__(16);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -785,7 +709,7 @@
 
 	var _ImageClass2 = _interopRequireDefault(_ImageClass);
 
-	var _Base = __webpack_require__(10);
+	var _Base = __webpack_require__(12);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
@@ -900,7 +824,7 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -908,11 +832,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _process = __webpack_require__(10);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -920,19 +840,14 @@
 	 * class for user selection
 	 */
 	var Selection = function () {
-
-	    /**
-	     * __construct
-	     * @return Object (this)
-	     */
 	    function Selection() {
 	        _classCallCheck(this, Selection);
 
-	        this.config = _config2.default.editable;
+	        this.selected = this.get();
 	    }
 
 	    /**
-	     * return user selection 
+	     * get user selection
 	     * @return Object || Boolean
 	     */
 
@@ -957,36 +872,43 @@
 	        }
 
 	        /**
-	         * get user selection text
-	         * @return String
+	         * get selected text
 	         */
 
 	    }, {
 	        key: 'text',
 	        value: function text() {
-	            var selected = this.get();
-
-	            if (selected) {
-	                return selected.toString();
-	            }
+	            return this.selected ? this.selected.toString() : null;
 	        }
 
 	        /**
-	         * insert selected text into DOM (node)
-	         * @param Object (Node | DOM)
+	         * insert user selection into new element
+	         * and remove the old selection
+	         * @param Object (Node element)
 	         */
 
 	    }, {
 	        key: 'append',
-	        value: function append(Node) {
-	            var selected = this.get();
+	        value: function append(FN) {
+	            if (!this.selected) return;
+	            var range = this.selected.getRangeAt(0);
 
-	            if (selected && selected.rangeCount) {
-	                var range = selected.getRangeAt(0).cloneRange();
-	                range.surroundContents(Node.cloneNode());
-	                selected.removeAllRanges();
-	                selected.addRange(range);
-	            }
+	            (0, _process.process)(range, FN);
+	        }
+
+	        /**
+	         * remove user selection text and element
+	         * @return Object (DocumentFragment)
+	         */
+
+	    }, {
+	        key: 'remove',
+	        value: function remove() {
+	            if (!this.selected) return;
+	            var range = this.selected.getRangeAt(0);
+	            var content = range.extractContents();
+
+	            return content;
 	        }
 
 	        /**
@@ -997,7 +919,7 @@
 	    }, {
 	        key: 'parent',
 	        value: function parent() {
-	            var selection = this.get().anchorNode;
+	            var selection = this.selected.anchorNode;
 	            // prevent '#text' node as element
 	            if (selection && selection.nodeType == 3) selection = selection.parentElement;
 
@@ -1026,27 +948,6 @@
 
 	            return editable;
 	        }
-
-	        /**
-	         * remove user selection dom element
-	         * (remove the selection parent element itself not the innerText)
-	         * the param Node need to be object that already exist in the document
-	         * @param Object (Node | DOM)
-	         */
-
-	    }, {
-	        key: 'remove_dom',
-	        value: function remove_dom(Node) {
-	            var selected = this.get();
-
-	            if (selected && selected.rangeCount) {
-	                var newText = document.createTextNode(this.text());
-	                var parent = Node.parentElement;
-
-	                parent.insertBefore(newText, Node);
-	                parent.removeChild(Node);
-	            }
-	        }
 	    }]);
 
 	    return Selection;
@@ -1056,6 +957,294 @@
 
 /***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	/**
+	 * import helper function for the process
+	 */
+
+	var _append = __webpack_require__(11);
+
+	var _exports = module.exports;
+
+	/**
+	 * important vars for the process flow
+	 */
+	var _CONTINUE;
+	var _END_CONTAINER;
+	var _HAS_CHILDREN;
+	var _BREAK_WHILE;
+
+	/**
+	 * the main process function
+	 * get the user selection and append it into new element
+	 * @param Object (user selection)
+	 * @param FN (what to do with the selection)
+	 */
+	_exports.process = function (range, FN) {
+	    var data = rangeData(range, FN);
+	    _CONTINUE = true;
+
+	    // same element
+	    level1(data);
+	    if (!_CONTINUE) return;
+
+	    // not the same element
+	    // refresh sibling after the first appendFromTo fn
+	    // prevent junk sibling
+	    level2(data);
+	    if (!_CONTINUE) return;
+
+	    // only 'one' element between end & start
+	    level3(data);
+	    if (!_CONTINUE) return;
+
+	    // get all the element between
+	    level4(data);
+	};
+
+	/**
+	 * same element
+	 * @param Object (range data)
+	 */
+	function level1(data) {
+	    if (data.start == data.end) {
+	        (0, _append.appendFromTo)(data.start, data.offset.start, data.offset.end, data.fn);
+	        _CONTINUE = false;
+	    }
+	}
+
+	/*
+	 * not the same element
+	 * refreshSibling
+	 * @param Object (range data)
+	 */
+	function level2(data) {
+	    var startElement = (0, _append.appendFromTo)(data.start, data.offset.start, null, data.fn);
+	    var endElement = (0, _append.appendFromTo)(data.end, null, data.offset.end, data.fn);
+
+	    refreshSibling(data);
+
+	    if (endElement.parentElement && data.sibling.start == endElement.parentElement || data.sibling.end == startElement) _CONTINUE = false;
+	}
+
+	/*
+	 * only 'one' element between end & start
+	 * @param Object (range data)
+	 */
+	function level3(data) {
+	    if (data.sibling.start == data.sibling.end && data.sibling.start != null) {
+
+	        var siblingStartChild = children(data.sibling.start, function (elem) {
+	            (0, _append.append)(elem, data.fn);
+	        });
+
+	        if (!siblingStartChild) (0, _append.append)(data.sibling.start, data.fn);
+
+	        _CONTINUE = false;
+	    }
+	}
+
+	/*
+	 * get all the element between
+	 * @param Object (range data)
+	 */
+	function level4(data) {
+	    var next = data.sibling.start;
+	    var child, isTheEndContainer;
+
+	    _BREAK_WHILE = false;
+
+	    while (next) {
+
+	        _END_CONTAINER = false;
+	        _HAS_CHILDREN = false;
+
+	        // check if next have children
+	        level4_1(data, next);
+
+	        // ### no children
+	        next = level4_2(data, next);
+
+	        // ### break
+	        level4_3b(data, next);
+	        if (_BREAK_WHILE) break;
+
+	        level4_4b(data, next);
+	        if (_BREAK_WHILE) break;
+
+	        // ### next while
+	        next = preventEmptySibling(next.nextSibling) || next.nextElementSibling;
+	    }
+	}
+
+	/**
+	 * while: children
+	 * @param Object (range data)
+	 * @param Object (Node element)
+	 */
+	function level4_1(data, next) {
+	    var child = children(next, function (elem) {
+	        if (!_END_CONTAINER) (0, _append.append)(elem, data.fn);
+	        if (elem == data.sibling.end) _END_CONTAINER = true;
+	    });
+
+	    return child ? _HAS_CHILDREN = true : _HAS_CHILDREN = false;
+	}
+
+	/**
+	 * while: no-children
+	 * @param Object (range data)
+	 * @param Object (Node element)
+	 * @return Object (Node element)
+	 */
+	function level4_2(data, next) {
+	    return !_HAS_CHILDREN && !_END_CONTAINER ? next = (0, _append.append)(next, data.fn) : next;
+	}
+
+	/**
+	 * while: break
+	 * @param Object (range data)
+	 * @param Object (Node element)
+	 */
+	function level4_3b(data, next) {
+	    if (data.sibling.end && next == data.sibling.end.toString()) {
+	        if (data.end.textContent.toString().substring(0, data.offset.end) == next.textContent) _BREAK_WHILE = true;
+	    }
+	}
+
+	/**
+	 * while: break
+	 * @param Object (range data)
+	 * @param Object (Node element)
+	 */
+	function level4_4b(data, next) {
+	    if (next == data.sibling.end || _END_CONTAINER) _BREAK_WHILE = true;
+	}
+
+	/**
+	 * order the range (user selection) object for the process function
+	 * @param Object (range)
+	 * @param FN (what to do with the selection)
+	 * @return Object
+	 */
+	function rangeData(range, FN) {
+	    return {
+	        start: range.startContainer,
+	        end: range.endContainer,
+	        offset: {
+	            start: range.startOffset,
+	            end: range.endOffset
+	        },
+	        sibling: {
+	            start: range.startContainer.nextSibling,
+	            end: range.endContainer.previousSibling
+	        },
+	        range: range,
+	        fn: FN
+	    };
+	}
+
+	/**
+	 * refresh range sibling after the first appendFromTo fn 
+	 * @param Object (range data)
+	 * @return Object (range data)
+	 */
+	function refreshSibling(data) {
+	    if (data.sibling.start == null) data.sibling.start = preventEmptySibling(data.range.startContainer.nextSibling) || data.range.startContainer.nextElementSibling;
+	    if (data.sibling.end == null) data.sibling.end = preventEmptySibling(data.range.endContainer.previousSibling) || data.range.endContainer.previousElementSibling;
+
+	    return data;
+	}
+
+	/**
+	 * prevent empty sibling 
+	 * if empty return Null
+	 * @param Object (Node)
+	 * @return Object || Null
+	 */
+	function preventEmptySibling(elem) {
+	    return elem && elem.nodeType == 3 && elem.data && elem.data.trim().length == 0 ? null : elem;
+	}
+
+	/**
+	 * get all the children of current element
+	 * - set callback fn on each child
+	 * @param Object (Node)
+	 * @param FN (callback function - what to do with the child)
+	 */
+	function children(node, callback) {
+	    var child = node.childNodes;
+	    child.forEach(function (element) {
+	        element.children ? children(element, callback) : callback(element);
+	    }, this);
+
+	    return child.length > 0 ? child : false;
+	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var _exports = module.exports;
+
+	/**
+	 * helper fn for appendFromTo
+	 * insert all the element into new element (@from = null, @to = null)
+	 * @param Object (Node)
+	 * @param FN (append the element)
+	 * @return Object (Node)
+	 */
+	_exports.append = function (node, FN) {
+	  return appendFromTo(node, null, null, FN);
+	};
+
+	/**
+	 * append part from element into new element
+	 * @param Object (Node)
+	 * @param Number || Null (offset start, null = 0)
+	 * @param Number || Null (offset end, null = node.length)
+	 * @param FN (append the important part into new element - this happend in FN)
+	 * @return Object (the important part - Node)
+	 */
+	_exports.appendFromTo = function (node, from, to, FN) {
+	  var text = node.textContent || '';
+	  var parent = node.parentElement || null;
+	  var nextSibling = node.nextSibling;
+
+	  if (to == null) to = text.length;
+	  if (from == null) from = 0;
+
+	  var before = text.substring(0, from);
+	  var main = text.substring(from, to);
+	  var after = text.substring(to, text.length);
+
+	  parent.removeChild(node);
+
+	  main = main.length > 0 ? FN(main) : null;
+
+	  if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
+	  if (main) parent.insertBefore(main, nextSibling);
+	  if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
+
+	  return main;
+	};
+
+	/**
+	 * create Text node
+	 * @param String 
+	 * @return Object (text node)
+	 */
+	function createTextNode(text) {
+	  return document.createTextNode(text).cloneNode(true);
+	}
+
+/***/ },
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1084,12 +1273,12 @@
 	};
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _AjaxClass = __webpack_require__(12);
+	var _AjaxClass = __webpack_require__(14);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
@@ -1118,7 +1307,7 @@
 	}];
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1133,7 +1322,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(13);
+	var _SerializeClass = __webpack_require__(15);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -1283,7 +1472,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1399,23 +1588,17 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _SelectionTest = __webpack_require__(15);
+	var _SelectionClass = __webpack_require__(9);
 
-	var _SelectionTest2 = _interopRequireDefault(_SelectionTest);
-
-	var _ElementClass = __webpack_require__(4);
-
-	var _ElementClass2 = _interopRequireDefault(_ElementClass);
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var editorElement = new _ElementClass2.default();
-	var selection = new _SelectionTest2.default();
 	var _exports = module.exports;
 
 	_exports.text = [
@@ -1434,7 +1617,7 @@
 	                var b = document.createElement('span');
 	                b.style.fontWeight = 'bold';
 
-	                text = editorElement.createTextNode(text);
+	                text = document.createTextNode(text).cloneNode(true);
 	                b.appendChild(text);
 
 	                return b.cloneNode(true);
@@ -1444,11 +1627,13 @@
 	                var b = document.createElement('span');
 	                b.style.fontWeight = 'normal';
 
-	                text = editorElement.createTextNode(text);
+	                text = document.createTextNode(text).cloneNode(true);
 	                b.appendChild(text);
 
 	                return b.cloneNode(true);
 	            };
+
+	            var selection = new _SelectionClass2.default();
 
 	            var parent = selection.parent();
 	            if (parent && parent.style.fontWeight == 'bold') {
@@ -1474,7 +1659,7 @@
 	                var i = document.createElement('span');
 	                i.style.fontStyle = 'italic';
 
-	                text = editorElement.createTextNode(text);
+	                text = document.createTextNode(text).cloneNode(true);
 	                i.appendChild(text);
 
 	                return i.cloneNode(true);
@@ -1484,11 +1669,13 @@
 	                var i = document.createElement('span');
 	                i.style.fontStyle = 'normal';
 
-	                text = editorElement.createTextNode(text);
+	                text = document.createTextNode(text).cloneNode(true);
 	                i.appendChild(text);
 
 	                return i.cloneNode(true);
 	            };
+
+	            var selection = new _SelectionClass2.default();
 
 	            var parent = selection.parent();
 	            if (parent && parent.style.fontStyle == 'italic') {
@@ -1514,7 +1701,7 @@
 	                var u = document.createElement('span');
 	                u.style.textDecoration = 'underline';
 
-	                text = editorElement.createTextNode(text);
+	                text = document.createTextNode(text).cloneNode(true);
 	                u.appendChild(text);
 
 	                return u.cloneNode(true);
@@ -1524,11 +1711,13 @@
 	                var u = document.createElement('span');
 	                u.style.textDecoration = 'none';
 
-	                text = editorElement.createTextNode(text);
+	                text = document.createTextNode(text).cloneNode(true);
 	                u.appendChild(text);
 
 	                return u.cloneNode(true);
 	            };
+
+	            var selection = new _SelectionClass2.default();
 
 	            var parent = selection.parent();
 	            if (parent && parent.style.textDecoration == 'underline') {
@@ -1540,636 +1729,6 @@
 	        }
 	    }
 	}];
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	var _ElementClass = __webpack_require__(4);
-
-	var _ElementClass2 = _interopRequireDefault(_ElementClass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * class for user selection
-	 */
-	var SelectionTest = function () {
-
-	    /**
-	     * __construct
-	     * @return Object (this)
-	     */
-	    function SelectionTest() {
-	        _classCallCheck(this, SelectionTest);
-
-	        this.config = _config2.default.editable;
-	        this.element = new _ElementClass2.default();
-	    }
-
-	    /**
-	     * return user selection 
-	     * @return Object || Boolean
-	     */
-
-
-	    _createClass(SelectionTest, [{
-	        key: 'get',
-	        value: function get() {
-	            if (window.getSelection && window.getSelection().toString()) {
-	                return window.getSelection();
-	            }
-
-	            if (document.getSelection && document.getSelection.toString()) {
-	                return document.getSelection();
-	            }
-
-	            var selection = document.selection && document.selection.createRange();
-	            if (typeof selection !== 'undefined' && selection.text && selection.text.toString()) {
-	                return selection.text;
-	            }
-
-	            return false;
-	        }
-
-	        /**
-	         * get user selection text
-	         * @return String
-	         */
-
-	    }, {
-	        key: 'text',
-	        value: function text() {
-	            var selected = this.get();
-	            return selected ? selected.toString() : null;
-	        }
-
-	        /**
-	         * insert selected text into DOM (node)
-	         * @param Object (Node | DOM)
-	         */
-
-	    }, {
-	        key: 'append',
-	        value: function append(FN) {
-	            if (!this.parentEditable()) return;
-
-	            var selection = this.get();
-	            if (selection.isCollapsed) return;
-
-	            var range = selection.getRangeAt(0);
-	            var start = range.startContainer;
-	            var end = range.endContainer;
-	            var offset = { start: range.startOffset, end: range.endOffset };
-	            var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling };
-
-	            this.appendProcess(start, end, sibling, offset, range, FN);
-
-	            selection.removeAllRanges();
-	        }
-
-	        /**
-	         * the proccess of this.append()
-	         * @param Object (range.startContainer)
-	         * @param Object (range.endContainer)
-	         * @param Object (range start && end sibling)
-	         * @param Object (range start && end offset)
-	         * @param Object (range)
-	         * @param FN (what to do with the selected text)
-	         */
-
-	    }, {
-	        key: 'appendProcess',
-	        value: function appendProcess(start, end, sibling, offset, range, FN) {
-	            var self = this;
-	            var startElement, endElement;
-
-	            // same element
-	            if (start == end) return this.element.appendFromTo(start, offset.start, offset.end, FN);
-
-	            // not the same element
-	            startElement = this.element.appendFromTo(start, offset.start, null, FN);
-	            endElement = this.element.appendFromTo(end, null, offset.end, FN);
-
-	            // refresh sibling after the first appendFromTo fn
-	            // prevent junk sibling
-	            if (sibling.start == null) sibling.start = this.element.preventEmptySibling(range.startContainer.nextSibling);
-	            if (sibling.end == null) sibling.end = this.element.preventEmptySibling(range.endContainer.previousSibling);
-
-	            // previousSibling of endContainer is startContainer after append
-	            if (sibling.end == startElement) return;
-
-	            // only 'one' element between end & start
-	            if (sibling.start == sibling.end && sibling.start != null) {
-	                var siblingStartChild = this.element.childrenFN(sibling.start, function (elem) {
-	                    self.appendFullElement(elem, FN);
-	                });
-
-	                if (!siblingStartChild) this.appendFullElement(sibling.start, FN);
-	                return;
-	            }
-
-	            // get all the element between
-	            this.allElementBetween(sibling, offset, end, FN);
-	        }
-	    }, {
-	        key: 'allElementBetween',
-	        value: function allElementBetween(sibling, offset, end, FN) {
-	            var self = this;
-	            var next = sibling.start;
-	            var child, isTheEndContainer;
-
-	            while (next) {
-	                // ### children
-	                isTheEndContainer = false;
-	                child = this.element.childrenFN(next, function (elem) {
-	                    if (!end) self.appendFullElement(elem, FN);
-	                    if (elem == sibling.end) isTheEndContainer = true;
-	                });
-
-	                // ### no children
-	                if (!child && !isTheEndContainer) next = this.appendFullElement(next, FN);
-
-	                // ### break
-	                if (next == sibling.end.toString()) {
-	                    if (end.textContent.toString().substring(0, offset.end) == next.textContent) break;
-	                }
-	                if (next == sibling.end || isTheEndContainer) break;
-
-	                // ### next while
-	                next = next.nextSibling;
-	            }
-	        }
-	    }, {
-	        key: 'appendFullElement',
-	        value: function appendFullElement(node, FN) {
-	            return this.element.appendFromTo(node, null, null, FN);
-	        }
-
-	        /**
-	         * get parent element of user selection
-	         * @return Object | Null
-	         */
-
-	    }, {
-	        key: 'parent',
-	        value: function parent() {
-	            var selection = this.get().anchorNode;
-	            // prevent '#text' node as element
-	            if (selection && selection.nodeType == 3) selection = selection.parentElement;
-
-	            return selection ? selection : null;
-	        }
-
-	        /**
-	         * check if the area of user selection is editable
-	         * - check if parent node is editable
-	         */
-
-	    }, {
-	        key: 'parentEditable',
-	        value: function parentEditable() {
-	            var parent = this.parent();
-	            var editable = false;
-
-	            while (parent) {
-	                if (parent.getAttribute('contenteditable') == 'true' && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin) {
-	                    editable = true;
-	                    break;
-	                }
-
-	                parent = parent.parentElement;
-	            }
-
-	            return editable;
-	        }
-	    }]);
-
-	    return SelectionTest;
-	}();
-
-	exports.default = SelectionTest;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _selectionAppend = __webpack_require__(17);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * class for user selection
-	 */
-	var Selection = function () {
-	    function Selection() {
-	        _classCallCheck(this, Selection);
-
-	        this.selected = this.get();
-	    }
-
-	    /**
-	     * get user selection
-	     * @return Object || Boolean
-	     */
-
-
-	    _createClass(Selection, [{
-	        key: 'get',
-	        value: function get() {
-	            if (window.getSelection && window.getSelection().toString()) {
-	                return window.getSelection();
-	            }
-
-	            if (document.getSelection && document.getSelection.toString()) {
-	                return document.getSelection();
-	            }
-
-	            var selection = document.selection && document.selection.createRange();
-	            if (typeof selection !== 'undefined' && selection.text && selection.text.toString()) {
-	                return selection.text;
-	            }
-
-	            return false;
-	        }
-
-	        /**
-	         * get selected text
-	         */
-
-	    }, {
-	        key: 'text',
-	        value: function text() {
-	            return this.selected ? this.selected.toString() : null;
-	        }
-
-	        /**
-	         * insert user selection into new element
-	         * and remove the old selection
-	         * @param FN (what to do with the selection text)
-	         */
-
-	    }, {
-	        key: 'append',
-	        value: function append(FN) {
-	            if (this.selected) (0, _selectionAppend.append)(this.selected, FN);
-	        }
-
-	        /**
-	         * remove selected element
-	         * @param Object
-	         */
-
-	    }, {
-	        key: 'remove',
-	        value: function remove(element) {}
-	    }]);
-
-	    return Selection;
-	}();
-
-	exports.default = Selection;
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
-	var _exports = module.exports;
-
-	/**
-	 * get user selection and insert it in new element
-	 * @param Object (window.getSelection())
-	 * @param FN (what to do with selected text)
-	 */
-	_exports.append = function (selection, FN) {
-	    if (selection.isCollapsed) return;
-
-	    var range = selection.getRangeAt(0);
-	    var start = range.startContainer;
-	    var end = range.endContainer;
-	    var offset = { start: range.startOffset, end: range.endOffset };
-	    var sibling = { start: range.startContainer.nextSibling, end: range.endContainer.previousSibling };
-
-	    process(start, end, sibling, offset, range, FN);
-	};
-
-	function process(start, end, sibling, offset, range, FN) {
-	    var startElement, endElement;
-
-	    // same element
-	    if (start == end) return appendFromTo(start, offset.start, offset.end, FN);
-
-	    // not the same element
-	    startElement = appendFromTo(start, offset.start, null, FN);
-	    endElement = appendFromTo(end, null, offset.end, FN);
-
-	    // refresh sibling after the first appendFromTo fn
-	    // prevent junk sibling
-	    if (sibling.start == null) sibling.start = preventEmptySibling(range.startContainer.nextSibling);
-	    if (sibling.end == null) sibling.end = preventEmptySibling(range.endContainer.previousSibling);
-
-	    if (sibling.end == startElement) return;
-
-	    // only 'one' element between end & start
-	    if (sibling.start == sibling.end && sibling.start != null) {
-	        var siblingStartChild = children(sibling.start, function (elem) {
-	            append(elem, FN);
-	        });
-
-	        if (!siblingStartChild) append(sibling.start, FN);
-	        return;
-	    }
-
-	    getAllElementBetween(sibling, offset, end, FN);
-	}
-
-	// get all the element between
-	function getAllElementBetween(sibling, offset, end, FN) {
-	    var next = sibling.start;
-	    var child, isTheEndContainer;
-
-	    while (next) {
-
-	        // ### children
-	        isTheEndContainer = false;
-	        child = children(next, function (elem) {
-	            if (!isTheEndContainer) append(elem, FN);
-	            if (elem == sibling.end) isTheEndContainer = true;
-	        });
-
-	        // ### no children
-	        if (!child && !isTheEndContainer) next = append(next, FN);
-
-	        // ### break
-	        if (next == sibling.end.toString()) {
-	            if (end.textContent.toString().substring(0, offset.end) == next.textContent) break;
-	        }
-	        if (next == sibling.end || isTheEndContainer) break;
-
-	        // ### next while
-	        next = next.nextSibling;
-	    }
-	}
-
-	function append(node, FN) {
-	    return appendFromTo(node, null, null, FN);
-	}
-
-	// @param Object (node)
-	// @return Object (the element with his parent - span);
-	function appendFromTo(node, from, to, FN) {
-	    var text = node.textContent || '';
-	    var parent = node.parentElement || null;
-	    var nextSibling = node.nextSibling;
-
-	    if (to == null) to = text.length;
-	    if (from == null) from = 0;
-
-	    var before = text.substring(0, from);
-	    var main = text.substring(from, to);
-	    var after = text.substring(to, text.length);
-
-	    parent.removeChild(node);
-
-	    main = main.length > 0 ? FN(main) : null;
-
-	    if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
-	    if (main) parent.insertBefore(main, nextSibling);
-	    if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
-
-	    return main;
-	}
-
-	function createTextNode(text) {
-	    return document.createTextNode(text).cloneNode(true);
-	}
-
-	// prevent empty sibling 
-	// set theme as null
-	function preventEmptySibling(elem) {
-	    return elem.nodeType == 3 && elem.data && elem.data.trim().length == 0 ? null : elem;
-	}
-
-	// get all element - children
-	function children(node, callback) {
-	    var child = node.childNodes;
-	    child.forEach(function (element) {
-	        element.children ? children(element, callback) : callback(element);
-	    }, this);
-
-	    return child.length > 0 ? child : false;
-	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	// shim for using process in browser
-	var process = module.exports = {};
-
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-
-	function defaultSetTimout() {
-	    throw new Error('setTimeout has not been defined');
-	}
-	function defaultClearTimeout () {
-	    throw new Error('clearTimeout has not been defined');
-	}
-	(function () {
-	    try {
-	        if (typeof setTimeout === 'function') {
-	            cachedSetTimeout = setTimeout;
-	        } else {
-	            cachedSetTimeout = defaultSetTimout;
-	        }
-	    } catch (e) {
-	        cachedSetTimeout = defaultSetTimout;
-	    }
-	    try {
-	        if (typeof clearTimeout === 'function') {
-	            cachedClearTimeout = clearTimeout;
-	        } else {
-	            cachedClearTimeout = defaultClearTimeout;
-	        }
-	    } catch (e) {
-	        cachedClearTimeout = defaultClearTimeout;
-	    }
-	} ())
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    // if setTimeout wasn't available but was latter defined
-	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-	        cachedSetTimeout = setTimeout;
-	        return setTimeout(fun, 0);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedSetTimeout(fun, 0);
-	    } catch(e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-	            return cachedSetTimeout.call(null, fun, 0);
-	        } catch(e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-	            return cachedSetTimeout.call(this, fun, 0);
-	        }
-	    }
-
-
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    // if clearTimeout wasn't available but was latter defined
-	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-	        cachedClearTimeout = clearTimeout;
-	        return clearTimeout(marker);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedClearTimeout(marker);
-	    } catch (e){
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-	            return cachedClearTimeout.call(null, marker);
-	        } catch (e){
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-	            return cachedClearTimeout.call(this, marker);
-	        }
-	    }
-
-
-
-	}
-	var queue = [];
-	var draining = false;
-	var currentQueue;
-	var queueIndex = -1;
-
-	function cleanUpNextTick() {
-	    if (!draining || !currentQueue) {
-	        return;
-	    }
-	    draining = false;
-	    if (currentQueue.length) {
-	        queue = currentQueue.concat(queue);
-	    } else {
-	        queueIndex = -1;
-	    }
-	    if (queue.length) {
-	        drainQueue();
-	    }
-	}
-
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    var timeout = runTimeout(cleanUpNextTick);
-	    draining = true;
-
-	    var len = queue.length;
-	    while(len) {
-	        currentQueue = queue;
-	        queue = [];
-	        while (++queueIndex < len) {
-	            if (currentQueue) {
-	                currentQueue[queueIndex].run();
-	            }
-	        }
-	        queueIndex = -1;
-	        len = queue.length;
-	    }
-	    currentQueue = null;
-	    draining = false;
-	    runClearTimeout(timeout);
-	}
-
-	process.nextTick = function (fun) {
-	    var args = new Array(arguments.length - 1);
-	    if (arguments.length > 1) {
-	        for (var i = 1; i < arguments.length; i++) {
-	            args[i - 1] = arguments[i];
-	        }
-	    }
-	    queue.push(new Item(fun, args));
-	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
-	    }
-	};
-
-	// v8 likes predictible objects
-	function Item(fun, array) {
-	    this.fun = fun;
-	    this.array = array;
-	}
-	Item.prototype.run = function () {
-	    this.fun.apply(null, this.array);
-	};
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-
-	function noop() {}
-
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-
-	process.cwd = function () { return '/' };
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function() { return 0; };
-
 
 /***/ }
 /******/ ]);
