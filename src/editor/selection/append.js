@@ -10,7 +10,7 @@ const exports = module.exports;
  * @return Object (Node)
  */
 exports.append = function(node, FN) {
-    return appendFromTo(node, null, null, FN);
+    return exports.appendFromTo(node, null, null, FN);
 }
 
 /**

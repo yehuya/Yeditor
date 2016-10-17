@@ -1200,7 +1200,7 @@
 	 * @return Object (Node)
 	 */
 	_exports.append = function (node, FN) {
-	  return appendFromTo(node, null, null, FN);
+	  return _exports.appendFromTo(node, null, null, FN);
 	};
 
 	/**
