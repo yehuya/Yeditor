@@ -64,7 +64,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -105,62 +105,64 @@
 	 * Editor main class
 	 */
 	var Editor = function () {
-	  /**
-	   * __construct
-	   * add element editable prototype
-	   * add editor navigation
-	   */
-	  function Editor(options) {
-	    _classCallCheck(this, Editor);
+	    /**
+	     * __construct
+	     * add element editable prototype
+	     * add editor navigation
+	     */
+	    function Editor(options) {
+	        _classCallCheck(this, Editor);
 
-	    window.Element.prototype[_config2.default.editable.prototype] = this.editable;
+	        window.Element.prototype[_config2.default.editable.prototype] = this.editable;
 
-	    var mainNav = new _NavigationClass2.default(_Buttons2.default.get(), _config2.default.nav.id);
+	        var mainNav = new _NavigationClass2.default(_Buttons2.default.get(), _config2.default.nav.id);
 
-	    if (options['uploadImage']) _config2.default.image.uploadImage = options.uploadImage;
-	    if (options['uploadBackground']) _config2.default.image.uploadBackground = options.uploadBackground;
-	    if (options['url']) _config2.default.ajax.url = options.url;
-	    if (options['method']) _config2.default.ajax.method = options.method;
-	    if (options['done']) _config2.default.ajax.done = options.done;
-	    if (options['success']) _config2.default.ajax.success = options.success;
-	    if (options['failed']) _config2.default.ajax.failed = options.failed;
+	        if (options) {
+	            if (options['uploadImage']) _config2.default.image.uploadImage = options.uploadImage;
+	            if (options['uploadBackground']) _config2.default.image.uploadBackground = options.uploadBackground;
+	            if (options['url']) _config2.default.ajax.url = options.url;
+	            if (options['method']) _config2.default.ajax.method = options.method;
+	            if (options['done']) _config2.default.ajax.done = options.done;
+	            if (options['success']) _config2.default.ajax.success = options.success;
+	            if (options['failed']) _config2.default.ajax.failed = options.failed;
+	        }
 
-	    this.api = {
-	      image: _Image2.default,
-	      base64: _Base2.default,
-	      selection: _SelectionClass2.default,
-	      navigation: mainNav
-	    };
+	        this.api = {
+	            image: _Image2.default,
+	            base64: _Base2.default,
+	            selection: _SelectionClass2.default,
+	            navigation: mainNav
+	        };
 
-	    return this;
-	  }
-
-	  /**
-	   * edit this area
-	   * add all the data attribute
-	   * @param Object (editable area options)
-	   */
-
-
-	  _createClass(Editor, [{
-	    key: 'editable',
-	    value: function editable(options) {
-	      return new _EditableClass2.default(options, this);
+	        return this;
 	    }
 
 	    /**
-	     * add input into editor navigation
-	     * @for Title
-	     * @for Description
-	     * @options: title, name, 
+	     * edit this area
+	     * add all the data attribute
+	     * @param Object (editable area options)
 	     */
 
-	  }, {
-	    key: 'addEditorInput',
-	    value: function addEditorInput(options) {}
-	  }]);
 
-	  return Editor;
+	    _createClass(Editor, [{
+	        key: 'editable',
+	        value: function editable(options) {
+	            return new _EditableClass2.default(options, this);
+	        }
+
+	        /**
+	         * add input into editor navigation
+	         * @for Title
+	         * @for Description
+	         * @options: title, name, 
+	         */
+
+	    }, {
+	        key: 'addEditorInput',
+	        value: function addEditorInput(options) {}
+	    }]);
+
+	    return Editor;
 	}();
 
 	/**

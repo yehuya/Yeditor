@@ -20,13 +20,15 @@ export default class Editor {
         
         var mainNav = new Navigation(Buttons.get(), Config.nav.id);
 
-        if(options['uploadImage']) Config.image.uploadImage = options.uploadImage;
-        if(options['uploadBackground']) Config.image.uploadBackground = options.uploadBackground;
-        if(options['url']) Config.ajax.url = options.url;
-        if(options['method']) Config.ajax.method = options.method;
-        if(options['done']) Config.ajax.done = options.done;
-        if(options['success']) Config.ajax.success = options.success;
-        if(options['failed']) Config.ajax.failed = options.failed;
+        if(options){
+            if(options['uploadImage']) Config.image.uploadImage = options.uploadImage;
+            if(options['uploadBackground']) Config.image.uploadBackground = options.uploadBackground;
+            if(options['url']) Config.ajax.url = options.url;
+            if(options['method']) Config.ajax.method = options.method;
+            if(options['done']) Config.ajax.done = options.done;
+            if(options['success']) Config.ajax.success = options.success;
+            if(options['failed']) Config.ajax.failed = options.failed;
+        }
 
         this.api = {
             image: Image,
