@@ -85,21 +85,21 @@
 
 	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
 
-	var _Image = __webpack_require__(8);
+	var _Image = __webpack_require__(7);
 
 	var _Image2 = _interopRequireDefault(_Image);
 
-	var _Base = __webpack_require__(12);
+	var _Base = __webpack_require__(11);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
-	var _SelectionClass = __webpack_require__(9);
+	var _SelectionClass = __webpack_require__(8);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _ButtonClass = __webpack_require__(6);
+	var _Buttons = __webpack_require__(12);
 
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+	var _Buttons2 = _interopRequireDefault(_Buttons);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -120,7 +120,7 @@
 	    var element = new _ElementClass2.default();
 	    element.prototype(_config2.default.editable.prototype, this.editable);
 
-	    var mainNav = new _NavigationClass2.default(new _ButtonClass2.default().get(), _config2.default.nav.id);
+	    var mainNav = new _NavigationClass2.default(_Buttons2.default.get(), _config2.default.nav.id);
 
 	    if (options['uploadImage']) _config2.default.image.uploadImage = options.uploadImage;
 	    if (options['uploadBackground']) _config2.default.image.uploadBackground = options.uploadBackground;
@@ -602,7 +602,7 @@
 	    }, {
 	        key: 'addButton',
 	        value: function addButton(object) {
-	            var btn = new _ButtonClass2.default().create(object);
+	            var btn = new _ButtonClass2.default(object);
 	            this.append(btn);
 	        }
 	    }]);
@@ -630,49 +630,55 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _imageArray = __webpack_require__(7);
-
-	var _navArray = __webpack_require__(13);
-
-	var _textArray = __webpack_require__(16);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	/**
+	 * Create button element from object
+	 * @example button object 
+	 * {
+	 *   @name: 'test', // btn name
+	 *   @description: 'test btn', // btn description - for title tag - optional
+	 *   @class: 'test-btn', // add class to this btn - optional
+	 *   @text: 'test', // insert text into the btn - optional
+	 *   @id: 'test-btn', // add id to this btn - optional
+	 *   @element: document.createElement('button').cloneNode(), // btn element - optional
+	 *   @event: [
+	 *             {
+	 *                 @name: 'click',
+	 *                 @fn: function(){
+	 *                     console.log('test');
+	 *                 }
+	 *             }
+	 *         ],// btn event || for multiple event use []
+	 * }
+	 */
+
 	var Button = function () {
-	    function Button() {
+
+	    /**
+	     * __construct
+	     * @param Object (button)
+	     * @return Object (Node element)
+	     */
+	    function Button(btn) {
 	        _classCallCheck(this, Button);
 
 	        this.config = _config2.default.button;
-	        this.btn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
+
+	        return this.create(btn);
 	    }
 
 	    /**
-	     * get all button elements
-	     * @return Array of Object
+	     * create btn from object 
+	     * @param Object
+	     * @property name, description, class, text, id, element, event 
+	     * @return Object
 	     */
 
 
 	    _createClass(Button, [{
-	        key: 'get',
-	        value: function get() {
-	            var arr = [];
-	            this.btn.forEach(function (button) {
-	                arr.push(this.create(button));
-	            }, this);
-
-	            return arr;
-	        }
-
-	        /**
-	         * create btn from object 
-	         * @property name, description, class, text, id, element, event 
-	         * @param Object
-	         * @return Object
-	         */
-
-	    }, {
 	        key: 'create',
 	        value: function create(btn) {
 	            var element = _typeof(btn.element) == 'object' ? btn.element : this.element();
@@ -719,110 +725,10 @@
 	    return Button;
 	}();
 
-	/* ## EXAMPLE of button object
-	{
-	    name: 'test', // btn name
-	    description: 'test btn', // btn description - for title tag - optional
-	    class: 'test-btn', // add class to this btn - optional
-	    text: 'test', // insert text into the btn - optional
-	    id: 'test-btn', // add id to this btn - optional
-	    element: document.createElement('button').cloneNode(), // btn element - optional
-	    event: [
-	        {
-	            name: 'click',
-	            fn: function(){
-	                console.log('test');
-	            }
-	        }
-	    ],// btn event || for multiple event use []
-	}
-	*/
-
-
 	exports.default = Button;
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _Image = __webpack_require__(8);
-
-	var _Image2 = _interopRequireDefault(_Image);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var _exports = module.exports;
-
-	_exports.image = [
-	/**
-	 * add image
-	 */
-	{
-	    name: 'Add image',
-	    text: 'Add image',
-	    element: function () {
-	        var label = document.createElement('label');
-	        var input = document.createElement('input');
-	        input.type = 'file';
-	        input.accept = 'image/*';
-	        input.style.display = 'none';
-
-	        label.appendChild(input);
-
-	        return label;
-	    }(),
-	    event: [{
-	        name: 'mousedown',
-	        fn: function fn(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        name: 'change',
-	        fn: function fn(event) {
-	            var files = event.target.files || event.dataTransfer.files;
-	            _Image2.default.uploadImage(files[0]);
-
-	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
-	        }
-	    }]
-	},
-	/**
-	 * add background  
-	 */
-	{
-	    name: 'Add background',
-	    text: 'Add background',
-	    element: function () {
-	        var label = document.createElement('label');
-	        var input = document.createElement('input');
-	        input.type = 'file';
-	        input.accept = 'image/*';
-	        input.style.display = 'none';
-
-	        label.appendChild(input);
-
-	        return label;
-	    }(),
-	    event: [{
-	        name: 'mousedown',
-	        fn: function fn(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        name: 'change',
-	        fn: function fn(event) {
-	            var files = event.target.files || event.dataTransfer.files;
-	            _Image2.default.uploadBackground(files[0]);
-
-	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
-	        }
-	    }]
-	}];
-
-/***/ },
-/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -831,11 +737,11 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(9);
+	var _SelectionClass = __webpack_require__(8);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _Base = __webpack_require__(12);
+	var _Base = __webpack_require__(11);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
@@ -890,7 +796,7 @@
 	};
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -901,7 +807,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _process = __webpack_require__(10);
+	var _process = __webpack_require__(9);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1044,7 +950,7 @@
 	exports.default = Selection;
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1053,7 +959,7 @@
 	 * import helper function for the process
 	 */
 
-	var _append = __webpack_require__(11);
+	var _append = __webpack_require__(10);
 
 	var _exports = module.exports;
 
@@ -1273,7 +1179,7 @@
 	}
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1332,7 +1238,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1361,12 +1267,130 @@
 	};
 
 /***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _ButtonClass = __webpack_require__(6);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
+	var _imageArray = __webpack_require__(13);
+
+	var _navArray = __webpack_require__(14);
+
+	var _textArray = __webpack_require__(17);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	/**
+	 * get all button object from the default array
+	 * create Node element from each btn object
+	 * insert new button element into array of btn elements
+	 * @return Array of Object (btn elements)
+	 */
+	_exports.get = function () {
+	    var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
+	    var readyBtn = [];
+
+	    allArrayOfTheBtn.forEach(function (object) {
+	        var btn = new _ButtonClass2.default(object);
+	        readyBtn.push(btn);
+	    }, this);
+
+	    return readyBtn;
+	};
+
+/***/ },
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _AjaxClass = __webpack_require__(14);
+	var _Image = __webpack_require__(7);
+
+	var _Image2 = _interopRequireDefault(_Image);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.image = [
+	/**
+	 * add image
+	 */
+	{
+	    name: 'Add image',
+	    text: 'Add image',
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            _Image2.default.uploadImage(files[0]);
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
+	},
+	/**
+	 * add background  
+	 */
+	{
+	    name: 'Add background',
+	    text: 'Add background',
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            _Image2.default.uploadBackground(files[0]);
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
+	}];
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AjaxClass = __webpack_require__(15);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
@@ -1395,7 +1419,7 @@
 	}];
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1410,7 +1434,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(15);
+	var _SerializeClass = __webpack_require__(16);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -1560,7 +1584,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1676,12 +1700,12 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _SelectionClass = __webpack_require__(9);
+	var _SelectionClass = __webpack_require__(8);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 

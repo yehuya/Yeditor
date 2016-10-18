@@ -81,6 +81,15 @@
             }
         });
 
+        editor.api.navigation.addButton({
+            name: 'TEST',
+            text: 'TEST',
+            event: {
+                name: 'click',
+                fn: function(){console.log('HELLO WORLD')}
+            }
+        });
+
         var title = document.getElementsByTagName('h1')[0];
         var edit = title.editable({
             name: 'title'

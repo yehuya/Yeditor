@@ -75,7 +75,7 @@ export default class Navigation {
      * @param Object
      */
     addButton(object){
-        var btn = new Button().create(object);
+        var btn = new Button(object);
         this.append(btn);
     }
 }

@@ -5,7 +5,7 @@ import Navigation from './Navigation.class.js';
 import Image from './image/Image.js';
 import Base64 from './image/Base64.js';
 import Selection from './selection/Selection.class.js';
-import Button from './button/Button.class.js';
+import Buttons from './button/Buttons.js';
 
 /**
  * Editor main class
@@ -20,7 +20,7 @@ export default class Editor {
         var element = new Element();
         element.prototype(Config.editable.prototype, this.editable);
         
-        var mainNav = new Navigation(new Button().get(), Config.nav.id);
+        var mainNav = new Navigation(Buttons.get(), Config.nav.id);
 
         if(options['uploadImage']) Config.image.uploadImage = options.uploadImage;
         if(options['uploadBackground']) Config.image.uploadBackground = options.uploadBackground;
