@@ -50,15 +50,9 @@
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
 
-	var _SelectionClass = __webpack_require__(9);
-
-	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	window.Editor = new _EditorClass2.default();
-
-	window.Selection = _SelectionClass2.default;
+	window.Editor = _EditorClass2.default;
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -91,6 +85,22 @@
 
 	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
 
+	var _Image = __webpack_require__(8);
+
+	var _Image2 = _interopRequireDefault(_Image);
+
+	var _Base = __webpack_require__(12);
+
+	var _Base2 = _interopRequireDefault(_Base);
+
+	var _SelectionClass = __webpack_require__(9);
+
+	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
+
+	var _ButtonClass = __webpack_require__(6);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -110,7 +120,24 @@
 	    var element = new _ElementClass2.default();
 	    element.prototype(_config2.default.editable.prototype, this.editable);
 
-	    new _NavigationClass2.default();
+	    var mainNav = new _NavigationClass2.default(new _ButtonClass2.default().get(), _config2.default.nav.id);
+
+	    if (options['uploadImage']) _config2.default.image.uploadImage = options.uploadImage;
+	    if (options['uploadBackground']) _config2.default.image.uploadBackground = options.uploadBackground;
+	    if (options['url']) _config2.default.ajax.url = options.url;
+	    if (options['method']) _config2.default.ajax.method = options.method;
+	    if (options['done']) _config2.default.ajax.done = options.done;
+	    if (options['success']) _config2.default.ajax.success = options.success;
+	    if (options['failed']) _config2.default.ajax.failed = options.failed;
+
+	    this.api = {
+	      image: _Image2.default,
+	      base64: _Base2.default,
+	      selection: _SelectionClass2.default,
+	      navigation: mainNav
+	    };
+
+	    return this;
 	  }
 
 	  /**
@@ -275,9 +302,11 @@
 
 	/**
 	 * @for image/Image.class.js
+	 * @for button/image.array.js
 	 */
 	_exports.image = {
-	    upload: null
+	    uploadImage: null, //function(file){console.log(file)},
+	    uploadBackground: null
 	};
 
 /***/ },
@@ -484,39 +513,42 @@
 	     * __construct
 	     * create navigation
 	     */
-	    function Navigation() {
+	    function Navigation(buttons, id) {
 	        _classCallCheck(this, Navigation);
 
 	        this.config = _config2.default.nav;
-	        this.create(this.config.id, new _ButtonClass2.default().get());
+	        this.buttons = buttons;
+	        this.id = id;
+	        this.nav;
+
+	        this.create();
 	    }
 
 	    /**
 	     * create navigation element (DOM)
-	     * @param String (nav id)
 	     * @return Object
 	     */
 
 
 	    _createClass(Navigation, [{
 	        key: 'element',
-	        value: function element(navId) {
-	            var elem = document.createElement('nav');
-	            elem.id = navId;
-	            elem.classList.add(this.config.class);
+	        value: function element() {
+	            this.nav = document.createElement('nav');
+	            this.nav.id = this.id;
+	            this.nav.classList.add(this.config.class);
 
-	            return elem.cloneNode();
+	            return this.nav;
 	        }
 
 	        /**
-	         * append DOM element into the document.body
+	         * insert nav element into the document.body
 	         * @param Object (DOM element)
 	         */
 
 	    }, {
-	        key: 'appendToDocument',
-	        value: function appendToDocument(Node) {
-	            document.body.appendChild(Node);
+	        key: 'insertIntoBody',
+	        value: function insertIntoBody() {
+	            return document.body.appendChild(this.nav);
 	        }
 
 	        /**
@@ -526,24 +558,23 @@
 	         */
 
 	    }, {
-	        key: 'appendToNav',
-	        value: function appendToNav(nav, Node) {
-	            nav.appendChild(Node);
+	        key: 'append',
+	        value: function append(Node) {
+	            return this.nav.appendChild(Node);
 	        }
 
 	        /**
-	         * append edit button into nav
+	         * insert edit button into nav
 	         * @param Object (nav element)
 	         * @param Array (buttons)
 	         */
 
 	    }, {
-	        key: 'appendEditButtons',
-	        value: function appendEditButtons(nav, buttons) {
-	            var self = this;
-	            buttons.forEach(function (element) {
-	                self.appendToNav(nav, element);
-	            });
+	        key: 'insertEditButtons',
+	        value: function insertEditButtons() {
+	            this.buttons.forEach(function (element) {
+	                this.append(element);
+	            }, this);
 	        }
 
 	        /**
@@ -557,11 +588,22 @@
 
 	    }, {
 	        key: 'create',
-	        value: function create(navId, buttons) {
-	            var nav = this.element(navId);
+	        value: function create() {
+	            this.element();
+	            this.insertEditButtons();
+	            this.insertIntoBody();
+	        }
 
-	            this.appendEditButtons(nav, buttons);
-	            this.appendToDocument(nav);
+	        /**
+	         * add button into the navigation
+	         * @param Object
+	         */
+
+	    }, {
+	        key: 'addButton',
+	        value: function addButton(object) {
+	            var btn = new _ButtonClass2.default().create(object);
+	            this.append(btn);
 	        }
 	    }]);
 
@@ -705,13 +747,9 @@
 
 	'use strict';
 
-	var _ImageClass = __webpack_require__(8);
+	var _Image = __webpack_require__(8);
 
-	var _ImageClass2 = _interopRequireDefault(_ImageClass);
-
-	var _Base = __webpack_require__(12);
-
-	var _Base2 = _interopRequireDefault(_Base);
+	var _Image2 = _interopRequireDefault(_Image);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -744,10 +782,41 @@
 	        name: 'change',
 	        fn: function fn(event) {
 	            var files = event.target.files || event.dataTransfer.files;
-	            _Base2.default.image(files[0], function (url, file) {
-	                var Img = new _ImageClass2.default();
-	                Img.insert(url).setAttribute('alt', file.type);
-	            });
+	            _Image2.default.uploadImage(files[0]);
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
+	},
+	/**
+	 * add background  
+	 */
+	{
+	    name: 'Add background',
+	    text: 'Add background',
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            _Image2.default.uploadBackground(files[0]);
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
 	        }
 	    }]
 	}];
@@ -756,13 +825,7 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	"use strict";
 
 	var _config = __webpack_require__(2);
 
@@ -772,53 +835,59 @@
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
+	var _Base = __webpack_require__(12);
+
+	var _Base2 = _interopRequireDefault(_Base);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	/**
+	 * image helper function 
+	 */
+
+	var _exports = module.exports;
 
 	/**
-	 * image class
+	 * append this.img into user selection
+	 * @param String (url)
+	 * @return Object (this.img) 
 	 */
-	var Image = function () {
-	    function Image() {
-	        _classCallCheck(this, Image);
+	_exports.insertImage = function (url) {
+	    var selection = new _SelectionClass2.default();
+	    var img = document.createElement('img');
+	    img.src = url;
 
-	        this.config = _config2.default.image;
-	        this.create();
+	    selection.insert(img);
+	    return img;
+	};
+
+	_exports.insertBackground = function (url) {
+	    var selection = new _SelectionClass2.default();
+	    var parent = selection.parent();
+
+	    parent.style.backgroundImage = 'url(' + url + ')';
+	    return parent;
+	};
+
+	_exports.uploadBackground = function (file) {
+	    if (typeof _config2.default.image.uploadBackground == 'function') {
+	        _config2.default.image.uploadBackground(file);
+	    } else {
+	        _Base2.default.image(file, function (url, file) {
+	            _exports.insertBackground(url);
+	        });
 	    }
+	};
 
-	    /**
-	     * create image element
-	     * @return Object (this.img)
-	     */
-
-
-	    _createClass(Image, [{
-	        key: 'create',
-	        value: function create() {
-	            return this.img = document.createElement('img').cloneNode();
-	        }
-
-	        /**
-	         * append this.img into user selection
-	         * @param String (url)
-	         * @return Object (this.img) 
-	         */
-
-	    }, {
-	        key: 'insert',
-	        value: function insert(url) {
-	            var selection = new _SelectionClass2.default();
-	            this.img.src = url;
-	            selection.append(this.img);
-	            return this.img;
-	        }
-	    }]);
-
-	    return Image;
-	}();
-
-	exports.default = Image;
+	_exports.uploadImage = function (file) {
+	    if (typeof _config2.default.image.uploadImage == 'function') {
+	        _config2.default.image.uploadImage(file);
+	    } else {
+	        _Base2.default.image(file, function (url, file) {
+	            _exports.insertImage(url);
+	        });
+	    }
+	};
 
 /***/ },
 /* 9 */
@@ -844,6 +913,7 @@
 	        _classCallCheck(this, Selection);
 
 	        this.selected = this.get();
+	        this.range = this.selected ? this.selected.getRangeAt(0) : false;
 	    }
 
 	    /**
@@ -884,16 +954,37 @@
 	        /**
 	         * insert user selection into new element
 	         * and remove the old selection
-	         * @param Object (Node element)
+	         * @param FN (in the fn you create element with the text of the user selection)
+	         * @example function bold(text){
+	         *   var b = document.createElement('span');
+	         *   b.style.fontWeight = 'bold';
+	         * 
+	         *   text = document.createTextNode(text).cloneNode(true);
+	         *   b.appendChild(text);
+	         *  
+	         *   return b.cloneNode(true); 
+	         * }
 	         */
 
 	    }, {
 	        key: 'append',
 	        value: function append(FN) {
-	            if (!this.selected) return;
-	            var range = this.selected.getRangeAt(0);
+	            if (!this.selected || this.selected.type == 'Caret' || !this.range) return;
+	            (0, _process.process)(this.range, FN);
+	        }
 
-	            (0, _process.process)(range, FN);
+	        /**
+	         * insert element in the start position of the user selection
+	         * only insert without delete or get user selection text
+	         * @param Object (Node element)
+	         */
+
+	    }, {
+	        key: 'insert',
+	        value: function insert(Node) {
+	            if (!this.range) return;
+
+	            this.range.insertNode(Node);
 	        }
 
 	        /**
@@ -904,11 +995,8 @@
 	    }, {
 	        key: 'remove',
 	        value: function remove() {
-	            if (!this.selected) return;
-	            var range = this.selected.getRangeAt(0);
-	            var content = range.extractContents();
-
-	            return content;
+	            if (!this.range) return;
+	            return this.range.extractContents();
 	        }
 
 	        /**

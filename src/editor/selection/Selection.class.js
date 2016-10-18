@@ -6,15 +6,16 @@ import { process } from './process.js';
  * class for user selection
  */
 export default class Selection {
-    constructor(){
+    constructor() {
         this.selected = this.get();
+        this.range = this.selected ? this.selected.getRangeAt(0) : false;
     }
 
     /**
      * get user selection
      * @return Object || Boolean
      */
-    get(){
+    get() {
         if (window.getSelection && window.getSelection().toString()) {
             return window.getSelection();
         }
@@ -34,43 +35,58 @@ export default class Selection {
     /**
      * get selected text
      */
-    text(){
+    text() {
         return this.selected ? this.selected.toString() : null;
     }
 
     /**
      * insert user selection into new element
      * and remove the old selection
+     * @param FN (in the fn you create element with the text of the user selection)
+     * @example function bold(text){
+     *   var b = document.createElement('span');
+     *   b.style.fontWeight = 'bold';
+     * 
+     *   text = document.createTextNode(text).cloneNode(true);
+     *   b.appendChild(text);
+     *  
+     *   return b.cloneNode(true); 
+     * }
+     */
+    append(FN) {
+        if (!this.selected || this.selected.type == 'Caret' || !this.range) return;
+        process(this.range, FN);
+    }
+
+    /**
+     * insert element in the start position of the user selection
+     * only insert without delete or get user selection text
      * @param Object (Node element)
      */
-    append(FN){
-        if(!this.selected) return;
-        var range = this.selected.getRangeAt(0);
+    insert(Node) {
+        if (!this.range) return;
         
-        process(range, FN);
+        this.range.insertNode(Node);
     }
 
     /**
      * remove user selection text and element
      * @return Object (DocumentFragment)
      */
-    remove(){
-        if(!this.selected) return;
-        var range = this.selected.getRangeAt(0);
-        var content = range.extractContents();
-
-        return content;
+    remove() {
+        if (!this.range) return;
+        return this.range.extractContents();
     }
 
     /**
      * get parent element of user selection
      * @return Object | Null
      */
-    parent(){
+    parent() {
         var selection = this.selected.anchorNode;
         // prevent '#text' node as element
-        if(selection && selection.nodeType == 3) selection = selection.parentElement; 
-        
+        if (selection && selection.nodeType == 3) selection = selection.parentElement;
+
         return selection ? selection : null;
     }
 
@@ -78,13 +94,13 @@ export default class Selection {
      * check if the area of user selection is editable
      * - check if parent node is editable
      */
-    parentEditable(){
+    parentEditable() {
         var parent = this.parent();
         var editable = false;
 
-        while(parent){
-            if(parent.getAttribute('contenteditable') == 'true' 
-            && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin){
+        while (parent) {
+            if (parent.getAttribute('contenteditable') == 'true'
+                && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin) {
                 editable = true;
                 break;
             }

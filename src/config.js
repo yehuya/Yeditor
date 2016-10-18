@@ -81,7 +81,9 @@ exports.ajax = {
 
 /**
  * @for image/Image.class.js
+ * @for button/image.array.js
  */
 exports.image = {
-    upload: null,
+    uploadImage: null, //function(file){console.log(file)},
+    uploadBackground: null 
 }

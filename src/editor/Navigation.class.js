@@ -7,30 +7,33 @@ export default class Navigation {
      * __construct
      * create navigation
      */
-    constructor(){
+    constructor(buttons, id){
         this.config = Config.nav;
-        this.create(this.config.id, new Button().get());  
+        this.buttons = buttons; 
+        this.id = id;
+        this.nav;
+
+        this.create();
     }
 
     /**
      * create navigation element (DOM)
-     * @param String (nav id)
      * @return Object
      */
-    element(navId){
-        var elem = document.createElement('nav');
-        elem.id = navId;
-        elem.classList.add(this.config.class);
+    element(){
+        this.nav = document.createElement('nav');
+        this.nav.id = this.id;
+        this.nav.classList.add(this.config.class);
 
-        return elem.cloneNode();
+        return this.nav;
     }
 
     /**
-     * append DOM element into the document.body
+     * insert nav element into the document.body
      * @param Object (DOM element)
      */
-    appendToDocument(Node){
-        document.body.appendChild(Node);
+    insertIntoBody(){
+        return document.body.appendChild(this.nav);
     }
 
     /**
@@ -38,20 +41,19 @@ export default class Navigation {
      * @param Object (nav element)
      * @param Object (DOM element)
      */
-    appendToNav(nav, Node){
-        nav.appendChild(Node);
+    append(Node){
+        return this.nav.appendChild(Node);
     }
 
     /**
-     * append edit button into nav
+     * insert edit button into nav
      * @param Object (nav element)
      * @param Array (buttons)
      */
-    appendEditButtons(nav, buttons){
-        var self = this;
-        buttons.forEach(function(element) {
-            self.appendToNav(nav, element);
-        });
+    insertEditButtons(){
+        this.buttons.forEach(function(element) {
+            this.append(element);
+        }, this);
     }
 
     /**
@@ -62,10 +64,18 @@ export default class Navigation {
      * - append edit button into nav
      * - append nav into body
      */
-    create(navId, buttons){
-        var nav = this.element(navId);
+    create(){
+        this.element();
+        this.insertEditButtons();
+        this.insertIntoBody();
+    }
 
-        this.appendEditButtons(nav, buttons);
-        this.appendToDocument(nav);
+    /**
+     * add button into the navigation
+     * @param Object
+     */
+    addButton(object){
+        var btn = new Button().create(object);
+        this.append(btn);
     }
 }

@@ -2,6 +2,10 @@ import Config from './../config.js';
 import Editable from './Editable.class.js';
 import Element from './Element.class.js';
 import Navigation from './Navigation.class.js';
+import Image from './image/Image.js';
+import Base64 from './image/Base64.js';
+import Selection from './selection/Selection.class.js';
+import Button from './button/Button.class.js';
 
 /**
  * Editor main class
@@ -16,7 +20,24 @@ export default class Editor {
         var element = new Element();
         element.prototype(Config.editable.prototype, this.editable);
         
-        new Navigation();
+        var mainNav = new Navigation(new Button().get(), Config.nav.id);
+
+        if(options['uploadImage']) Config.image.uploadImage = options.uploadImage;
+        if(options['uploadBackground']) Config.image.uploadBackground = options.uploadBackground;
+        if(options['url']) Config.ajax.url = options.url;
+        if(options['method']) Config.ajax.method = options.method;
+        if(options['done']) Config.ajax.done = options.done;
+        if(options['success']) Config.ajax.success = options.success;
+        if(options['failed']) Config.ajax.failed = options.failed;
+
+        this.api = {
+            image: Image,
+            base64: Base64,
+            selection: Selection,
+            navigation: mainNav
+        }
+
+        return this;
     }
 
     /**

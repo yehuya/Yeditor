@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Test frontend-editor</title>
+    <script src="js/jquery-2.2.1.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -68,10 +69,18 @@
             <div>blabla End</div>
         </div>
     </div>
-    <input id="uploadImage" type="file" accept="image/*">
 
     <script src="../dist/index.bundle.js"></script>
     <script>
+        var editor = new Editor({
+            uploadImage: function(file){
+                $.get('http://localhost').then(function(data){
+                    var img = editor.api.image;
+                    img.insertImage(data);
+                });
+            }
+        });
+
         var title = document.getElementsByTagName('h1')[0];
         var edit = title.editable({
             name: 'title'
