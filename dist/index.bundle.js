@@ -77,27 +77,23 @@
 
 	var _EditableClass2 = _interopRequireDefault(_EditableClass);
 
-	var _ElementClass = __webpack_require__(4);
-
-	var _ElementClass2 = _interopRequireDefault(_ElementClass);
-
-	var _NavigationClass = __webpack_require__(5);
+	var _NavigationClass = __webpack_require__(4);
 
 	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
 
-	var _Image = __webpack_require__(7);
+	var _Image = __webpack_require__(6);
 
 	var _Image2 = _interopRequireDefault(_Image);
 
-	var _Base = __webpack_require__(11);
+	var _Base = __webpack_require__(10);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
-	var _SelectionClass = __webpack_require__(8);
+	var _SelectionClass = __webpack_require__(7);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _Buttons = __webpack_require__(12);
+	var _Buttons = __webpack_require__(11);
 
 	var _Buttons2 = _interopRequireDefault(_Buttons);
 
@@ -117,8 +113,7 @@
 	  function Editor(options) {
 	    _classCallCheck(this, Editor);
 
-	    var element = new _ElementClass2.default();
-	    element.prototype(_config2.default.editable.prototype, this.editable);
+	    window.Element.prototype[_config2.default.editable.prototype] = this.editable;
 
 	    var mainNav = new _NavigationClass2.default(_Buttons2.default.get(), _config2.default.nav.id);
 
@@ -432,64 +427,6 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * all about the Element
-	 */
-	var Element = function () {
-	  function Element() {
-	    _classCallCheck(this, Element);
-	  }
-
-	  /**
-	   * create element prototype
-	   * @param String (prototype.name)
-	   * @param All (prototype.name = value)
-	   */
-
-
-	  _createClass(Element, [{
-	    key: 'prototype',
-	    value: function prototype(key, value) {
-	      window.Element.prototype[key] = value;
-	    }
-
-	    /**
-	     * get all element with plugin attribute (editable area)
-	     * @return Array Of Object (element)
-	     */
-
-	  }, {
-	    key: 'getAllEditable',
-	    value: function getAllEditable() {
-	      return document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
-	    }
-	  }]);
-
-	  return Element;
-	}();
-
-	exports.default = Element;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
@@ -499,7 +436,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _ButtonClass = __webpack_require__(6);
+	var _ButtonClass = __webpack_require__(5);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
@@ -613,7 +550,7 @@
 	exports.default = Navigation;
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -728,7 +665,7 @@
 	exports.default = Button;
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -737,11 +674,11 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(8);
+	var _SelectionClass = __webpack_require__(7);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _Base = __webpack_require__(11);
+	var _Base = __webpack_require__(10);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
@@ -796,7 +733,7 @@
 	};
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -807,7 +744,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _process = __webpack_require__(9);
+	var _process = __webpack_require__(8);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -950,7 +887,7 @@
 	exports.default = Selection;
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -959,7 +896,7 @@
 	 * import helper function for the process
 	 */
 
-	var _append = __webpack_require__(10);
+	var _append = __webpack_require__(9);
 
 	var _exports = module.exports;
 
@@ -1179,7 +1116,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1238,7 +1175,7 @@
 	}
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1267,20 +1204,20 @@
 	};
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _ButtonClass = __webpack_require__(6);
+	var _ButtonClass = __webpack_require__(5);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
-	var _imageArray = __webpack_require__(13);
+	var _imageArray = __webpack_require__(12);
 
-	var _navArray = __webpack_require__(14);
+	var _navArray = __webpack_require__(13);
 
-	var _textArray = __webpack_require__(17);
+	var _textArray = __webpack_require__(16);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1305,12 +1242,12 @@
 	};
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _Image = __webpack_require__(7);
+	var _Image = __webpack_require__(6);
 
 	var _Image2 = _interopRequireDefault(_Image);
 
@@ -1385,12 +1322,12 @@
 	}];
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _AjaxClass = __webpack_require__(15);
+	var _AjaxClass = __webpack_require__(14);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
@@ -1419,7 +1356,7 @@
 	}];
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1434,13 +1371,9 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(16);
+	var _SerializeClass = __webpack_require__(15);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
-
-	var _ElementClass = __webpack_require__(4);
-
-	var _ElementClass2 = _interopRequireDefault(_ElementClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1551,7 +1484,7 @@
 	        key: 'request',
 	        value: function request() {
 	            var self = this;
-	            var elements = new _ElementClass2.default().getAllEditable();
+	            var elements = document.querySelectorAll('[' + _config2.default.editable.attribute.plugin + ']');
 	            var method = self.config.method;
 	            this.xhr = new XMLHttpRequest();
 
@@ -1584,7 +1517,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1700,12 +1633,12 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _SelectionClass = __webpack_require__(8);
+	var _SelectionClass = __webpack_require__(7);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 

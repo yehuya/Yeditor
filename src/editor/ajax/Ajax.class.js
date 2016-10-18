@@ -1,6 +1,5 @@
 import Config from './../../config.js';
 import Serialize from './Serialize.class.js';
-import Element from './../Element.class.js'
 
 /**
  * class for ajax request
@@ -83,7 +82,7 @@ export default class Ajax {
      */
     request() {
         var self = this;
-        var elements = new Element().getAllEditable();
+        var elements = document.querySelectorAll('[' + Config.editable.attribute.plugin + ']');
         var method = self.config.method;
         this.xhr = new XMLHttpRequest();
 

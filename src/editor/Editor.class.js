@@ -1,6 +1,5 @@
 import Config from './../config.js';
 import Editable from './Editable.class.js';
-import Element from './Element.class.js';
 import Navigation from './Navigation.class.js';
 import Image from './image/Image.js';
 import Base64 from './image/Base64.js';
@@ -17,8 +16,7 @@ export default class Editor {
      * add editor navigation
      */
     constructor(options){
-        var element = new Element();
-        element.prototype(Config.editable.prototype, this.editable);
+        window.Element.prototype[Config.editable.prototype] = this.editable;
         
         var mainNav = new Navigation(Buttons.get(), Config.nav.id);
 
