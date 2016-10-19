@@ -1,5 +1,6 @@
 "use strict";
 
+import Config from './../../config.js';
 import { process } from './process.js';
 
 /**
@@ -7,8 +8,9 @@ import { process } from './process.js';
  */
 export default class Selection {
     constructor() {
+        this.config = Config.editable;
         this.selected = this.get();
-        this.range = this.selected ? this.selected.getRangeAt(0) : false;
+        this.range = (this.selected && this.selected.type != 'None') ? this.selected.getRangeAt(0) : false;
     }
 
     /**
@@ -65,7 +67,7 @@ export default class Selection {
      */
     insert(Node) {
         if (!this.range) return;
-        
+
         this.range.insertNode(Node);
     }
 
@@ -93,6 +95,7 @@ export default class Selection {
     /**
      * check if the area of user selection is editable
      * - check if parent node is editable
+     * @return Boolean || Object (the parent element)
      */
     parentEditable() {
         var parent = this.parent();
@@ -101,7 +104,7 @@ export default class Selection {
         while (parent) {
             if (parent.getAttribute('contenteditable') == 'true'
                 && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin) {
-                editable = true;
+                editable = parent;
                 break;
             }
 

@@ -5,6 +5,7 @@ import Image from './image/Image.js';
 import Base64 from './image/Base64.js';
 import Selection from './selection/Selection.class.js';
 import Buttons from './button/Buttons.js';
+import { CodeMirror } from './Code.js';
 
 /**
  * Editor main class
@@ -34,7 +35,8 @@ export default class Editor {
             image: Image,
             base64: Base64,
             selection: Selection,
-            navigation: mainNav
+            navigation: mainNav,
+            code: CodeMirror
         }
 
         return this;

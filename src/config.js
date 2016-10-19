@@ -20,7 +20,6 @@ exports.extends = function(def, set){
 /**
  * @for Editor.class.js
  * @for Editable.class.js
- * @for Element.class.js
  * @for ajax/Serialize.class.js
  */
 exports.editable = {
@@ -36,7 +35,6 @@ exports.editable = {
         * toLowerCase - prevent bug: the browser render attribute name as lowercase
         * @for Selection.class.js 
         * @for Editable.class.js 
-        * @for Element.class.js
         */
         plugin: prefix.toLowerCase() 
     },
@@ -51,7 +49,7 @@ exports.editable = {
 }
 
 /**
- * @for editor/Nav.class.js
+ * @for editor/Navigation.class.js
  */
 exports.nav = {
     class: `${prefix}-nav`,
@@ -59,7 +57,7 @@ exports.nav = {
 }
 
 /**
- * @for editor/button/*.class.js
+ * @for editor/button/Button.class.js
  */
 exports.button = {
     class: `${prefix}-nav-btn`,
@@ -80,7 +78,7 @@ exports.ajax = {
 }
 
 /**
- * @for image/Image.class.js
+ * @for image/Image.js
  * @for button/image.array.js
  */
 exports.image = {

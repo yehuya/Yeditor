@@ -3,12 +3,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Test frontend-editor</title>
-    <script src="js/jquery-2.2.1.min.js"></script>
-    <script src="codemirror/codemirror.js"></script>
-    <script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="codemirror/codemirror.css">
+    <link rel="stylesheet" href="css/codemirror.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -78,21 +75,21 @@
     <script>
         var editor = new Editor({
             uploadImage: function(file){
-                $.get('http://localhost').then(function(data){
+                /*$.get('http://localhost').then(function(data){
                     var img = editor.api.image;
                     img.insertImage(data);
-                });
+                });*/
             }
         });
 
-        editor.api.navigation.addButton({
+        /*editor.api.navigation.addButton({
             name: 'TEST',
             text: 'TEST',
             event: {
                 name: 'click',
                 fn: function(){console.log('HELLO WORLD')}
             }
-        });
+        });*/
 
         var title = document.getElementsByTagName('h1')[0];
         var edit = title.editable({
@@ -110,14 +107,6 @@
         QA.editable({
             name: 'QA'
         });
-
-        var code = CodeMirror(document.body, {
-            value: document.getElementById('testCode').innerHTML,
-            mode: 'htmlmixed',
-            theme: "default",
-            lineNumbers: true,
-        });
-
 
         //### usefull link convert to base64 into binary
         // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
