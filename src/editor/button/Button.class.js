@@ -6,7 +6,7 @@ import Config from './../../config.js';
  * {
  *   @name: 'test', // btn name
  *   @description: 'test btn', // btn description - for title tag - optional
- *   @class: 'test-btn', // add class to this btn - optional
+ *   @class: 'test-btn', // [] for multiple,  add class to this btn - optional
  *   @text: 'test', // insert text into the btn - optional
  *   @id: 'test-btn', // add id to this btn - optional
  *   @element: document.createElement('button').cloneNode(), // btn element - optional
@@ -41,15 +41,17 @@ export default class Button {
      * @return Object
      */
     create(btn) {
-        var element = typeof btn.element == 'object' ? btn.element : this.element();
-        element.classList.add(this.config.class + (btn.class || ''));
-        element.title = btn.description || '';
-        element.id = btn.id || '';
-        if (btn.text && btn.text.length > 0) element.appendChild(document.createTextNode(btn.text));
+        this.element = typeof btn.element == 'object' ? btn.element : this.element();
+        
+        this.class(btn.class);
 
-        this.event(btn.event, element);
+        this.element.title = btn.description || '';
+        this.element.id = btn.id || '';
+        if (btn.text && btn.text.length > 0) this.element.appendChild(document.createTextNode(btn.text));
 
-        return element;
+        this.event(btn.event);
+
+        return this.element;
     }
 
     /**
@@ -61,17 +63,34 @@ export default class Button {
     }
 
     /**
+     * add class to btn element
+     * @param String || Array
+     */
+    class(classes) {
+        this.element.classList.add(this.config.class);
+
+        if(Array.isArray(classes)){
+            classes.forEach(function(cla){
+                this.element.classList.add(cla);
+            }, this);
+        }else if(classes){
+            this.element.classList.add(classes);
+        }
+    }
+
+
+    /**
      * create button events
      * @param Array of Object || Object (events)
      * @param Object (dom element)
      */
-    event(events, element) {
+    event(events) {
         if (Array.isArray(events)) {
             events.forEach(function (event) {
-                element.addEventListener(event.name, event.fn);
+                this.element.addEventListener(event.name, event.fn);
             }, this);
         } else {
-            element.addEventListener(events.name, events.fn);
+            this.element.addEventListener(events.name, events.fn);
         }
     }
 }

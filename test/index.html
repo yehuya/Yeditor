@@ -4,7 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Test frontend-editor</title>
     <script src="js/jquery-2.2.1.min.js"></script>
+    <script src="codemirror/codemirror.js"></script>
+    <script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="codemirror/codemirror.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -34,7 +38,7 @@
             nec facilisis nibh libero vel ipsum. Sed laoreet porta sapien non suscipit. Nam sed tellus ut urna posuere rhoncus.
             Sed scelerisque vestibulum massa, at imperdiet est tincidunt quis.
         </div>
-        <div class="col-xs-4 text-left">
+        <div class="col-xs-4 text-left" id="testCode">
             Sed in erat lectus. In pretium ligula nec nunc fringilla gravida. Nulla facilisi. Ut dignissim justo sed neque tristique
             egestas. Etiam tristique neque ullamcorper, pellentesque quam ut, tincidunt lectus. In sit amet ipsum eget libero
             sodales suscipit eu accumsan odio. Quisque lorem nisl, iaculis ac accumsan ut, luctus condimentum orci.
@@ -106,6 +110,14 @@
         QA.editable({
             name: 'QA'
         });
+
+        var code = CodeMirror(document.body, {
+            value: document.getElementById('testCode').innerHTML,
+            mode: 'htmlmixed',
+            theme: "default",
+            lineNumbers: true,
+        });
+
 
         //### usefull link convert to base64 into binary
         // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript

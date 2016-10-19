@@ -8,7 +8,7 @@ exports.image = [
      */
     {
         name: 'Add image',
-        text: 'Add image',
+        class: ['fa', 'fa-picture-o'],
         element: (function(){
             var label = document.createElement('label');
             var input = document.createElement('input');
@@ -43,7 +43,7 @@ exports.image = [
      */
     {
         name: 'Add background',
-        text: 'Add background',
+        class: ['fa', 'fa-file-image-o'],
         element: (function(){
             var label = document.createElement('label');
             var input = document.createElement('input');

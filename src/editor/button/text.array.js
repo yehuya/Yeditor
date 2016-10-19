@@ -9,7 +9,7 @@ exports.text = [
      */
     {
         name: 'bold',
-        text: 'B',
+        class: ['fa', 'fa-bold'],
         event: {
             name: 'click',
             fn: function(){
@@ -51,7 +51,7 @@ exports.text = [
      */
     {
         name: 'italic',
-        text: 'I',
+        class: ['fa', 'fa-italic'],
         event: {
             name: 'click',
             fn: function(){
@@ -93,7 +93,7 @@ exports.text = [
      */
     {
         name: 'underline',
-        text: 'U',
+        class: ['fa', 'fa-underline'],
         event: {
             name: 'click',
             fn: function(){

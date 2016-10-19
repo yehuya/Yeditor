@@ -10,7 +10,7 @@ exports.nav = [
      */
     {
         name: 'save',
-        text: 'Save',
+        class: ['fa', 'fa-floppy-o'],
         event: {
             name: 'click',
             fn: function(){

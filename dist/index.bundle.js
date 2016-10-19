@@ -579,7 +579,7 @@
 	 * {
 	 *   @name: 'test', // btn name
 	 *   @description: 'test btn', // btn description - for title tag - optional
-	 *   @class: 'test-btn', // add class to this btn - optional
+	 *   @class: 'test-btn', // [] for multiple,  add class to this btn - optional
 	 *   @text: 'test', // insert text into the btn - optional
 	 *   @id: 'test-btn', // add id to this btn - optional
 	 *   @element: document.createElement('button').cloneNode(), // btn element - optional
@@ -620,15 +620,17 @@
 	    _createClass(Button, [{
 	        key: 'create',
 	        value: function create(btn) {
-	            var element = _typeof(btn.element) == 'object' ? btn.element : this.element();
-	            element.classList.add(this.config.class + (btn.class || ''));
-	            element.title = btn.description || '';
-	            element.id = btn.id || '';
-	            if (btn.text && btn.text.length > 0) element.appendChild(document.createTextNode(btn.text));
+	            this.element = _typeof(btn.element) == 'object' ? btn.element : this.element();
 
-	            this.event(btn.event, element);
+	            this.class(btn.class);
 
-	            return element;
+	            this.element.title = btn.description || '';
+	            this.element.id = btn.id || '';
+	            if (btn.text && btn.text.length > 0) this.element.appendChild(document.createTextNode(btn.text));
+
+	            this.event(btn.event);
+
+	            return this.element;
 	        }
 
 	        /**
@@ -643,6 +645,25 @@
 	        }
 
 	        /**
+	         * add class to btn element
+	         * @param String || Array
+	         */
+
+	    }, {
+	        key: 'class',
+	        value: function _class(classes) {
+	            this.element.classList.add(this.config.class);
+
+	            if (Array.isArray(classes)) {
+	                classes.forEach(function (cla) {
+	                    this.element.classList.add(cla);
+	                }, this);
+	            } else if (classes) {
+	                this.element.classList.add(classes);
+	            }
+	        }
+
+	        /**
 	         * create button events
 	         * @param Array of Object || Object (events)
 	         * @param Object (dom element)
@@ -650,13 +671,13 @@
 
 	    }, {
 	        key: 'event',
-	        value: function event(events, element) {
+	        value: function event(events) {
 	            if (Array.isArray(events)) {
 	                events.forEach(function (event) {
-	                    element.addEventListener(event.name, event.fn);
+	                    this.element.addEventListener(event.name, event.fn);
 	                }, this);
 	            } else {
-	                element.addEventListener(events.name, events.fn);
+	                this.element.addEventListener(events.name, events.fn);
 	            }
 	        }
 	    }]);
@@ -1263,7 +1284,7 @@
 	 */
 	{
 	    name: 'Add image',
-	    text: 'Add image',
+	    class: ['fa', 'fa-picture-o'],
 	    element: function () {
 	        var label = document.createElement('label');
 	        var input = document.createElement('input');
@@ -1295,7 +1316,7 @@
 	 */
 	{
 	    name: 'Add background',
-	    text: 'Add background',
+	    class: ['fa', 'fa-file-image-o'],
 	    element: function () {
 	        var label = document.createElement('label');
 	        var input = document.createElement('input');
@@ -1345,7 +1366,7 @@
 	 */
 	{
 	    name: 'save',
-	    text: 'Save',
+	    class: ['fa', 'fa-floppy-o'],
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
@@ -1656,7 +1677,7 @@
 	 */
 	{
 	    name: 'bold',
-	    text: 'B',
+	    class: ['fa', 'fa-bold'],
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
@@ -1698,7 +1719,7 @@
 	 */
 	{
 	    name: 'italic',
-	    text: 'I',
+	    class: ['fa', 'fa-italic'],
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
@@ -1740,7 +1761,7 @@
 	 */
 	{
 	    name: 'underline',
-	    text: 'U',
+	    class: ['fa', 'fa-underline'],
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
