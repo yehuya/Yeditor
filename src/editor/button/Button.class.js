@@ -7,6 +7,7 @@ import Config from './../../config.js';
  *   @name: 'test', // btn name
  *   @description: 'test btn', // btn description - for title tag - optional
  *   @class: 'test-btn', // [] for multiple,  add class to this btn - optional
+ *   @align: 'center' || 'left' || 'right' // the align of the button
  *   @text: 'test', // insert text into the btn - optional
  *   @id: 'test-btn', // add id to this btn - optional
  *   @element: document.createElement('button').cloneNode(), // btn element - optional
@@ -37,13 +38,13 @@ export default class Button {
     /**
      * create btn from object 
      * @param Object
-     * @property name, description, class, text, id, element, event 
+     * @property name, description, class, text, id, element, event, align 
      * @return Object
      */
     create(btn) {
         this.element = typeof btn.element == 'object' ? btn.element : this.element();
         
-        this.class(btn.class);
+        this.class(btn.class, btn.align);
 
         this.element.title = btn.description || '';
         this.element.id = btn.id || '';
@@ -64,10 +65,17 @@ export default class Button {
 
     /**
      * add class to btn element
-     * @param String || Array
+     * @param String || Array (the button.classs)
+     * @param String (the button.align)
      */
-    class(classes) {
+    class(classes, align) {
         this.element.classList.add(this.config.class);
+
+        if(align == 'right' || align == 'left'){
+            this.element.classList.add(align);
+        }else{
+            this.element.classList.add('center');
+        }
 
         if(Array.isArray(classes)){
             classes.forEach(function(cla){

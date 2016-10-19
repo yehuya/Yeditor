@@ -34,6 +34,8 @@
     box-shadow: 0px 0px 5px 0px black;
     font-size: 18px;
     font-family: Verdana;
+    text-align: center;
+    z-index: 9999999999999999999999;
 }
 
 .frontendEditor-nav #openBTN {
@@ -84,13 +86,17 @@
     width: 40px;
 }
 
+.frontendEditor-nav-btn.left {
+    float: left;
+}
+
+.frontendEditor-nav-btn.right {
+    float: right;
+}
+
 .frontendEditor-nav-btn:hover, .frontendEditor-nav-btn:focus {
     background: #efefef;
     outline: none;
-}
-
- .frontendEditor-nav #closeBTN {
-    float: right;
 }
 
 /**

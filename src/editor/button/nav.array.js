@@ -13,6 +13,7 @@ exports.nav = [
     {
         name: 'save',
         class: ['fa', 'fa-floppy-o'],
+        align: 'right',
         event: {
             name: 'click',
             fn: function () {
@@ -29,6 +30,7 @@ exports.nav = [
     {
         name: 'Close nav',
         class: ['fa', 'fa-times'],
+        align: 'left',
         id: ['closeBTN'],
         event: {
             name: 'click',
