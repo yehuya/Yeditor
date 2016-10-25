@@ -95,6 +95,10 @@
 
 	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
 
+	var _EditBackgroundClass = __webpack_require__(14);
+
+	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
+
 	var _Base = __webpack_require__(13);
 
 	var _Base2 = _interopRequireDefault(_Base);
@@ -107,7 +111,7 @@
 
 	var _Buttons2 = _interopRequireDefault(_Buttons);
 
-	var _Code = __webpack_require__(17);
+	var _Code = __webpack_require__(18);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -129,6 +133,7 @@
 
 	        var mainNav = new _NavigationClass2.default(_Buttons2.default.getMainNavButton(), _config2.default.nav.id);
 	        var editImage = new _EditImageClass2.default();
+	        var editBackground = new _EditBackgroundClass2.default();
 
 	        if (options) {
 	            if (options['uploadImage']) _config2.default.image.uploadImage = options.uploadImage;
@@ -146,10 +151,14 @@
 	            selection: _SelectionClass2.default,
 	            navigation: {
 	                main: mainNav,
-	                image: editImage.nav
+	                image: editImage.nav,
+	                background: editBackground.nav
 	            },
 	            code: _Code.CodeMirror,
-	            editImage: _EditImageClass2.default
+	            edit: {
+	                image: _EditImageClass2.default,
+	                background: _EditBackgroundClass2.default
+	            }
 	        };
 
 	        return this;
@@ -296,6 +305,15 @@
 	};
 
 	/**
+	 * @for editor/image/EditBackground.class.js
+	 */
+	_exports.EditBackground = {
+	    navActiveClass: 'active',
+	    currentImageClass: prefix + '-current-edit-background',
+	    navId: prefix + '-edit-background-nav'
+	};
+
+	/**
 	 * @for editor/button/Button.class.js
 	 */
 	_exports.button = {
@@ -349,6 +367,10 @@
 
 	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
 
+	var _EditBackgroundClass = __webpack_require__(14);
+
+	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -372,14 +394,20 @@
 	        this.options = _config2.default.extends(this.config.default, options);
 
 	        this.set();
-	        this.editImage();
+	        this.editImageAndBg();
 	        return this;
 	    }
 
+	    /**
+	     * set all the images and element with background as editable by navigation of image or bg
+	     */
+
+
 	    _createClass(Editable, [{
-	        key: 'editImage',
-	        value: function editImage() {
-	            _EditImageClass2.default.setAllImages(this.element, true);
+	        key: 'editImageAndBg',
+	        value: function editImageAndBg() {
+	            _EditImageClass2.default.setAllImages(this.element);
+	            _EditBackgroundClass2.default.setAllbackground(this.element);
 	        }
 
 	        /**
@@ -556,7 +584,8 @@
 	            var position = Node.getBoundingClientRect();
 
 	            nav.classList.add(_config2.default.editImage.navActiveClass);
-	            nav.style.cssText += 'left:' + position.left + ';top:' + position.top + ';';
+	            nav.style.left = position.left + window.scrollX + 'px';
+	            nav.style.top = position.top + window.scrollY + 'px';
 	        }
 
 	        /**
@@ -591,27 +620,15 @@
 
 	        /**
 	         * set all element images child - editable
-	         * update set image when drag and drop
 	         * @param Object (Node - parent)
-	         * @param Boolean (for dragAndDrop event)
 	         */
 
 	    }, {
 	        key: 'setAllImages',
-	        value: function setAllImages(element, dragAndDrop) {
+	        value: function setAllImages(element) {
 	            var allImages = element.getElementsByTagName('img');
 	            for (var i = 0; i < allImages.length; i++) {
 	                EditImage.setImage(allImages[i]);
-	            }
-
-	            if (dragAndDrop) {
-	                element.addEventListener('drop', function (e) {
-	                    EditImage.hide();
-
-	                    setTimeout(function () {
-	                        EditImage.setAllImages(element, false);
-	                    }, 0);
-	                });
 	            }
 	        }
 
@@ -943,11 +960,13 @@
 
 	var _imageArray = __webpack_require__(8);
 
-	var _navArray = __webpack_require__(14);
+	var _navArray = __webpack_require__(15);
 
-	var _textArray = __webpack_require__(23);
+	var _textArray = __webpack_require__(24);
 
-	var _editImageArray = __webpack_require__(24);
+	var _editImageArray = __webpack_require__(25);
+
+	var _editBackgroundArray = __webpack_require__(26);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -966,6 +985,13 @@
 	 */
 	_exports.getEditImageButton = function () {
 	    return _exports.createAllButtons(_editImageArray.editImage);
+	};
+
+	/**
+	 * get all button for edit backgound navigation
+	 */
+	_exports.getEditBackgroundButton = function () {
+	    return _exports.createAllButtons(_editBackgroundArray.editBackground);
 	};
 
 	/**
@@ -1086,6 +1112,14 @@
 
 	var _Base2 = _interopRequireDefault(_Base);
 
+	var _EditBackgroundClass = __webpack_require__(14);
+
+	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
+
+	var _EditImageClass = __webpack_require__(4);
+
+	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
@@ -1105,6 +1139,8 @@
 	    img.src = url;
 
 	    selection.insert(img);
+	    _EditImageClass2.default.setImage(img);
+
 	    return img;
 	};
 
@@ -1113,6 +1149,8 @@
 	    var parent = selection.parent();
 
 	    parent.style.backgroundImage = 'url(' + url + ')';
+	    _EditBackgroundClass2.default.setBackground(parent);
+
 	    return parent;
 	};
 
@@ -1612,9 +1650,188 @@
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _NavigationClass = __webpack_require__(5);
+
+	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
+
+	var _Buttons = __webpack_require__(7);
+
+	var _Buttons2 = _interopRequireDefault(_Buttons);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditBackground = function () {
+	    /**
+	     * __construct
+	     * create navigation
+	     * add hide nav event
+	     */
+	    function EditBackground() {
+	        _classCallCheck(this, EditBackground);
+
+	        this.config = _config2.default.EditBackground;
+	        this.nav;
+	        this.navigation();
+	    }
+
+	    /**
+	     * create edit image navigation
+	     * by Navigation class
+	     */
+
+
+	    _createClass(EditBackground, [{
+	        key: 'navigation',
+	        value: function navigation() {
+	            this.nav = new _NavigationClass2.default(_Buttons2.default.getEditBackgroundButton(), this.config.navId);
+	            return this.nav;
+	        }
+
+	        /**
+	         * get navigation element by id
+	         * @return Object (Node)
+	         */
+
+	    }], [{
+	        key: 'getNavigation',
+	        value: function getNavigation() {
+	            return document.getElementById(_config2.default.EditBackground.navId);
+	        }
+
+	        /**
+	         * show navigation above the current background element
+	         * @param Object (Node element - the current background element)
+	         */
+
+	    }, {
+	        key: 'show',
+	        value: function show(Node) {
+	            var nav = EditBackground.getNavigation();
+	            var position = Node.getBoundingClientRect();
+
+	            nav.classList.add(_config2.default.EditBackground.navActiveClass);
+	            nav.style.left = position.left + window.scrollX + 'px';
+	            nav.style.top = position.top + window.scrollY + 'px';
+	        }
+
+	        /**
+	         * hide edit background navigation
+	         * - remove the current background elem 
+	         */
+
+	    }, {
+	        key: 'hide',
+	        value: function hide() {
+	            var nav = EditBackground.getNavigation();
+	            nav.classList.remove(_config2.default.EditBackground.navActiveClass);
+	            EditBackground.removeCurrentBackground();
+	        }
+
+	        /**
+	         * set background image - editable
+	         * @param Object (Node)
+	         */
+
+	    }, {
+	        key: 'setBackground',
+	        value: function setBackground(bg) {
+	            bg.addEventListener('focus', function (event) {
+	                event.stopPropagation();
+	                event.preventDefault();
+
+	                EditBackground.show(this);
+	                EditBackground.setCurrentBackground(this);
+
+	                this.addEventListener('blur', EditBackground.hide);
+	            });
+	        }
+
+	        /**
+	         * set all element child background - editable 
+	         * update set background when drag and drop
+	         * @param Object (Node - parent)
+	         * @param Boolean (for dragAndDrop event)
+	         */
+
+	    }, {
+	        key: 'setAllbackground',
+	        value: function setAllbackground(element) {
+	            var getAllBg = Array.prototype.slice.call(element.getElementsByTagName('*'), 0);
+	            getAllBg.push(element); // add the element himself
+
+	            var filterElem = getAllBg.filter(function (elem) {
+	                return elem.style.backgroundImage;
+	            });
+
+	            filterElem.forEach(function (elem) {
+	                EditBackground.setBackground(elem);
+	            });
+	        }
+
+	        /**
+	         * get current image (that user click on it)
+	         * @return Object (Node)
+	         */
+
+	    }, {
+	        key: 'getCurrentBackground',
+	        value: function getCurrentBackground() {
+	            var getByClass = document.getElementsByClassName(_config2.default.EditBackground.currentImageClass);
+	            return getByClass.length > 0 ? getByClass[0] : null;
+	        }
+
+	        /**
+	         * set current image by adding class to the clicked image
+	         * @param Object (Node element - the clicked image)
+	         */
+
+	    }, {
+	        key: 'setCurrentBackground',
+	        value: function setCurrentBackground(element) {
+	            EditBackground.removeCurrentBackground();
+	            element.classList.add(_config2.default.EditBackground.currentImageClass);
+	        }
+
+	        /**
+	         * remove the current image by removing the class from the image
+	         */
+
+	    }, {
+	        key: 'removeCurrentBackground',
+	        value: function removeCurrentBackground() {
+	            var get = document.getElementsByClassName(_config2.default.EditBackground.currentImageClass);
+	            for (var i = 0; i < get.length; i++) {
+	                get[i].classList.remove(_config2.default.EditBackground.currentImageClass);
+	            }
+	        }
+	    }]);
+
+	    return EditBackground;
+	}();
+
+	exports.default = EditBackground;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var _AjaxClass = __webpack_require__(15);
+	var _AjaxClass = __webpack_require__(16);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
@@ -1626,7 +1843,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _Code = __webpack_require__(17);
+	var _Code = __webpack_require__(18);
 
 	var _Code2 = _interopRequireDefault(_Code);
 
@@ -1739,7 +1956,7 @@
 	}];
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1754,7 +1971,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(16);
+	var _SerializeClass = __webpack_require__(17);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -1900,7 +2117,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2016,7 +2233,7 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2026,11 +2243,11 @@
 	 * https://codemirror.net/
 	 */
 
-	var _codemirror = __webpack_require__(18);
+	var _codemirror = __webpack_require__(19);
 
 	var _codemirror2 = _interopRequireDefault(_codemirror);
 
-	var _htmlmixed = __webpack_require__(19);
+	var _htmlmixed = __webpack_require__(20);
 
 	var _htmlmixed2 = _interopRequireDefault(_htmlmixed);
 
@@ -2067,7 +2284,7 @@
 	};
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11037,7 +11254,7 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11045,7 +11262,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(18), __webpack_require__(20), __webpack_require__(21), __webpack_require__(22));
+	    mod(__webpack_require__(19), __webpack_require__(21), __webpack_require__(22), __webpack_require__(23));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror", "../xml/xml", "../javascript/javascript", "../css/css"], mod);
 	  else // Plain browser env
@@ -11195,7 +11412,7 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11203,7 +11420,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(18));
+	    mod(__webpack_require__(19));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -11595,7 +11812,7 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11603,7 +11820,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(18));
+	    mod(__webpack_require__(19));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -12376,7 +12593,7 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -12384,7 +12601,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(18));
+	    mod(__webpack_require__(19));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -13207,7 +13424,7 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13350,7 +13567,7 @@
 	}];
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13403,6 +13620,66 @@
 	            _Image2.default.imageUrl(files[0], function (url) {
 	                currentImage.src = url;
 	                _EditImageClass2.default.show(currentImage);
+	            });
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
+	}];
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	/**
+	 * array of button for image editing navigation
+	 */
+
+	var _EditBackgroundClass = __webpack_require__(14);
+
+	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
+
+	var _Image = __webpack_require__(9);
+
+	var _Image2 = _interopRequireDefault(_Image);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.editBackground = [
+	/**
+	 * change background image url 
+	 */
+	{
+	    name: 'Add background',
+	    class: ['fa', 'fa-file-image-o'],
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            var currentBg = _EditBackgroundClass2.default.getCurrentBackground();
+
+	            _Image2.default.imageUrl(files[0], function (url) {
+	                currentBg.style.backgroundImage = 'url(' + url + ')';
 	            });
 
 	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image

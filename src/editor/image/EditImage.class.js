@@ -33,14 +33,14 @@ export default class EditImage {
     hideEvent() {
         var self = this;
 
-        window.addEventListener('click', function (event) {
+        window.addEventListener('click', function(event) {
             if (self.nav.elem.classList.contains(self.config.navActiveClass)) {
                 EditImage.hide();
             }
         });
 
         // prevent nav hiding when nav button clicked
-        this.nav.elem.addEventListener('click', function(e){
+        this.nav.elem.addEventListener('click', function(e) {
             e.stopPropagation();
         });
     }
@@ -62,14 +62,15 @@ export default class EditImage {
         var position = Node.getBoundingClientRect();
 
         nav.classList.add(Config.editImage.navActiveClass);
-        nav.style.cssText += 'left:' + position.left + ';top:' + position.top + ';';
+        nav.style.left = position.left + window.scrollX + 'px';
+        nav.style.top = position.top + window.scrollY + 'px';
     }
 
     /**
      * hide edit image navigation
      * - remove the current image 
      */
-    static hide(){
+    static hide() {
         var nav = EditImage.getNavigation();
         nav.classList.remove(Config.editImage.navActiveClass);
         EditImage.removeCurrentImage();
@@ -80,7 +81,7 @@ export default class EditImage {
      * @param Object (Node)
      */
     static setImage(image) {
-        image.addEventListener('click', function (event) {
+        image.addEventListener('click', function(event) {
             event.stopPropagation();
             event.preventDefault();
 
@@ -91,24 +92,12 @@ export default class EditImage {
 
     /**
      * set all element images child - editable
-     * update set image when drag and drop
      * @param Object (Node - parent)
-     * @param Boolean (for dragAndDrop event)
      */
-    static setAllImages(element, dragAndDrop) {
+    static setAllImages(element) {
         var allImages = element.getElementsByTagName('img');
         for (let i = 0; i < allImages.length; i++) {
             EditImage.setImage(allImages[i]);
-        }
-
-        if (dragAndDrop) {
-            element.addEventListener('drop', function (e) {
-                EditImage.hide();
-
-                setTimeout(function () {
-                    EditImage.setAllImages(element, false);
-                }, 0);
-            });
         }
     }
 

@@ -14,7 +14,6 @@ export default class EditBackground {
         this.config = Config.EditBackground;
         this.nav;
         this.navigation();
-        this.hideEvent();
     }
 
     /**
@@ -27,25 +26,6 @@ export default class EditBackground {
     }
 
     /**
-     * hide navigation when user leaves the current image
-     * - remove the current image
-     */
-    hideEvent() {
-        var self = this;
-
-        window.addEventListener('click', function (event) {
-            if (self.nav.elem.classList.contains(self.config.navActiveClass)) {
-                EditBackground.hide();
-            }
-        });
-
-        // prevent nav hiding when nav button clicked
-        this.nav.elem.addEventListener('click', function(e){
-            e.stopPropagation();
-        });
-    }
-
-    /**
      * get navigation element by id
      * @return Object (Node)
      */
@@ -54,77 +34,68 @@ export default class EditBackground {
     }
 
     /**
-     * show navigation above the current image
-     * @param Object (Node element - the current image)
+     * show navigation above the current background element
+     * @param Object (Node element - the current background element)
      */
     static show(Node) {
         var nav = EditBackground.getNavigation();
         var position = Node.getBoundingClientRect();
 
         nav.classList.add(Config.EditBackground.navActiveClass);
-        nav.style.cssText += 'left:' + position.left + ';top:' + position.top + ';';
+        nav.style.left = position.left + window.scrollX + 'px';
+        nav.style.top = position.top + window.scrollY + 'px';
     }
 
     /**
-     * hide edit image navigation
-     * - remove the current image 
+     * hide edit background navigation
+     * - remove the current background elem 
      */
-    static hide(){
+    static hide() {
         var nav = EditBackground.getNavigation();
         nav.classList.remove(Config.EditBackground.navActiveClass);
-        EditBackground.removeCurrentImage();
+        EditBackground.removeCurrentBackground();
     }
 
     /**
-     * set image - editable
+     * set background image - editable
      * @param Object (Node)
      */
-    static setImage(image) {
-        image.addEventListener('click', function (event) {
+    static setBackground(bg) {
+        bg.addEventListener('focus', function(event) {
             event.stopPropagation();
             event.preventDefault();
 
             EditBackground.show(this);
-            EditBackground.setCurrentImage(this);
+            EditBackground.setCurrentBackground(this);
+
+            this.addEventListener('blur', EditBackground.hide);
         });
     }
 
     /**
-     * set all element images child - editable
-     * update set image when drag and drop
+     * set all element child background - editable 
+     * update set background when drag and drop
      * @param Object (Node - parent)
      * @param Boolean (for dragAndDrop event)
      */
-    static setAllImages(element, dragAndDrop) {
-        var allImages = element.getElementsByTagName('*');
-        allImages.map(function(elem){
-            if(elem.style.backgroundImage){
-                return true;
-            }else{
-                return false;
-            }
+    static setAllbackground(element) {
+        var getAllBg = Array.prototype.slice.call(element.getElementsByTagName('*'), 0);
+        getAllBg.push(element); // add the element himself
+
+        var filterElem = getAllBg.filter(elem => {
+            return elem.style.backgroundImage;
         });
-        
-        for (let i = 0; i < allImages.length; i++) {
-            EditBackground.setImage(allImages[i]);
-        }
 
-        if (dragAndDrop) {
-            element.addEventListener('drop', function (e) {
-                EditBackground.hide();
-
-                setTimeout(function () {
-                    EditBackground.setAllImages(element, false);
-                }, 0);
-            });
-        }
+        filterElem.forEach(elem => {
+            EditBackground.setBackground(elem);
+        });
     }
 
     /**
      * get current image (that user click on it)
      * @return Object (Node)
      */
-    static getCurrentImage() {
+    static getCurrentBackground() {
         var getByClass = document.getElementsByClassName(Config.EditBackground.currentImageClass);
         return getByClass.length > 0 ? getByClass[0] : null;
     }
@@ -133,15 +104,15 @@ export default class EditBackground {
      * set current image by adding class to the clicked image
      * @param Object (Node element - the clicked image)
      */
-    static setCurrentImage(element) {
-        EditBackground.removeCurrentImage();
+    static setCurrentBackground(element) {
+        EditBackground.removeCurrentBackground();
         element.classList.add(Config.EditBackground.currentImageClass);
     }
 
     /**
      * remove the current image by removing the class from the image
      */
-    static removeCurrentImage() {
+    static removeCurrentBackground() {
         var get = document.getElementsByClassName(Config.EditBackground.currentImageClass);
         for (let i = 0; i < get.length; i++) {
             get[i].classList.remove(Config.EditBackground.currentImageClass)

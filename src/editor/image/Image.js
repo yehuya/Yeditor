@@ -3,6 +3,8 @@
 import Config from './../../config.js';
 import Selection from './../selection/Selection.class.js';
 import Base64 from './Base64.js';
+import EditBackground from './EditBackground.class.js';
+import EditImage from './EditImage.class.js';
 
 /**
  * image helper function 
@@ -22,6 +24,8 @@ exports.insertImage = function(url) {
     img.src = url;
 
     selection.insert(img);
+    EditImage.setImage(img);
+
     return img;
 }
 
@@ -30,16 +34,18 @@ exports.insertBackground = function(url) {
     var parent = selection.parent();
 
     parent.style.backgroundImage = 'url(' + url + ')';
+    EditBackground.setBackground(parent);
+
     return parent;
 }
 
 exports.imageUrl = function(file, callback) {
     if (typeof Config.image.uploadImage == 'function') {
-        Config.image.uploadImage(file, function(url){
+        Config.image.uploadImage(file, function(url) {
             callback(url);
         });
     } else {
-        Base64.image(file, function (url, file) {
+        Base64.image(file, function(url, file) {
             //exports.insertImage(url);
             callback(url);
         });

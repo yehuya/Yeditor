@@ -1,29 +1,34 @@
 import Config from './../config.js';
 import EditImage from './image/EditImage.class.js';
+import EditBackgound from './image/EditBackground.class.js';
 
 /**
  * get all the editable area
  */
 export default class Editable {
-    
+
     /**
      * __construct
      * get editable area options and extends them with the default optinos
      * this.set()
      */
-    constructor(options, element){
+    constructor(options, element) {
         this.config = Config.editable;
         this.attrs = this.config.attribute;
         this.element = element;
         this.options = Config.extends(this.config.default, options);
 
         this.set();
-        this.editImage();
+        this.editImageAndBg();
         return this;
     }
 
-    editImage(){
-        EditImage.setAllImages(this.element, true);
+    /**
+     * set all the images and element with background as editable by navigation of image or bg
+     */
+    editImageAndBg() {
+        EditImage.setAllImages(this.element);
+        EditBackgound.setAllbackground(this.element);
     }
 
     /**
@@ -31,7 +36,7 @@ export default class Editable {
      * @param String
      * @param String
      */
-    addAttr(name, value){
+    addAttr(name, value) {
         this.element.setAttribute(name, value);
     }
 
@@ -40,7 +45,7 @@ export default class Editable {
      * @param String
      * @param String
      */
-    removeAttr(name){
+    removeAttr(name) {
         this.element.removeAttribute(name);
     }
 
@@ -48,11 +53,11 @@ export default class Editable {
      * set editable area attribute
      * - check if has attribure for this options 
      */
-    set(){
+    set() {
         this.addAttr(this.attrs.plugin, this.attrs.plugin);
         this.addAttr('contenteditable', 'true');
-        for(let key in this.options){
-            if(this.attrs.hasOwnProperty(key)){
+        for (let key in this.options) {
+            if (this.attrs.hasOwnProperty(key)) {
                 this.addAttr(this.attrs[key], this.options[key]);
             }
         }
@@ -61,18 +66,18 @@ export default class Editable {
     /**
      * set contenteditable = fales
      */
-    unset(){
+    unset() {
         this.addAttr('contenteditable', 'false');
     }
 
     /**
      * remove all editable area attribure include contenteditable
      */
-    destroy(){
+    destroy() {
         this.removeAttr(this.attrs.plugin);
         this.removeAttr('contenteditable');
-        for(let key in this.options){
-            if(this.attrs.hasOwnProperty(key)){
+        for (let key in this.options) {
+            if (this.attrs.hasOwnProperty(key)) {
                 this.removeAttr(this.attrs[key]);
             }
         }

@@ -5,13 +5,15 @@ import { image as btn_image } from './image.array.js';
 import { nav as btn_nav } from './nav.array.js';
 import { text as btn_text } from './text.array.js';
 import { editImage as editImageButton } from './editImage.array.js';
+import { editBackground as editBackgroundButton } from './editBackground.array.js';
+
 
 const exports = module.exports;
 
 /**
  * get all button for main navigation
  */
-exports.getMainNavButton = function(){
+exports.getMainNavButton = function() {
     var allArrayOfTheBtn = [].concat(btn_image, btn_nav, btn_text);
     return exports.createAllButtons(allArrayOfTheBtn);
 }
@@ -19,8 +21,15 @@ exports.getMainNavButton = function(){
 /**
  * get all button for edit image navigation
  */
-exports.getEditImageButton = function(){
+exports.getEditImageButton = function() {
     return exports.createAllButtons(editImageButton);
+}
+
+/**
+ * get all button for edit backgound navigation
+ */
+exports.getEditBackgroundButton = function() {
+    return exports.createAllButtons(editBackgroundButton);
 }
 
 /**
@@ -30,9 +39,9 @@ exports.getEditImageButton = function(){
  * @param Array
  * @return Array
  */
-exports.createAllButtons = function(array){
+exports.createAllButtons = function(array) {
     var ready_button = [];
-    array.forEach(function(button){
+    array.forEach(function(button) {
         let btn = new Button(button);
         ready_button.push(btn);
     });

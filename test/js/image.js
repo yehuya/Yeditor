@@ -64,30 +64,26 @@ function clickOnBackgroundImage() {
         elem.onclick = function(event) {
             event.stopPropagation();
             var bg = this.style.backgroundImage;
-            
+
             // var r = bg.replace(/^(url\(')|^(url\(")|('\))$|("\))$/g, '');            
-            var r = bg.replace(/^(url\(('|"))|(("|')\))$/g, '');                        
+            var r = bg.replace(/^(url\(('|"))|(("|')\))$/g, '');
             console.log(bg, r);
         }
     }
 }
 
-clickOnBackgroundImage();
+// clickOnBackgroundImage();
 
 
-function getAllBackground(){
+function getAllBackground() {
     var get = Array.prototype.slice.call(document.body.getElementsByTagName('*'), 0);
 
-    if(get){
+    if (get) {
         var arr = [];
-        var reduce = get.map(elem => {
-            if(elem.style.backgroundImage){ 
-               arr.push(elem);
-            }
+        var reduce = get.filter(elem => {
+            return elem.style.backgroundImage;
         });
 
-        console.log(arr);
+        console.log(reduce);
     }
 }
-
-getAllBackground();

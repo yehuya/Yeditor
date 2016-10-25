@@ -1,32 +1,41 @@
 /* editable dom element */
+
 [contenteditable="true"] {
     outline: none;
     display: block;
     box-sizing: border-box;
     transition: background 250ms linear;
 }
+
+
 /* FOCUS, HOVER */
 
 [contenteditable="true"]:focus,
 [contenteditable="true"]:hover {
     background: #efefef;
 }
+
+
 /* editable element > img */
 
 [contenteditable="true"] img {
     cursor: pointer;
 }
+
+
 /* editable element > img:FOCUS */
 
 [contenteditable="true"] img:active {
     opacity: 0.5;
 }
 
+
 /**
 * main nav open
 */
+
 #frontendEditor-nav {
-    background-color:white;
+    background-color: white;
     width: 100%;
     position: fixed;
     top: 0;
@@ -42,19 +51,20 @@
     display: none;
 }
 
+
 /**
 * main nav close
 */
+
 #frontendEditor-nav.close {
     width: 0px;
     height: 0px;
     border: 0;
-    border-radius:  100%;
+    border-radius: 100%;
     opacity: 1;
-
 }
 
-#frontendEditor-nav.close .frontendEditor-nav-btn{
+#frontendEditor-nav.close .frontendEditor-nav-btn {
     display: none;
 }
 
@@ -68,12 +78,14 @@
     width: 70px;
     height: 70px;
     box-shadow: 0px 0px 5px 0px black;
-    border-radius:  100%;
+    border-radius: 100%;
 }
+
 
 /**
 * main nav button
 */
+
 .frontendEditor-nav-btn {
     border: 0;
     background: white;
@@ -94,14 +106,17 @@
     float: right;
 }
 
-.frontendEditor-nav-btn:hover, .frontendEditor-nav-btn:focus {
+.frontendEditor-nav-btn:hover,
+.frontendEditor-nav-btn:focus {
     background: #efefef;
     outline: none;
 }
 
+
 /**
 * .CodeMirror
 */
+
 .CodeMirror {
     position: fixed;
     box-shadow: 0px 0px 5px 0px black;
@@ -118,14 +133,18 @@
     opacity: 1;
 }
 
+
 /**
 * edit image navigation
 */
-#frontendEditor-edit-image-nav {
+
+#frontendEditor-edit-image-nav,
+#frontendEditor-edit-background-nav {
     position: absolute;
     display: none;
 }
 
-#frontendEditor-edit-image-nav.active {
+#frontendEditor-edit-image-nav.active,
+#frontendEditor-edit-background-nav.active {
     display: block;
 }
