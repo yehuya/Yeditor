@@ -25,7 +25,7 @@
 /**
 * main nav open
 */
-.frontendEditor-nav {
+#frontendEditor-nav {
     background-color:white;
     width: 100%;
     position: fixed;
@@ -38,14 +38,14 @@
     z-index: 9999999999999999999999;
 }
 
-.frontendEditor-nav #openBTN {
+#frontendEditor-nav #openBTN {
     display: none;
 }
 
 /**
 * main nav close
 */
-.frontendEditor-nav.close {
+#frontendEditor-nav.close {
     width: 0px;
     height: 0px;
     border: 0;
@@ -54,11 +54,11 @@
 
 }
 
-.frontendEditor-nav.close .frontendEditor-nav-btn{
+#frontendEditor-nav.close .frontendEditor-nav-btn{
     display: none;
 }
 
-.frontendEditor-nav.close #openBTN {
+#frontendEditor-nav.close #openBTN {
     display: block;
     position: fixed;
     top: 2%;
@@ -116,4 +116,16 @@
 .CodeMirror.active {
     height: 250px;
     opacity: 1;
+}
+
+/**
+* edit image navigation
+*/
+#frontendEditor-edit-image-nav {
+    position: absolute;
+    display: none;
+}
+
+#frontendEditor-edit-image-nav.active {
+    display: block;
 }

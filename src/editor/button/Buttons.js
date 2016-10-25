@@ -4,23 +4,37 @@ import Button from './Button.class.js';
 import { image as btn_image } from './image.array.js';
 import { nav as btn_nav } from './nav.array.js';
 import { text as btn_text } from './text.array.js';
+import { editImage as editImageButton } from './editImage.array.js';
 
 const exports = module.exports;
 
 /**
- * get all button object from the default array
- * create Node element from each btn object
- * insert new button element into array of btn elements
- * @return Array of Object (btn elements)
+ * get all button for main navigation
  */
-exports.get = function(){
+exports.getMainNavButton = function(){
     var allArrayOfTheBtn = [].concat(btn_image, btn_nav, btn_text);
-    var readyBtn = [];
+    return exports.createAllButtons(allArrayOfTheBtn);
+}
 
-    allArrayOfTheBtn.forEach(function (object) {
-        var btn = new Button(object);
-        readyBtn.push(btn);
-    }, this);
+/**
+ * get all button for edit image navigation
+ */
+exports.getEditImageButton = function(){
+    return exports.createAllButtons(editImageButton);
+}
 
-    return readyBtn;
+/**
+ * create button from object by Button class
+ * - get array of button object
+ * - return array of button element
+ * @param Array
+ * @return Array
+ */
+exports.createAllButtons = function(array){
+    var ready_button = [];
+    array.forEach(function(button){
+        let btn = new Button(button);
+        ready_button.push(btn);
+    });
+    return ready_button;
 }

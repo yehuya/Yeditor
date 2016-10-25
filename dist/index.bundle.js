@@ -50,9 +50,15 @@
 
 	var _EditorClass2 = _interopRequireDefault(_EditorClass);
 
+	var _EditImageClass = __webpack_require__(4);
+
+	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.Editor = _EditorClass2.default;
+
+	window.editimage = _EditImageClass2.default;
 
 	// usefull link
 	// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable
@@ -77,27 +83,31 @@
 
 	var _EditableClass2 = _interopRequireDefault(_EditableClass);
 
-	var _NavigationClass = __webpack_require__(4);
+	var _NavigationClass = __webpack_require__(5);
 
 	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
 
-	var _Image = __webpack_require__(6);
+	var _Image = __webpack_require__(9);
 
 	var _Image2 = _interopRequireDefault(_Image);
 
-	var _Base = __webpack_require__(10);
+	var _EditImageClass = __webpack_require__(4);
+
+	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
+
+	var _Base = __webpack_require__(13);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
-	var _SelectionClass = __webpack_require__(7);
+	var _SelectionClass = __webpack_require__(10);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _Buttons = __webpack_require__(11);
+	var _Buttons = __webpack_require__(7);
 
 	var _Buttons2 = _interopRequireDefault(_Buttons);
 
-	var _Code = __webpack_require__(16);
+	var _Code = __webpack_require__(17);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -117,7 +127,8 @@
 
 	        window.Element.prototype[_config2.default.editable.prototype] = this.editable;
 
-	        var mainNav = new _NavigationClass2.default(_Buttons2.default.get(), _config2.default.nav.id);
+	        var mainNav = new _NavigationClass2.default(_Buttons2.default.getMainNavButton(), _config2.default.nav.id);
+	        var editImage = new _EditImageClass2.default();
 
 	        if (options) {
 	            if (options['uploadImage']) _config2.default.image.uploadImage = options.uploadImage;
@@ -133,8 +144,12 @@
 	            image: _Image2.default,
 	            base64: _Base2.default,
 	            selection: _SelectionClass2.default,
-	            navigation: mainNav,
-	            code: _Code.CodeMirror
+	            navigation: {
+	                main: mainNav,
+	                image: editImage.nav
+	            },
+	            code: _Code.CodeMirror,
+	            editImage: _EditImageClass2.default
 	        };
 
 	        return this;
@@ -272,6 +287,15 @@
 	};
 
 	/**
+	 * @for editor/image/EditImage.class.js
+	 */
+	_exports.editImage = {
+	    navActiveClass: 'active',
+	    currentImageClass: prefix + '-current-edit-image',
+	    navId: prefix + '-edit-image-nav'
+	};
+
+	/**
 	 * @for editor/button/Button.class.js
 	 */
 	_exports.button = {
@@ -303,9 +327,7 @@
 	 * @for button/image.array.js
 	 */
 	_exports.image = {
-	    uploadImage: null, //function(file){console.log(file)},
-	    uploadBackground: null
-	};
+	    uploadImage: null };
 
 /***/ },
 /* 3 */
@@ -322,6 +344,10 @@
 	var _config = __webpack_require__(2);
 
 	var _config2 = _interopRequireDefault(_config);
+
+	var _EditImageClass = __webpack_require__(4);
+
+	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -346,17 +372,23 @@
 	        this.options = _config2.default.extends(this.config.default, options);
 
 	        this.set();
+	        this.editImage();
 	        return this;
 	    }
 
-	    /**
-	     * add element attribute
-	     * @param String
-	     * @param String
-	     */
-
-
 	    _createClass(Editable, [{
+	        key: 'editImage',
+	        value: function editImage() {
+	            _EditImageClass2.default.setAllImages(this.element, true);
+	        }
+
+	        /**
+	         * add element attribute
+	         * @param String
+	         * @param String
+	         */
+
+	    }, {
 	        key: 'addAttr',
 	        value: function addAttr(name, value) {
 	            this.element.setAttribute(name, value);
@@ -427,6 +459,209 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _NavigationClass = __webpack_require__(5);
+
+	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
+
+	var _Buttons = __webpack_require__(7);
+
+	var _Buttons2 = _interopRequireDefault(_Buttons);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var EditImage = function () {
+	    /**
+	     * __construct
+	     * create navigation
+	     * add hide nav event
+	     */
+	    function EditImage() {
+	        _classCallCheck(this, EditImage);
+
+	        this.config = _config2.default.editImage;
+	        this.nav;
+	        this.navigation();
+	        this.hideEvent();
+	    }
+
+	    /**
+	     * create edit image navigation
+	     * by Navigation class
+	     */
+
+
+	    _createClass(EditImage, [{
+	        key: 'navigation',
+	        value: function navigation() {
+	            this.nav = new _NavigationClass2.default(_Buttons2.default.getEditImageButton(), this.config.navId);
+	            return this.nav;
+	        }
+
+	        /**
+	         * hide navigation when user leaves the current image
+	         * - remove the current image
+	         */
+
+	    }, {
+	        key: 'hideEvent',
+	        value: function hideEvent() {
+	            var self = this;
+
+	            window.addEventListener('click', function (event) {
+	                if (self.nav.elem.classList.contains(self.config.navActiveClass)) {
+	                    EditImage.hide();
+	                }
+	            });
+
+	            // prevent nav hiding when nav button clicked
+	            this.nav.elem.addEventListener('click', function (e) {
+	                e.stopPropagation();
+	            });
+	        }
+
+	        /**
+	         * get navigation element by id
+	         * @return Object (Node)
+	         */
+
+	    }], [{
+	        key: 'getNavigation',
+	        value: function getNavigation() {
+	            return document.getElementById(_config2.default.editImage.navId);
+	        }
+
+	        /**
+	         * show navigation above the current image
+	         * @param Object (Node element - the current image)
+	         */
+
+	    }, {
+	        key: 'show',
+	        value: function show(Node) {
+	            var nav = EditImage.getNavigation();
+	            var position = Node.getBoundingClientRect();
+
+	            nav.classList.add(_config2.default.editImage.navActiveClass);
+	            nav.style.cssText += 'left:' + position.left + ';top:' + position.top + ';';
+	        }
+
+	        /**
+	         * hide edit image navigation
+	         * - remove the current image 
+	         */
+
+	    }, {
+	        key: 'hide',
+	        value: function hide() {
+	            var nav = EditImage.getNavigation();
+	            nav.classList.remove(_config2.default.editImage.navActiveClass);
+	            EditImage.removeCurrentImage();
+	        }
+
+	        /**
+	         * set image - editable
+	         * @param Object (Node)
+	         */
+
+	    }, {
+	        key: 'setImage',
+	        value: function setImage(image) {
+	            image.addEventListener('click', function (event) {
+	                event.stopPropagation();
+	                event.preventDefault();
+
+	                EditImage.show(this);
+	                EditImage.setCurrentImage(this);
+	            });
+	        }
+
+	        /**
+	         * set all element images child - editable
+	         * update set image when drag and drop
+	         * @param Object (Node - parent)
+	         * @param Boolean (for dragAndDrop event)
+	         */
+
+	    }, {
+	        key: 'setAllImages',
+	        value: function setAllImages(element, dragAndDrop) {
+	            var allImages = element.getElementsByTagName('img');
+	            for (var i = 0; i < allImages.length; i++) {
+	                EditImage.setImage(allImages[i]);
+	            }
+
+	            if (dragAndDrop) {
+	                element.addEventListener('drop', function (e) {
+	                    EditImage.hide();
+
+	                    setTimeout(function () {
+	                        EditImage.setAllImages(element, false);
+	                    }, 0);
+	                });
+	            }
+	        }
+
+	        /**
+	         * get current image (that user click on it)
+	         * @return Object (Node)
+	         */
+
+	    }, {
+	        key: 'getCurrentImage',
+	        value: function getCurrentImage() {
+	            var getByClass = document.getElementsByClassName(_config2.default.editImage.currentImageClass);
+	            return getByClass.length > 0 ? getByClass[0] : null;
+	        }
+
+	        /**
+	         * set current image by adding class to the clicked image
+	         * @param Object (Node element - the clicked image)
+	         */
+
+	    }, {
+	        key: 'setCurrentImage',
+	        value: function setCurrentImage(element) {
+	            EditImage.removeCurrentImage();
+	            element.classList.add(_config2.default.editImage.currentImageClass);
+	        }
+
+	        /**
+	         * remove the current image by removing the class from the image
+	         */
+
+	    }, {
+	        key: 'removeCurrentImage',
+	        value: function removeCurrentImage() {
+	            var get = document.getElementsByClassName(_config2.default.editImage.currentImageClass);
+	            for (var i = 0; i < get.length; i++) {
+	                get[i].classList.remove(_config2.default.editImage.currentImageClass);
+	            }
+	        }
+	    }]);
+
+	    return EditImage;
+	}();
+
+	exports.default = EditImage;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -439,7 +674,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _ButtonClass = __webpack_require__(5);
+	var _ButtonClass = __webpack_require__(6);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
 
@@ -459,7 +694,7 @@
 	        this.config = _config2.default.nav;
 	        this.buttons = buttons;
 	        this.id = id;
-	        this.nav;
+	        this.elem;
 
 	        this.create();
 	    }
@@ -473,11 +708,11 @@
 	    _createClass(Navigation, [{
 	        key: 'element',
 	        value: function element() {
-	            this.nav = document.createElement('nav');
-	            this.nav.id = this.id;
-	            this.nav.classList.add(this.config.class);
+	            this.elem = document.createElement('nav');
+	            this.elem.id = this.id;
+	            this.elem.classList.add(this.config.class);
 
-	            return this.nav;
+	            return this.elem;
 	        }
 
 	        /**
@@ -488,7 +723,7 @@
 	    }, {
 	        key: 'insertIntoBody',
 	        value: function insertIntoBody() {
-	            return document.body.appendChild(this.nav);
+	            return document.body.appendChild(this.elem);
 	        }
 
 	        /**
@@ -500,7 +735,7 @@
 	    }, {
 	        key: 'append',
 	        value: function append(Node) {
-	            return this.nav.appendChild(Node);
+	            return this.elem.appendChild(Node);
 	        }
 
 	        /**
@@ -553,7 +788,7 @@
 	exports.default = Navigation;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -697,7 +932,144 @@
 	exports.default = Button;
 
 /***/ },
-/* 6 */
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _ButtonClass = __webpack_require__(6);
+
+	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
+
+	var _imageArray = __webpack_require__(8);
+
+	var _navArray = __webpack_require__(14);
+
+	var _textArray = __webpack_require__(23);
+
+	var _editImageArray = __webpack_require__(24);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	/**
+	 * get all button for main navigation
+	 */
+	_exports.getMainNavButton = function () {
+	    var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
+	    return _exports.createAllButtons(allArrayOfTheBtn);
+	};
+
+	/**
+	 * get all button for edit image navigation
+	 */
+	_exports.getEditImageButton = function () {
+	    return _exports.createAllButtons(_editImageArray.editImage);
+	};
+
+	/**
+	 * create button from object by Button class
+	 * - get array of button object
+	 * - return array of button element
+	 * @param Array
+	 * @return Array
+	 */
+	_exports.createAllButtons = function (array) {
+	    var ready_button = [];
+	    array.forEach(function (button) {
+	        var btn = new _ButtonClass2.default(button);
+	        ready_button.push(btn);
+	    });
+	    return ready_button;
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _Image = __webpack_require__(9);
+
+	var _Image2 = _interopRequireDefault(_Image);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.image = [
+	/**
+	 * add image
+	 */
+	{
+	    name: 'Add image',
+	    class: ['fa', 'fa-picture-o'],
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            _Image2.default.imageUrl(files[0], function (url) {
+	                _Image2.default.insertImage(url);
+	            });
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
+	},
+	/**
+	 * add background  
+	 */
+	{
+	    name: 'Add background',
+	    class: ['fa', 'fa-file-image-o'],
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            _Image2.default.imageUrl(files[0], function (url) {
+	                _Image2.default.insertBackground(url);
+	            });
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
+	}];
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -706,11 +1078,11 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SelectionClass = __webpack_require__(7);
+	var _SelectionClass = __webpack_require__(10);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _Base = __webpack_require__(10);
+	var _Base = __webpack_require__(13);
 
 	var _Base2 = _interopRequireDefault(_Base);
 
@@ -744,28 +1116,21 @@
 	    return parent;
 	};
 
-	_exports.uploadBackground = function (file) {
-	    if (typeof _config2.default.image.uploadBackground == 'function') {
-	        _config2.default.image.uploadBackground(file);
-	    } else {
-	        _Base2.default.image(file, function (url, file) {
-	            _exports.insertBackground(url);
-	        });
-	    }
-	};
-
-	_exports.uploadImage = function (file) {
+	_exports.imageUrl = function (file, callback) {
 	    if (typeof _config2.default.image.uploadImage == 'function') {
-	        _config2.default.image.uploadImage(file);
+	        _config2.default.image.uploadImage(file, function (url) {
+	            callback(url);
+	        });
 	    } else {
 	        _Base2.default.image(file, function (url, file) {
-	            _exports.insertImage(url);
+	            //exports.insertImage(url);
+	            callback(url);
 	        });
 	    }
 	};
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -780,7 +1145,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _process = __webpack_require__(8);
+	var _process = __webpack_require__(11);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -927,7 +1292,7 @@
 	exports.default = Selection;
 
 /***/ },
-/* 8 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -936,7 +1301,7 @@
 	 * import helper function for the process
 	 */
 
-	var _append = __webpack_require__(9);
+	var _append = __webpack_require__(12);
 
 	var _exports = module.exports;
 
@@ -1156,7 +1521,7 @@
 	}
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1215,7 +1580,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1244,134 +1609,16 @@
 	};
 
 /***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _ButtonClass = __webpack_require__(5);
-
-	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
-
-	var _imageArray = __webpack_require__(12);
-
-	var _navArray = __webpack_require__(13);
-
-	var _textArray = __webpack_require__(22);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var _exports = module.exports;
-
-	/**
-	 * get all button object from the default array
-	 * create Node element from each btn object
-	 * insert new button element into array of btn elements
-	 * @return Array of Object (btn elements)
-	 */
-	_exports.get = function () {
-	    var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
-	    var readyBtn = [];
-
-	    allArrayOfTheBtn.forEach(function (object) {
-	        var btn = new _ButtonClass2.default(object);
-	        readyBtn.push(btn);
-	    }, this);
-
-	    return readyBtn;
-	};
-
-/***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _Image = __webpack_require__(6);
-
-	var _Image2 = _interopRequireDefault(_Image);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var _exports = module.exports;
-
-	_exports.image = [
-	/**
-	 * add image
-	 */
-	{
-	    name: 'Add image',
-	    class: ['fa', 'fa-picture-o'],
-	    element: function () {
-	        var label = document.createElement('label');
-	        var input = document.createElement('input');
-	        input.type = 'file';
-	        input.accept = 'image/*';
-	        input.style.display = 'none';
-
-	        label.appendChild(input);
-
-	        return label;
-	    }(),
-	    event: [{
-	        name: 'mousedown',
-	        fn: function fn(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        name: 'change',
-	        fn: function fn(event) {
-	            var files = event.target.files || event.dataTransfer.files;
-	            _Image2.default.uploadImage(files[0]);
-
-	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
-	        }
-	    }]
-	},
-	/**
-	 * add background  
-	 */
-	{
-	    name: 'Add background',
-	    class: ['fa', 'fa-file-image-o'],
-	    element: function () {
-	        var label = document.createElement('label');
-	        var input = document.createElement('input');
-	        input.type = 'file';
-	        input.accept = 'image/*';
-	        input.style.display = 'none';
-
-	        label.appendChild(input);
-
-	        return label;
-	    }(),
-	    event: [{
-	        name: 'mousedown',
-	        fn: function fn(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        name: 'change',
-	        fn: function fn(event) {
-	            var files = event.target.files || event.dataTransfer.files;
-	            _Image2.default.uploadBackground(files[0]);
-
-	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
-	        }
-	    }]
-	}];
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _AjaxClass = __webpack_require__(14);
+	var _AjaxClass = __webpack_require__(15);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
-	var _SelectionClass = __webpack_require__(7);
+	var _SelectionClass = __webpack_require__(10);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
@@ -1379,7 +1626,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _Code = __webpack_require__(16);
+	var _Code = __webpack_require__(17);
 
 	var _Code2 = _interopRequireDefault(_Code);
 
@@ -1492,7 +1739,7 @@
 	}];
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1507,7 +1754,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(15);
+	var _SerializeClass = __webpack_require__(16);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -1653,7 +1900,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1769,7 +2016,7 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1779,11 +2026,11 @@
 	 * https://codemirror.net/
 	 */
 
-	var _codemirror = __webpack_require__(17);
+	var _codemirror = __webpack_require__(18);
 
 	var _codemirror2 = _interopRequireDefault(_codemirror);
 
-	var _htmlmixed = __webpack_require__(18);
+	var _htmlmixed = __webpack_require__(19);
 
 	var _htmlmixed2 = _interopRequireDefault(_htmlmixed);
 
@@ -1820,7 +2067,7 @@
 	};
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -10790,7 +11037,7 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -10798,7 +11045,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(17), __webpack_require__(19), __webpack_require__(20), __webpack_require__(21));
+	    mod(__webpack_require__(18), __webpack_require__(20), __webpack_require__(21), __webpack_require__(22));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror", "../xml/xml", "../javascript/javascript", "../css/css"], mod);
 	  else // Plain browser env
@@ -10948,7 +11195,7 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -10956,7 +11203,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(17));
+	    mod(__webpack_require__(18));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -11348,7 +11595,7 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -11356,7 +11603,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(17));
+	    mod(__webpack_require__(18));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -12129,7 +12376,7 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -12137,7 +12384,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(17));
+	    mod(__webpack_require__(18));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -12960,12 +13207,12 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _SelectionClass = __webpack_require__(7);
+	var _SelectionClass = __webpack_require__(10);
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
@@ -13100,6 +13347,67 @@
 	            selection.append(underline);
 	        }
 	    }
+	}];
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	/**
+	 * array of button for image editing navigation
+	 */
+
+	var _EditImageClass = __webpack_require__(4);
+
+	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
+
+	var _Image = __webpack_require__(9);
+
+	var _Image2 = _interopRequireDefault(_Image);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var _exports = module.exports;
+
+	_exports.editImage = [
+	/**
+	 * change image src 
+	 */
+	{
+	    name: 'image src',
+	    class: ['fa', 'fa-picture-o'],
+	    element: function () {
+	        var label = document.createElement('label');
+	        var input = document.createElement('input');
+	        input.type = 'file';
+	        input.accept = 'image/*';
+	        input.style.display = 'none';
+
+	        label.appendChild(input);
+
+	        return label;
+	    }(),
+	    event: [{
+	        name: 'mousedown',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        name: 'change',
+	        fn: function fn(event) {
+	            var files = event.target.files || event.dataTransfer.files;
+	            var currentImage = _EditImageClass2.default.getCurrentImage();
+
+	            _Image2.default.imageUrl(files[0], function (url) {
+	                currentImage.src = url;
+	                _EditImageClass2.default.show(currentImage);
+	            });
+
+	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
+	        }
+	    }]
 	}];
 
 /***/ }

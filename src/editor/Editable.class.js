@@ -1,4 +1,5 @@
 import Config from './../config.js';
+import EditImage from './image/EditImage.class.js';
 
 /**
  * get all the editable area
@@ -17,7 +18,12 @@ export default class Editable {
         this.options = Config.extends(this.config.default, options);
 
         this.set();
+        this.editImage();
         return this;
+    }
+
+    editImage(){
+        EditImage.setAllImages(this.element, true);
     }
 
     /**

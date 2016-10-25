@@ -2,6 +2,7 @@ import Config from './../config.js';
 import Editable from './Editable.class.js';
 import Navigation from './Navigation.class.js';
 import Image from './image/Image.js';
+import EditImage from './image/EditImage.class.js';
 import Base64 from './image/Base64.js';
 import Selection from './selection/Selection.class.js';
 import Buttons from './button/Buttons.js';
@@ -19,7 +20,8 @@ export default class Editor {
     constructor(options){
         window.Element.prototype[Config.editable.prototype] = this.editable;
         
-        var mainNav = new Navigation(Buttons.get(), Config.nav.id);
+        var mainNav = new Navigation(Buttons.getMainNavButton(), Config.nav.id);
+        var editImage = new EditImage();
 
         if(options){
             if(options['uploadImage']) Config.image.uploadImage = options.uploadImage;
@@ -35,8 +37,12 @@ export default class Editor {
             image: Image,
             base64: Base64,
             selection: Selection,
-            navigation: mainNav,
-            code: CodeMirror
+            navigation: {
+                main: mainNav,
+                image: editImage.nav 
+            },
+            code: CodeMirror,
+            editImage: EditImage
         }
 
         return this;
@@ -47,7 +53,7 @@ export default class Editor {
      * add all the data attribute
      * @param Object (editable area options)
      */
-    editable(options){
+    editable(options){  
         return new Editable(options, this);
     }    
     

@@ -31,7 +31,9 @@ exports.image = [
                 name: 'change',
                 fn: function(event){
                     var files = event.target.files || event.dataTransfer.files;                 
-                    Img.uploadImage(files[0]);
+                    Img.imageUrl(files[0], function(url){
+                        Img.insertImage(url);
+                    });
 
                     this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
                 }
@@ -66,7 +68,9 @@ exports.image = [
                 name: 'change',
                 fn: function(event){
                     var files = event.target.files || event.dataTransfer.files;
-                    Img.uploadBackground(files[0]);
+                    Img.imageUrl(files[0], function(url){
+                        Img.insertBackground(url);
+                    });
 
                     this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
                 }

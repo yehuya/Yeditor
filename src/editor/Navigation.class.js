@@ -11,7 +11,7 @@ export default class Navigation {
         this.config = Config.nav;
         this.buttons = buttons; 
         this.id = id;
-        this.nav;
+        this.elem;
 
         this.create();
     }
@@ -21,11 +21,11 @@ export default class Navigation {
      * @return Object
      */
     element(){
-        this.nav = document.createElement('nav');
-        this.nav.id = this.id;
-        this.nav.classList.add(this.config.class);
+        this.elem = document.createElement('nav');
+        this.elem.id = this.id;
+        this.elem.classList.add(this.config.class);
 
-        return this.nav;
+        return this.elem;
     }
 
     /**
@@ -33,7 +33,7 @@ export default class Navigation {
      * @param Object (DOM element)
      */
     insertIntoBody(){
-        return document.body.appendChild(this.nav);
+        return document.body.appendChild(this.elem);
     }
 
     /**
@@ -42,7 +42,7 @@ export default class Navigation {
      * @param Object (DOM element)
      */
     append(Node){
-        return this.nav.appendChild(Node);
+        return this.elem.appendChild(Node);
     }
 
     /**

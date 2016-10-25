@@ -59,8 +59,7 @@ function navButtonClickEvent(Node) {
 }
 
 function clickOnBackgroundImage() {
-    var elements = document.getElementsByTagName('*');
-    console.log(elements);
+    var elements = document.body.getElementsByTagName('*');
     for (elem of elements) {
         elem.onclick = function(event) {
             event.stopPropagation();
@@ -70,7 +69,4 @@ function clickOnBackgroundImage() {
     }
 }
 
-createNav();
-hideNav();
-clickOnImage();
 clickOnBackgroundImage();

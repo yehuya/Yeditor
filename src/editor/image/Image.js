@@ -33,22 +33,15 @@ exports.insertBackground = function(url) {
     return parent;
 }
 
-exports.uploadBackground = function(file) {
-    if (typeof Config.image.uploadBackground == 'function') {
-        Config.image.uploadBackground(file);
-    } else {
-        Base64.image(file, function (url, file) {
-            exports.insertBackground(url);
-        });
-    }
-}
-
-exports.uploadImage = function(file) {
+exports.imageUrl = function(file, callback) {
     if (typeof Config.image.uploadImage == 'function') {
-        Config.image.uploadImage(file);
+        Config.image.uploadImage(file, function(url){
+            callback(url);
+        });
     } else {
         Base64.image(file, function (url, file) {
-            exports.insertImage(url);
+            //exports.insertImage(url);
+            callback(url);
         });
     }
 }

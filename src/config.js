@@ -57,6 +57,15 @@ exports.nav = {
 }
 
 /**
+ * @for editor/image/EditImage.class.js
+ */
+exports.editImage = {
+    navActiveClass: 'active',
+    currentImageClass: `${prefix}-current-edit-image`,
+    navId: `${prefix}-edit-image-nav`
+}
+
+/**
  * @for editor/button/Button.class.js
  */
 exports.button = {
@@ -83,5 +92,4 @@ exports.ajax = {
  */
 exports.image = {
     uploadImage: null, //function(file){console.log(file)},
-    uploadBackground: null 
 }
