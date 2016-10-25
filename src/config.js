@@ -66,6 +66,15 @@ exports.editImage = {
 }
 
 /**
+ * @for editor/image/EditBackground.class.js
+ */
+exports.EditBackground = {
+    navActiveClass: 'active',
+    currentImageClass: `${prefix}-current-edit-background`,
+    navId: `${prefix}-edit-background-nav`
+}
+
+/**
  * @for editor/button/Button.class.js
  */
 exports.button = {
