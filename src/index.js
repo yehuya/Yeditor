@@ -1,4 +1,9 @@
+require('./css/style.css');
+require('font-awesome/css/font-awesome.css');
+
 import Editor from './editor/Editor.class.js';
+
+
 window.Editor = Editor;
 
 

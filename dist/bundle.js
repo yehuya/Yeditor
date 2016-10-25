@@ -56,6 +56,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(31);
+	__webpack_require__(33);
+
 	window.Editor = _EditorClass2.default;
 
 	window.editimage = _EditImageClass2.default;
@@ -235,10 +238,12 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	var _exports = module.exports;
 	var prefix = 'frontendEditor';
+
+	_exports.prefix = prefix;
 
 	/**
 	 * concat two objects
@@ -270,11 +275,11 @@
 	        image: prefix + '-image',
 	        html: prefix + '-html',
 	        /**
-	        * attribute says - this is our plugin editable area 
-	        * toLowerCase - prevent bug: the browser render attribute name as lowercase
-	        * @for Selection.class.js 
-	        * @for Editable.class.js 
-	        */
+	         * attribute says - this is our plugin editable area 
+	         * toLowerCase - prevent bug: the browser render attribute name as lowercase
+	         * @for Selection.class.js 
+	         * @for Editable.class.js 
+	         */
 	        plugin: prefix.toLowerCase()
 	    },
 	    default: {
@@ -962,11 +967,11 @@
 
 	var _navArray = __webpack_require__(15);
 
-	var _textArray = __webpack_require__(24);
+	var _textArray = __webpack_require__(28);
 
-	var _editImageArray = __webpack_require__(25);
+	var _editImageArray = __webpack_require__(29);
 
-	var _editBackgroundArray = __webpack_require__(26);
+	var _editBackgroundArray = __webpack_require__(30);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2252,6 +2257,9 @@
 	var _htmlmixed2 = _interopRequireDefault(_htmlmixed);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	__webpack_require__(24);
+
 
 	var _exports = module.exports;
 
@@ -13425,6 +13433,15 @@
 
 /***/ },
 /* 24 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13567,7 +13584,7 @@
 	}];
 
 /***/ },
-/* 25 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13628,7 +13645,7 @@
 	}];
 
 /***/ },
-/* 26 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13686,6 +13703,19 @@
 	        }
 	    }]
 	}];
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 32 */,
+/* 33 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

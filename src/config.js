@@ -1,5 +1,9 @@
+"use strict";
+
 const exports = module.exports;
 const prefix = 'frontendEditor';
+
+exports.prefix = prefix;
 
 /**
  * concat two objects
@@ -7,9 +11,9 @@ const prefix = 'frontendEditor';
  * @param Object (set)
  * @return Object (def with new value of set)
  */
-exports.extends = function(def, set){
-    for(let key in set){
-        if(def.hasOwnProperty(key)){
+exports.extends = function(def, set) {
+    for (let key in set) {
+        if (def.hasOwnProperty(key)) {
             def[key] = set[key];
         }
     }
@@ -31,12 +35,12 @@ exports.editable = {
         image: `${prefix}-image`,
         html: `${prefix}-html`,
         /**
-        * attribute says - this is our plugin editable area 
-        * toLowerCase - prevent bug: the browser render attribute name as lowercase
-        * @for Selection.class.js 
-        * @for Editable.class.js 
-        */
-        plugin: prefix.toLowerCase() 
+         * attribute says - this is our plugin editable area 
+         * toLowerCase - prevent bug: the browser render attribute name as lowercase
+         * @for Selection.class.js 
+         * @for Editable.class.js 
+         */
+        plugin: prefix.toLowerCase()
     },
     default: {
         name: null,
@@ -90,9 +94,9 @@ exports.ajax = {
     url: 'http://localhost',
     method: 'POST',
     header: {},
-    success: function(data){console.log(data, 'success')},
-    done: function(data){console.log(data, 'done')},
-    failed: function(data){console.log(data, 'error')}
+    success: function(data) { console.log(data, 'success') },
+    done: function(data) { console.log(data, 'done') },
+    failed: function(data) { console.log(data, 'error') }
 }
 
 /**

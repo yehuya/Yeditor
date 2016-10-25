@@ -4,9 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Test frontend-editor</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/codemirror.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../dist/style.min.css">
     <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>-->
 </head>
 
@@ -28,14 +26,14 @@
         <div class="col-xs-4 text-left">
             Etiam hendrerit in nisi vel fermentum. Duis vel ligula elit. Etiam id lobortis mi. Vestibulum ultricies maximus odio, quis
             <img class="pull-right" id="img" src="images/tmp.jpg" /> vulputate lacus laoreet eget. Donec aliquam sem nisl, non dictum est feugiat sit amet. Fusce viverra, sapien aliquet vulputate aliquam, metus lectus elementum tellus, nec facilisis nibh
-            libero vel ipsum. Sed laoreet porta sapien non suscipit. Nam sed tellus <img class="pull-right" src="http://placehold.it/200x200"/>ut urna posuere rhoncus. Sed scelerisque vestibulum massa, at imperdiet est tincidunt quis.
+            libero vel ipsum. Sed laoreet porta sapien non suscipit. Nam sed tellus <img class="pull-right" src="http://placehold.it/200x200" />ut urna posuere rhoncus. Sed scelerisque vestibulum massa, at imperdiet est tincidunt quis.
         </div>
         <div class="col-xs-4 text-left" id="testCode">
             Sed in erat lectus. In pretium ligula nec nunc fringilla gravida. Nulla facilisi. Ut dignissim justo sed neque tristique egestas. Etiam tristique neque ullamcorper, pellentesque quam ut, tincidunt lectus. In sit amet ipsum eget libero sodales suscipit
             eu accumsan odio. Quisque lorem nisl, iaculis ac accumsan ut, luctus condimentum orci.
             <span style="color:blue;" id="parent"> orem nisl odio <span style="color:green;" id="child">Aenea</span> condimentumn dolor
             </span>, condimentum et nibh id, pulvinar consequat arcu. Sed non risus sem. Mauris risus ligula, molestie sed arcu a, feugiat hendrerit eros. Ut posuere, ex vel lobortis suscipit, justo turpis auctor nulla, a sollicitudin nibh sem faucibus
-            arcu. Suspendisse vitae porttitor sapien. <img src="http://placehold.it/200x400"/>
+            arcu. Suspendisse vitae porttitor sapien. <img src="http://placehold.it/200x400" />
         </div>
     </div>
     <div class="container-fluid" style="display:none;">
@@ -63,7 +61,7 @@
         </div>
     </div>
 
-    <script src="../dist/index.bundle.js"></script>
+    <script src="../dist/bundle.min.js"></script>
     <script src="js/image.js"></script>
     <script>
         var editor = new Editor({
