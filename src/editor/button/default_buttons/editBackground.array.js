@@ -1,22 +1,22 @@
 "use strict";
 
 /**
- * array of button for image editing navigation
+ * default buttons for Edit background navigation
  */
 
-import EditImage from './../image/EditImage.class.js';
-import Img from './../image/Image.js';
+import EditBackground from './../../image/EditBackground.class.js';
+import Img from './../../image/Image.js';
 
 const exports = module.exports;
 
-exports.editImage = [
+exports.editBackground = [
     /**
-     * change image src 
+     * change background image url 
      */
     {
-        name: 'image src',
-        class: ['fa', 'fa-picture-o'],
-        element: (function(){
+        name: 'Add background',
+        class: ['fa', 'fa-file-image-o'],
+        element: (function() {
             var label = document.createElement('label');
             var input = document.createElement('input');
             input.type = 'file';
@@ -27,27 +27,25 @@ exports.editImage = [
 
             return label;
         })(),
-        event: [
-            {
+        event: [{
                 name: 'mousedown',
-                fn: function(event){
+                fn: function(event) {
                     event.preventDefault();
                 }
             },
             {
                 name: 'change',
-                fn: function(event){
+                fn: function(event) {
                     var files = event.target.files || event.dataTransfer.files;
-                    var currentImage = EditImage.getCurrentImage();                 
-                    
-                    Img.imageUrl(files[0], function(url){
-                        currentImage.src = url;
-                        EditImage.show(currentImage);
+                    var currentBg = EditBackground.getCurrentBackground();
+
+                    Img.imageUrl(files[0], function(url) {
+                        currentBg.style.backgroundImage = 'url(' + url + ')';
                     });
 
                     this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
                 }
             }
-        ] 
+        ]
     }
 ];

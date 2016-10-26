@@ -1,32 +1,36 @@
+"use strict";
+
+/**
+ * set the element as editable
+ */
+
 import Config from './../config.js';
 import EditImage from './image/EditImage.class.js';
 import EditBackgound from './image/EditBackground.class.js';
 
-/**
- * get all the editable area
- */
 export default class Editable {
 
     /**
      * __construct
-     * get editable area options and extends them with the default optinos
+     * get editable area options and extends them with the default options
      * this.set()
+     * @param Object (Node)
+     * @param Object (options)
      */
-    constructor(options, element) {
+    constructor(element, options) {
         this.config = Config.editable;
         this.attrs = this.config.attribute;
         this.element = element;
         this.options = Config.extends(this.config.default, options);
 
         this.set();
-        this.editImageAndBg();
-        return this;
+        this.setImageAndBackground();
     }
 
     /**
-     * set all the images and element with background as editable by navigation of image or bg
+     * set children element with images and background as editable by the nav of image or background
      */
-    editImageAndBg() {
+    setImageAndBackground() {
         EditImage.setAllImages(this.element);
         EditBackgound.setAllbackground(this.element);
     }

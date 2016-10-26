@@ -2,7 +2,7 @@
 
 import Config from './../../config.js';
 import Navigation from './../Navigation.class.js';
-import Buttons from './../button/Buttons.js';
+import Buttons from './../button/Button.helper.js';
 
 export default class EditBackground {
     /**

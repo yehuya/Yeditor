@@ -1,4 +1,4 @@
-import Config from './../../config.js';
+"use strict";
 
 /**
  * Create button element from object
@@ -22,8 +22,9 @@ import Config from './../../config.js';
  * }
  */
 
-export default class Button {
+import Config from './../../config.js';
 
+export default class Button {
     /**
      * __construct
      * @param Object (button)
@@ -42,17 +43,16 @@ export default class Button {
      * @return Object
      */
     create(btn) {
-        this.element = typeof btn.element == 'object' ? btn.element : this.element();
-        
+        this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element();
         this.class(btn.class, btn.align);
+        this.elem.title = btn.description || null;
+        this.elem.id = btn.id || null;
 
-        this.element.title = btn.description || '';
-        this.element.id = btn.id || '';
-        if (btn.text && btn.text.length > 0) this.element.appendChild(document.createTextNode(btn.text));
+        if (btn.text && btn.text.length > 0) this.elem.appendChild(document.createTextNode(btn.text));
 
         this.event(btn.event);
 
-        return this.element;
+        return this.elem;
     }
 
     /**
@@ -69,20 +69,20 @@ export default class Button {
      * @param String (the button.align)
      */
     class(classes, align) {
-        this.element.classList.add(this.config.class);
+        this.elem.classList.add(this.config.class);
 
-        if(align == 'right' || align == 'left'){
-            this.element.classList.add(align);
-        }else{
-            this.element.classList.add('center');
+        if (align == 'right' || align == 'left') {
+            this.elem.classList.add(align);
+        } else {
+            this.elem.classList.add('center');
         }
 
-        if(Array.isArray(classes)){
-            classes.forEach(function(cla){
-                this.element.classList.add(cla);
+        if (Array.isArray(classes)) {
+            classes.forEach(function (cls) {
+                this.elem.classList.add(cls);
             }, this);
-        }else if(classes){
-            this.element.classList.add(classes);
+        } else if (classes) {
+            this.elem.classList.add(classes);
         }
     }
 
@@ -95,10 +95,19 @@ export default class Button {
     event(events) {
         if (Array.isArray(events)) {
             events.forEach(function (event) {
-                this.element.addEventListener(event.name, event.fn);
+                this.elem.addEventListener(event.name, event.fn);
             }, this);
-        } else {
-            this.element.addEventListener(events.name, events.fn);
+        } else if (events) {
+            this.elem.addEventListener(events.name, events.fn);
         }
+    }
+
+    /**
+     * check if object is HTML DOM element
+     */
+    static isDOM(element) {
+        return (
+            typeof HTMLElement === "object" ? element instanceof HTMLElement : element && typeof element === "object" && element !== null
+        );
     }
 }

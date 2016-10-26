@@ -1,4 +1,10 @@
-import Img from './../image/Image.js';
+"use strict";
+
+/**
+ * defalut button for images in Main navigation
+ */
+
+import Img from './../../image/Image.js';
 
 const exports = module.exports;
 

@@ -1,3 +1,9 @@
+"use strict";
+
+/**
+ * creata navigation element (with buttons)
+ */
+
 import Config from './../config.js';
 import Button from './button/Button.class.js';
 
@@ -6,6 +12,8 @@ export default class Navigation {
     /**
      * __construct
      * create navigation
+     * @param Array Of Object (buttons array)
+     * @param String (navigation id) 
      */
     constructor(buttons, id){
         this.config = Config.nav;

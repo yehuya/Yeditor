@@ -1,7 +1,13 @@
-import Ajax from './../ajax/Ajax.class.js';
-import Selection from './../selection/Selection.class.js';
-import Config from './../../config.js';
-import Code from './../Code.js';
+"use strict";
+
+/**
+ * defalut button for main functions in Main navigation
+ */
+
+import Ajax from './../../ajax/Ajax.class.js';
+import Selection from './../../selection/Selection.class.js';
+import Config from './../../../config.js';
+import Code from './../../Code.js';
 
 const exports = module.exports;
 

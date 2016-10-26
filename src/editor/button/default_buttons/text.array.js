@@ -1,4 +1,11 @@
-import Selection from '../selection/Selection.class.js';
+"use strict";
+
+/**
+ * defalut button for text in Main navigation
+ */
+
+import Selection from './../../selection/Selection.class.js';
+
 const exports = module.exports;
 
 exports.text = [

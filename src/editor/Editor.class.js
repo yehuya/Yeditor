@@ -6,7 +6,7 @@ import EditImage from './image/EditImage.class.js';
 import EditBackground from './image/EditBackground.class.js';
 import Base64 from './image/Base64.js';
 import Selection from './selection/Selection.class.js';
-import Buttons from './button/Buttons.js';
+import Buttons from './button/Button.helper.js';
 import { CodeMirror } from './Code.js';
 
 /**
@@ -60,7 +60,7 @@ export default class Editor {
      * @param Object (editable area options)
      */
     editable(options) {
-        return new Editable(options, this);
+        return new Editable(this, options);
     }
 
     /**

@@ -110,9 +110,9 @@
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _Buttons = __webpack_require__(7);
+	var _ButtonHelper = __webpack_require__(7);
 
-	var _Buttons2 = _interopRequireDefault(_Buttons);
+	var _ButtonHelper2 = _interopRequireDefault(_ButtonHelper);
 
 	var _Code = __webpack_require__(18);
 
@@ -134,7 +134,7 @@
 
 	        window.Element.prototype[_config2.default.editable.prototype] = this.editable;
 
-	        var mainNav = new _NavigationClass2.default(_Buttons2.default.getMainNavButton(), _config2.default.nav.id);
+	        var mainNav = new _NavigationClass2.default(_ButtonHelper2.default.getMainNavButton(), _config2.default.nav.id);
 	        var editImage = new _EditImageClass2.default();
 	        var editBackground = new _EditBackgroundClass2.default();
 
@@ -177,7 +177,7 @@
 	    _createClass(Editor, [{
 	        key: 'editable',
 	        value: function editable(options) {
-	            return new _EditableClass2.default(options, this);
+	            return new _EditableClass2.default(this, options);
 	        }
 
 	        /**
@@ -356,7 +356,11 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+
+	/**
+	 * set the element as editable
+	 */
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -380,17 +384,16 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	/**
-	 * get all the editable area
-	 */
 	var Editable = function () {
 
 	    /**
 	     * __construct
-	     * get editable area options and extends them with the default optinos
+	     * get editable area options and extends them with the default options
 	     * this.set()
+	     * @param Object (Node)
+	     * @param Object (options)
 	     */
-	    function Editable(options, element) {
+	    function Editable(element, options) {
 	        _classCallCheck(this, Editable);
 
 	        this.config = _config2.default.editable;
@@ -399,18 +402,17 @@
 	        this.options = _config2.default.extends(this.config.default, options);
 
 	        this.set();
-	        this.editImageAndBg();
-	        return this;
+	        this.setImageAndBackground();
 	    }
 
 	    /**
-	     * set all the images and element with background as editable by navigation of image or bg
+	     * set children element with images and background as editable by the nav of image or background
 	     */
 
 
 	    _createClass(Editable, [{
-	        key: 'editImageAndBg',
-	        value: function editImageAndBg() {
+	        key: 'setImageAndBackground',
+	        value: function setImageAndBackground() {
 	            _EditImageClass2.default.setAllImages(this.element);
 	            _EditBackgroundClass2.default.setAllbackground(this.element);
 	        }
@@ -508,9 +510,9 @@
 
 	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
 
-	var _Buttons = __webpack_require__(7);
+	var _ButtonHelper = __webpack_require__(7);
 
-	var _Buttons2 = _interopRequireDefault(_Buttons);
+	var _ButtonHelper2 = _interopRequireDefault(_ButtonHelper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -540,7 +542,7 @@
 	    _createClass(EditImage, [{
 	        key: 'navigation',
 	        value: function navigation() {
-	            this.nav = new _NavigationClass2.default(_Buttons2.default.getEditImageButton(), this.config.navId);
+	            this.nav = new _NavigationClass2.default(_ButtonHelper2.default.getEditImageButton(), this.config.navId);
 	            return this.nav;
 	        }
 
@@ -684,7 +686,11 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+
+	/**
+	 * creata navigation element (with buttons)
+	 */
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -709,6 +715,8 @@
 	    /**
 	     * __construct
 	     * create navigation
+	     * @param Array Of Object (buttons array)
+	     * @param String (navigation id) 
 	     */
 	    function Navigation(buttons, id) {
 	        _classCallCheck(this, Navigation);
@@ -813,23 +821,7 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _config = __webpack_require__(2);
-
-	var _config2 = _interopRequireDefault(_config);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	"use strict";
 
 	/**
 	 * Create button element from object
@@ -853,8 +845,23 @@
 	 * }
 	 */
 
-	var Button = function () {
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(2);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Button = function () {
 	    /**
 	     * __construct
 	     * @param Object (button)
@@ -879,17 +886,16 @@
 	    _createClass(Button, [{
 	        key: 'create',
 	        value: function create(btn) {
-	            this.element = _typeof(btn.element) == 'object' ? btn.element : this.element();
-
+	            this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element();
 	            this.class(btn.class, btn.align);
+	            this.elem.title = btn.description || null;
+	            this.elem.id = btn.id || null;
 
-	            this.element.title = btn.description || '';
-	            this.element.id = btn.id || '';
-	            if (btn.text && btn.text.length > 0) this.element.appendChild(document.createTextNode(btn.text));
+	            if (btn.text && btn.text.length > 0) this.elem.appendChild(document.createTextNode(btn.text));
 
 	            this.event(btn.event);
 
-	            return this.element;
+	            return this.elem;
 	        }
 
 	        /**
@@ -912,20 +918,20 @@
 	    }, {
 	        key: 'class',
 	        value: function _class(classes, align) {
-	            this.element.classList.add(this.config.class);
+	            this.elem.classList.add(this.config.class);
 
 	            if (align == 'right' || align == 'left') {
-	                this.element.classList.add(align);
+	                this.elem.classList.add(align);
 	            } else {
-	                this.element.classList.add('center');
+	                this.elem.classList.add('center');
 	            }
 
 	            if (Array.isArray(classes)) {
-	                classes.forEach(function (cla) {
-	                    this.element.classList.add(cla);
+	                classes.forEach(function (cls) {
+	                    this.elem.classList.add(cls);
 	                }, this);
 	            } else if (classes) {
-	                this.element.classList.add(classes);
+	                this.elem.classList.add(classes);
 	            }
 	        }
 
@@ -940,11 +946,21 @@
 	        value: function event(events) {
 	            if (Array.isArray(events)) {
 	                events.forEach(function (event) {
-	                    this.element.addEventListener(event.name, event.fn);
+	                    this.elem.addEventListener(event.name, event.fn);
 	                }, this);
-	            } else {
-	                this.element.addEventListener(events.name, events.fn);
+	            } else if (events) {
+	                this.elem.addEventListener(events.name, events.fn);
 	            }
+	        }
+
+	        /**
+	         * check if object is HTML DOM element
+	         */
+
+	    }], [{
+	        key: 'isDOM',
+	        value: function isDOM(element) {
+	            return (typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === "object" ? element instanceof HTMLElement : element && (typeof element === 'undefined' ? 'undefined' : _typeof(element)) === "object" && element !== null;
 	        }
 	    }]);
 
@@ -958,6 +974,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	/**
+	 * helper function for Button
+	 * create buttons element array for all the navigation
+	 * the button come from default array of the buttons
+	 */
 
 	var _ButtonClass = __webpack_require__(6);
 
@@ -978,48 +1000,55 @@
 	var _exports = module.exports;
 
 	/**
-	 * get all button for main navigation
+	 * create button
+	 * @for Main nav
 	 */
 	_exports.getMainNavButton = function () {
-	    var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
-	    return _exports.createAllButtons(allArrayOfTheBtn);
+	  var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
+	  return _exports.createAllButtons(allArrayOfTheBtn);
 	};
 
 	/**
-	 * get all button for edit image navigation
+	 * create button
+	 * @for Edit image nav
 	 */
 	_exports.getEditImageButton = function () {
-	    return _exports.createAllButtons(_editImageArray.editImage);
+	  return _exports.createAllButtons(_editImageArray.editImage);
 	};
 
 	/**
-	 * get all button for edit backgound navigation
+	 * create button 
+	 * @for Edit backgound nav
 	 */
 	_exports.getEditBackgroundButton = function () {
-	    return _exports.createAllButtons(_editBackgroundArray.editBackground);
+	  return _exports.createAllButtons(_editBackgroundArray.editBackground);
 	};
 
 	/**
 	 * create button from object by Button class
 	 * - get array of button object
 	 * - return array of button element
-	 * @param Array
-	 * @return Array
+	 * @param Array Of Object
+	 * @return Array Of Object
 	 */
 	_exports.createAllButtons = function (array) {
-	    var ready_button = [];
-	    array.forEach(function (button) {
-	        var btn = new _ButtonClass2.default(button);
-	        ready_button.push(btn);
-	    });
-	    return ready_button;
+	  var ready_button = [];
+	  array.forEach(function (button) {
+	    var btn = new _ButtonClass2.default(button);
+	    ready_button.push(btn);
+	  });
+	  return ready_button;
 	};
 
 /***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+
+	/**
+	 * defalut button for images in Main navigation
+	 */
 
 	var _Image = __webpack_require__(9);
 
@@ -1671,9 +1700,9 @@
 
 	var _NavigationClass2 = _interopRequireDefault(_NavigationClass);
 
-	var _Buttons = __webpack_require__(7);
+	var _ButtonHelper = __webpack_require__(7);
 
-	var _Buttons2 = _interopRequireDefault(_Buttons);
+	var _ButtonHelper2 = _interopRequireDefault(_ButtonHelper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1702,7 +1731,7 @@
 	    _createClass(EditBackground, [{
 	        key: 'navigation',
 	        value: function navigation() {
-	            this.nav = new _NavigationClass2.default(_Buttons2.default.getEditBackgroundButton(), this.config.navId);
+	            this.nav = new _NavigationClass2.default(_ButtonHelper2.default.getEditBackgroundButton(), this.config.navId);
 	            return this.nav;
 	        }
 
@@ -1834,7 +1863,11 @@
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+
+	/**
+	 * defalut button for main functions in Main navigation
+	 */
 
 	var _AjaxClass = __webpack_require__(16);
 
@@ -13444,7 +13477,11 @@
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+
+	/**
+	 * defalut button for text in Main navigation
+	 */
 
 	var _SelectionClass = __webpack_require__(10);
 
@@ -13590,7 +13627,7 @@
 	"use strict";
 
 	/**
-	 * array of button for image editing navigation
+	 * default buttons for Edit image navigation
 	 */
 
 	var _EditImageClass = __webpack_require__(4);
@@ -13651,7 +13688,7 @@
 	"use strict";
 
 	/**
-	 * array of button for image editing navigation
+	 * default buttons for Edit background navigation
 	 */
 
 	var _EditBackgroundClass = __webpack_require__(14);
