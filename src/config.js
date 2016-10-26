@@ -1,7 +1,7 @@
 "use strict";
 
 const exports = module.exports;
-const prefix = 'frontendEditor';
+const prefix = 'frontendEditor'; // the plugin name
 
 exports.prefix = prefix;
 
@@ -30,10 +30,6 @@ exports.editable = {
     prototype: 'editable',
     attribute: {
         name: `${prefix}-name`,
-        background: `${prefix}-bg`,
-        bgExists: `${prefix}-bg-exists`,
-        image: `${prefix}-image`,
-        html: `${prefix}-html`,
         /**
          * attribute says - this is our plugin editable area 
          * toLowerCase - prevent bug: the browser render attribute name as lowercase
@@ -43,12 +39,7 @@ exports.editable = {
         plugin: prefix.toLowerCase()
     },
     default: {
-        name: null,
-        type: 'inline',
-        background: true,
-        bgExists: true, // background editable only if bg element allready exists
-        image: true,
-        html: false
+        name: null
     }
 }
 
@@ -83,7 +74,7 @@ exports.EditBackground = {
  */
 exports.button = {
     class: `${prefix}-nav-btn`,
-    tagName: 'button'
+    tagName: 'button' 
 }
 
 /**
@@ -91,18 +82,18 @@ exports.button = {
  * @for ajax/Serialize.class.js
  */
 exports.ajax = {
-    url: 'http://localhost',
+    url: null,
     method: 'POST',
+    param: [], // for additional data 
     header: {},
-    success: function(data) { console.log(data, 'success') },
-    done: function(data) { console.log(data, 'done') },
-    failed: function(data) { console.log(data, 'error') }
+    success: null, //function(data) { console.log(data, 'success') },
+    done: null, //function(data) { console.log(data, 'done') },
+    failed: null //function(data) { console.log(data, 'error') }
 }
 
 /**
- * @for image/Image.js
- * @for button/image.array.js
+ * @for image/Images.class.js
  */
 exports.image = {
-    uploadImage: null, //function(file){console.log(file)},
+    uploadImage: null
 }

@@ -1,15 +1,20 @@
+"use strict";
+
+/**
+ * entry point
+ */
+
+// add babel polyfill 
+import "babel-polyfill";
+
+// add main style file
 require('./css/style.css');
+
+// add font-awesome style (its helpful with the button)
 require('font-awesome/css/font-awesome.css');
 
-import Editor from './editor/Editor.class.js';
+// import the main class
+import Editor from './js/Editor.class.js';
 
-
+// expose the class to window scope
 window.Editor = Editor;
-
-
-import EditImage from './editor/image/EditImage.class.js';
-
-window.editimage = EditImage;
-
-// usefull link
-// https://html.spec.whatwg.org/multipage/interaction.html#attr-contenteditable

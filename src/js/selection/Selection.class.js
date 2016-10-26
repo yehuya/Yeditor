@@ -1,7 +1,7 @@
 "use strict";
 
 import Config from './../../config.js';
-import { process } from './process.js';
+import { process } from './process.helper.js';
 
 /**
  * class for user selection

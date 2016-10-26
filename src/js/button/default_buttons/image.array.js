@@ -4,7 +4,8 @@
  * defalut button for images in Main navigation
  */
 
-import Img from './../../image/Image.js';
+import Images from './../../image/Images.class.js';
+import Selection from './../../selection/Selection.class.js';
 
 const exports = module.exports;
 
@@ -37,8 +38,8 @@ exports.image = [
                 name: 'change',
                 fn: function(event){
                     var files = event.target.files || event.dataTransfer.files;                 
-                    Img.imageUrl(files[0], function(url){
-                        Img.insertImage(url);
+                    Images.getURL(files[0], function(url){
+                        Images.insertImageIntoUserSelection(url);
                     });
 
                     this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
@@ -74,8 +75,12 @@ exports.image = [
                 name: 'change',
                 fn: function(event){
                     var files = event.target.files || event.dataTransfer.files;
-                    Img.imageUrl(files[0], function(url){
-                        Img.insertBackground(url);
+                    
+                    var selection = new Selection();
+                    var elem = selection.parent();
+
+                    Images.getURL(files[0], function(url){
+                        Images.addBackground(url, elem);
                     });
 
                     this.getElementsByTagName('input')[0].value = ''; // clone the input for new image

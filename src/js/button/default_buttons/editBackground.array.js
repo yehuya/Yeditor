@@ -5,7 +5,7 @@
  */
 
 import EditBackground from './../../image/EditBackground.class.js';
-import Img from './../../image/Image.js';
+import Images from './../../image/Images.class.js';
 
 const exports = module.exports;
 
@@ -39,7 +39,7 @@ exports.editBackground = [
                     var files = event.target.files || event.dataTransfer.files;
                     var currentBg = EditBackground.getCurrentBackground();
 
-                    Img.imageUrl(files[0], function(url) {
+                    Images.getURL(files[0], function(url) {
                         currentBg.style.backgroundImage = 'url(' + url + ')';
                     });
 

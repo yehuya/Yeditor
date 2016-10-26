@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <script src="../dist/bundle.min.js"></script>
+    <script src="../dist/bundle.js"></script>
     <script src="js/image.js"></script>
     <script>
         var editor = new Editor({
@@ -70,7 +70,13 @@
                     callback(url);
                 });
             }*/
+            url: 'http://localhost',
+            done: function(data){
+                console.log(data);
+            }
         });
+
+        editor.api.ajax.addParam({name: 'hello', value: 'world'});
 
         var title = document.getElementsByTagName('h1')[0];
         var edit = title.editable({

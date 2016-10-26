@@ -1,33 +1,39 @@
-import Config from './../../config.js';
+"use strict";
 
 /**
  * serialize data for ajax request
  */
+
+import Config from './../../config.js';
+
 export default class Serialize {
-    constructor(){
+    /**
+     * __construct
+     * serialize DOM elements
+     * for ajax sending
+     * @param Array (of HTML elements)
+     */
+    constructor(ArrayOfElements){
         this.FromData = new FormData(); // for POST method
         this.StringData = ''; // for GET method
+        
         this.config = Config.editable;
-        this.method = Config.ajax.method;
+        this.convert(ArrayOfElements);
     }
 
     /**
-     * serialize array of elements for POST ajax method
-     * @param Array of Object (elements)
-     * @return Object
+     * get serialize array of elements for POST ajax method
+     * @return Object (FormData)
      */
-    POST(ArrayOfElements){
-        this.convert(ArrayOfElements)
+    POST(){
         return this.FromData;
     }
 
     /**
-     * serialize array of elements for GET
-     * @param Array of Object (elements)
+     * get serialize array of elements for GET
      * @return String
      */
-    GET(ArrayOfElements){
-        this.convert(ArrayOfElements)
+    GET(){
         return this.StringData;
     }
 
@@ -64,11 +70,11 @@ export default class Serialize {
      * @param String (value)
      */
     addData(key, value){
-        if(this.method == 'GET'){
-            let and = this.StringData.length > 0 ? '&' : '';
-            this.StringData += encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
-        }else if(this.method == 'POST'){
-            this.FromData.append(key, value);
-        }
+        // GET
+        let and = this.StringData.length > 0 ? '&' : '';
+        this.StringData += encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
+        
+        // POST
+        this.FromData.append(key, value);
     }
 } 

@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * helper functions for parcess.helper.js 
+ */
+
 const exports = module.exports;
 
 /**

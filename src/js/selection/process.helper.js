@@ -1,9 +1,13 @@
 "use strict";
 
 /**
+ * helper functions for user selection append in Selection.class.js
+ */
+
+/**
  * import helper function for the process
  */
-import { append, appendFromTo } from './append.js';
+import { append, appendFromTo } from './append.helper.js';
 
 const exports = module.exports;
 

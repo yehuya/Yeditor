@@ -86,4 +86,11 @@ export default class Editable {
             }
         }
     }
+
+    /**
+     * get all editable element
+     */
+    static getAllEditableElement(){
+        return document.querySelectorAll('[' + Config.editable.attribute.plugin + ']');
+    }
 }

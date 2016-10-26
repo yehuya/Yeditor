@@ -19,6 +19,16 @@ exports.nav = [
     {
         name: 'save',
         class: ['fa', 'fa-floppy-o'],
+        element: function(){
+            var btn = document.createElement(Config.button.tagName);
+
+            // hide the button if there is no config.ajax.url
+            if(Config.ajax.url == null){
+                btn.style.display = 'none';
+            }
+
+            return btn;
+        },
         align: 'right',
         event: {
             name: 'click',

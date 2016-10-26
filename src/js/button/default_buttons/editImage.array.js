@@ -5,7 +5,7 @@
  */
 
 import EditImage from './../../image/EditImage.class.js';
-import Img from './../../image/Image.js';
+import Images from './../../image/Images.class.js';
 
 const exports = module.exports;
 
@@ -40,7 +40,7 @@ exports.editImage = [
                     var files = event.target.files || event.dataTransfer.files;
                     var currentImage = EditImage.getCurrentImage();                 
                     
-                    Img.imageUrl(files[0], function(url){
+                    Images.getURL(files[0], function(url){
                         currentImage.src = url;
                         EditImage.show(currentImage);
                     });

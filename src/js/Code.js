@@ -2,7 +2,8 @@
 
 /**
  * Create CodeMirror object
- * https://codemirror.net/
+ * @url https://codemirror.net/
+ * helper function for codemirror
  */
 
 require('codemirror/lib/codemirror.css');
@@ -13,6 +14,7 @@ const exports = module.exports;
 
 /**
  * init CodeMirror
+ * the main function
  */
 exports.CodeMirror = CodeMirror(document.body, {
     mode: 'htmlmixed',
@@ -31,10 +33,16 @@ exports.EventFn = {
     change: null
 };
 
+/**
+ * get codemirror elemet
+ */
 exports.element = function() {
     return document.getElementsByClassName('CodeMirror')[0];
 }
 
+/**
+ * toggle - hide / show codemirror elem
+ */
 exports.toggleShow = function() {
     exports.element().classList.toggle('active');
 }

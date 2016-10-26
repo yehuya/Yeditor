@@ -10,7 +10,7 @@
  *   @align: 'center' || 'left' || 'right' // the align of the button
  *   @text: 'test', // insert text into the btn - optional
  *   @id: 'test-btn', // add id to this btn - optional
- *   @element: document.createElement('button').cloneNode(), // btn element - optional
+ *   @element: document.createElement('button').cloneNode(), // btn element - optional (DOM elem or Function that return DOM elem)
  *   @event: [
  *             {
  *                 @name: 'click',
@@ -18,7 +18,7 @@
  *                     console.log('test');
  *                 }
  *             }
- *         ],// btn event || for multiple event use []
+ *         ],// btn event, for multiple event use []
  * }
  */
 
@@ -43,7 +43,8 @@ export default class Button {
      * @return Object
      */
     create(btn) {
-        this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element();
+        if(typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
+        this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element(); // check if btn element is DOM element
         this.class(btn.class, btn.align);
         this.elem.title = btn.description || null;
         this.elem.id = btn.id || null;
