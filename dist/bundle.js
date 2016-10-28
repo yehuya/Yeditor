@@ -61,10 +61,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// add main style file
-	__webpack_require__(327);
+	__webpack_require__(326);
 
 	// add font-awesome style (its helpful with the button)
-	__webpack_require__(329);
+	__webpack_require__(328);
 
 	// import the main class
 
@@ -8235,7 +8235,7 @@
 
 	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
 
-	var _EditBackgroundClass = __webpack_require__(310);
+	var _EditBackgroundClass = __webpack_require__(309);
 
 	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
 
@@ -8247,15 +8247,15 @@
 
 	var _ButtonHelper2 = _interopRequireDefault(_ButtonHelper);
 
-	var _AjaxClass = __webpack_require__(312);
+	var _AjaxClass = __webpack_require__(311);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
-	var _SerializeClass = __webpack_require__(313);
+	var _SerializeClass = __webpack_require__(312);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
-	var _Code = __webpack_require__(314);
+	var _Code = __webpack_require__(313);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8524,7 +8524,7 @@
 
 	var _EditImageClass2 = _interopRequireDefault(_EditImageClass);
 
-	var _EditBackgroundClass = __webpack_require__(310);
+	var _EditBackgroundClass = __webpack_require__(309);
 
 	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
 
@@ -9146,13 +9146,13 @@
 
 	var _imageArray = __webpack_require__(305);
 
-	var _navArray = __webpack_require__(311);
+	var _navArray = __webpack_require__(310);
 
-	var _textArray = __webpack_require__(324);
+	var _textArray = __webpack_require__(323);
 
-	var _editImageArray = __webpack_require__(325);
+	var _editImageArray = __webpack_require__(324);
 
-	var _editBackgroundArray = __webpack_require__(326);
+	var _editBackgroundArray = __webpack_require__(325);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9319,7 +9319,7 @@
 
 	var _SelectionClass2 = _interopRequireDefault(_SelectionClass);
 
-	var _EditBackgroundClass = __webpack_require__(310);
+	var _EditBackgroundClass = __webpack_require__(309);
 
 	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
 
@@ -9440,7 +9440,9 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _processHelper = __webpack_require__(308);
+	var _AppendClass = __webpack_require__(308);
+
+	var _AppendClass2 = _interopRequireDefault(_AppendClass);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9450,6 +9452,9 @@
 	 * class for user selection
 	 */
 	var Selection = function () {
+	    /**
+	     * __consturct
+	     */
 	    function Selection() {
 	        _classCallCheck(this, Selection);
 
@@ -9485,6 +9490,7 @@
 
 	        /**
 	         * get selected text
+	         * @return String
 	         */
 
 	    }, {
@@ -9512,7 +9518,9 @@
 	        key: 'append',
 	        value: function append(FN) {
 	            if (!this.selected || this.selected.type == 'Caret' || !this.range) return;
-	            (0, _processHelper.process)(this.range, FN);
+	            if (this.parentEditable()) {
+	                new _AppendClass2.default(this.range, FN);
+	            }
 	        }
 
 	        /**
@@ -9525,8 +9533,9 @@
 	        key: 'insert',
 	        value: function insert(Node) {
 	            if (!this.range) return;
-
-	            this.range.insertNode(Node);
+	            if (this.parentEditable()) {
+	                this.range.insertNode(Node);
+	            }
 	        }
 
 	        /**
@@ -9538,7 +9547,9 @@
 	        key: 'remove',
 	        value: function remove() {
 	            if (!this.range) return;
-	            return this.range.extractContents();
+	            if (this.parentEditable()) {
+	                return this.range.extractContents();
+	            }
 	        }
 
 	        /**
@@ -9588,302 +9599,357 @@
 
 /***/ },
 /* 308 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	/**
-	 * helper functions for user selection append in Selection.class.js
-	 */
-
-	/**
-	 * import helper function for the process
-	 */
-
-	var _appendHelper = __webpack_require__(309);
-
-	var _exports = module.exports;
-
-	/**
-	 * important vars for the process flow
-	 */
-	var _CONTINUE;
-	var _END_CONTAINER;
-	var _HAS_CHILDREN;
-	var _BREAK_WHILE;
-
-	/**
-	 * the main process function
-	 * get the user selection and append it into new element
-	 * @param Object (user selection)
-	 * @param FN (what to do with the selection)
-	 */
-	_exports.process = function (range, FN) {
-	    var data = rangeData(range, FN);
-	    _CONTINUE = true;
-
-	    // same element
-	    level1(data);
-	    if (!_CONTINUE) return;
-
-	    // not the same element
-	    // refresh sibling after the first appendFromTo fn
-	    // prevent junk sibling
-	    level2(data);
-	    if (!_CONTINUE) return;
-
-	    // only 'one' element between end & start
-	    level3(data);
-	    if (!_CONTINUE) return;
-
-	    // get all the element between
-	    level4(data);
-	};
-
-	/**
-	 * same element
-	 * @param Object (range data)
-	 */
-	function level1(data) {
-	    if (data.start == data.end) {
-	        (0, _appendHelper.appendFromTo)(data.start, data.offset.start, data.offset.end, data.fn);
-	        _CONTINUE = false;
-	    }
-	}
-
-	/*
-	 * not the same element
-	 * refreshSibling
-	 * @param Object (range data)
-	 */
-	function level2(data) {
-	    var startElement = (0, _appendHelper.appendFromTo)(data.start, data.offset.start, null, data.fn);
-	    var endElement = (0, _appendHelper.appendFromTo)(data.end, null, data.offset.end, data.fn);
-
-	    refreshSibling(data);
-
-	    if (endElement.parentElement && data.sibling.start == endElement.parentElement || data.sibling.end == startElement) _CONTINUE = false;
-	}
-
-	/*
-	 * only 'one' element between end & start
-	 * @param Object (range data)
-	 */
-	function level3(data) {
-	    if (data.sibling.start == data.sibling.end && data.sibling.start != null) {
-
-	        var siblingStartChild = children(data.sibling.start, function (elem) {
-	            (0, _appendHelper.append)(elem, data.fn);
-	        });
-
-	        if (!siblingStartChild) (0, _appendHelper.append)(data.sibling.start, data.fn);
-
-	        _CONTINUE = false;
-	    }
-	}
-
-	/*
-	 * get all the element between
-	 * @param Object (range data)
-	 */
-	function level4(data) {
-	    var next = data.sibling.start;
-	    var child, isTheEndContainer;
-
-	    _BREAK_WHILE = false;
-
-	    while (next) {
-
-	        _END_CONTAINER = false;
-	        _HAS_CHILDREN = false;
-
-	        // check if next have children
-	        level4_1(data, next);
-
-	        // ### no children
-	        next = level4_2(data, next);
-
-	        // ### break
-	        level4_3b(data, next);
-	        if (_BREAK_WHILE) break;
-
-	        level4_4b(data, next);
-	        if (_BREAK_WHILE) break;
-
-	        // ### next while
-	        next = preventEmptySibling(next.nextSibling) || next.nextElementSibling;
-	    }
-	}
-
-	/**
-	 * while: children
-	 * @param Object (range data)
-	 * @param Object (Node element)
-	 */
-	function level4_1(data, next) {
-	    var child = children(next, function (elem) {
-	        if (!_END_CONTAINER) (0, _appendHelper.append)(elem, data.fn);
-	        if (elem == data.sibling.end) _END_CONTAINER = true;
-	    });
-
-	    return child ? _HAS_CHILDREN = true : _HAS_CHILDREN = false;
-	}
-
-	/**
-	 * while: no-children
-	 * @param Object (range data)
-	 * @param Object (Node element)
-	 * @return Object (Node element)
-	 */
-	function level4_2(data, next) {
-	    return !_HAS_CHILDREN && !_END_CONTAINER ? next = (0, _appendHelper.append)(next, data.fn) : next;
-	}
-
-	/**
-	 * while: break
-	 * @param Object (range data)
-	 * @param Object (Node element)
-	 */
-	function level4_3b(data, next) {
-	    if (data.sibling.end && next == data.sibling.end.toString()) {
-	        if (data.end.textContent.toString().substring(0, data.offset.end) == next.textContent) _BREAK_WHILE = true;
-	    }
-	}
-
-	/**
-	 * while: break
-	 * @param Object (range data)
-	 * @param Object (Node element)
-	 */
-	function level4_4b(data, next) {
-	    if (next == data.sibling.end || _END_CONTAINER) _BREAK_WHILE = true;
-	}
-
-	/**
-	 * order the range (user selection) object for the process function
-	 * @param Object (range)
-	 * @param FN (what to do with the selection)
-	 * @return Object
-	 */
-	function rangeData(range, FN) {
-	    return {
-	        start: range.startContainer,
-	        end: range.endContainer,
-	        offset: {
-	            start: range.startOffset,
-	            end: range.endOffset
-	        },
-	        sibling: {
-	            start: range.startContainer.nextSibling,
-	            end: range.endContainer.previousSibling
-	        },
-	        range: range,
-	        fn: FN
-	    };
-	}
-
-	/**
-	 * refresh range sibling after the first appendFromTo fn 
-	 * @param Object (range data)
-	 * @return Object (range data)
-	 */
-	function refreshSibling(data) {
-	    if (data.sibling.start == null) data.sibling.start = preventEmptySibling(data.range.startContainer.nextSibling) || data.range.startContainer.nextElementSibling;
-	    if (data.sibling.end == null) data.sibling.end = preventEmptySibling(data.range.endContainer.previousSibling) || data.range.endContainer.previousElementSibling;
-
-	    return data;
-	}
-
-	/**
-	 * prevent empty sibling 
-	 * if empty return Null
-	 * @param Object (Node)
-	 * @return Object || Null
-	 */
-	function preventEmptySibling(elem) {
-	    return elem && elem.nodeType == 3 && elem.data && elem.data.trim().length == 0 ? null : elem;
-	}
-
-	/**
-	 * get all the children of current element
-	 * - set callback fn on each child
-	 * @param Object (Node)
-	 * @param FN (callback function - what to do with the child)
-	 */
-	function children(node, callback) {
-	    var child = node.childNodes;
-	    child.forEach(function (element) {
-	        element.children ? children(element, callback) : callback(element);
-	    }, this);
-
-	    return child.length > 0 ? child : false;
-	}
-
-/***/ },
-/* 309 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	/**
-	 * helper functions for parcess.helper.js 
+	 * get user selection and append it inside new element
 	 */
 
-	var _exports = module.exports;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	/**
-	 * helper fn for appendFromTo
-	 * insert all the element into new element (@from = null, @to = null)
-	 * @param Object (Node)
-	 * @param FN (append the element)
-	 * @return Object (Node)
-	 */
-	_exports.append = function (node, FN) {
-	  return _exports.appendFromTo(node, null, null, FN);
-	};
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	/**
-	 * append part from element into new element
-	 * @param Object (Node)
-	 * @param Number || Null (offset start, null = 0)
-	 * @param Number || Null (offset end, null = node.length)
-	 * @param FN (append the important part into new element - this happend in FN)
-	 * @return Object (the important part - Node)
-	 */
-	_exports.appendFromTo = function (node, from, to, FN) {
-	  var text = node.textContent || '';
-	  var parent = node.parentElement || null;
-	  var nextSibling = node.nextSibling;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  if (to == null) to = text.length;
-	  if (from == null) from = 0;
+	var Append = function () {
 
-	  var before = text.substring(0, from);
-	  var main = text.substring(from, to);
-	  var after = text.substring(to, text.length);
+	    /**
+	     * __consturct
+	     * @param Object (user selection range)
+	     * @param FN (what to do with the user selection)
+	     */
+	    function Append(range, FN) {
+	        _classCallCheck(this, Append);
 
-	  parent.removeChild(node);
+	        this.data = this.rangeData(range, FN);
 
-	  main = main.length > 0 ? FN(main) : null;
+	        this._CONTINUE;
+	        this._END_CONTAINER;
+	        this._HAS_CHILDREN;
+	        this._BREAK_WHILE;
 
-	  if (before.length > 0) parent.insertBefore(createTextNode(before), nextSibling);
-	  if (main) parent.insertBefore(main, nextSibling);
-	  if (after.length > 0) parent.insertBefore(createTextNode(after), nextSibling);
+	        this.process();
+	    }
 
-	  return main;
-	};
+	    /**
+	     * the main process function
+	     * get the user selection and append it into new element
+	     */
 
-	/**
-	 * create Text node
-	 * @param String 
-	 * @return Object (text node)
-	 */
-	function createTextNode(text) {
-	  return document.createTextNode(text).cloneNode(true);
-	}
+
+	    _createClass(Append, [{
+	        key: "process",
+	        value: function process() {
+	            this._CONTINUE = true;
+
+	            // same element
+	            this.level1();
+	            if (!this._CONTINUE) return;
+
+	            // not the same element
+	            // refresh sibling after the first appendFromTo fn
+	            // prevent junk sibling
+	            this.level2();
+	            if (!this._CONTINUE) return;
+
+	            // only 'one' element between end & start
+	            this.level3();
+	            if (!this._CONTINUE) return;
+
+	            // get all the element between
+	            this.level4();
+	        }
+
+	        /**
+	         * same element
+	         */
+
+	    }, {
+	        key: "level1",
+	        value: function level1() {
+	            var data = this.data;
+	            if (data.start == data.end) {
+	                this.appendFromTo(data.start, data.offset.start, data.offset.end, data.fn);
+	                this._CONTINUE = false;
+	            }
+	        }
+
+	        /*
+	         * not the same element
+	         * refreshSibling
+	         */
+
+	    }, {
+	        key: "level2",
+	        value: function level2() {
+	            var data = this.data;
+	            var startElement = this.appendFromTo(data.start, data.offset.start, null, data.fn);
+	            var endElement = this.appendFromTo(data.end, null, data.offset.end, data.fn);
+
+	            this.refreshSibling(data);
+
+	            if (endElement.parentElement && data.sibling.start == endElement.parentElement || data.sibling.end == startElement) this._CONTINUE = false;
+	        }
+
+	        /*
+	         * only 'one' element between end & start
+	         */
+
+	    }, {
+	        key: "level3",
+	        value: function level3() {
+	            var self = this;
+	            var data = this.data;
+
+	            if (data.sibling.start == data.sibling.end && data.sibling.start != null) {
+
+	                var siblingStartChild = this.children(data.sibling.start, function (elem) {
+	                    self.append(elem, data.fn);
+	                });
+
+	                if (!siblingStartChild) this.append(data.sibling.start, data.fn);
+
+	                this._CONTINUE = false;
+	            }
+	        }
+
+	        /*
+	         * get all the element between
+	         */
+
+	    }, {
+	        key: "level4",
+	        value: function level4() {
+	            var data = this.data;
+	            var next = data.sibling.start;
+	            var child, isTheEndContainer;
+
+	            this._BREAK_WHILE = false;
+
+	            while (next) {
+
+	                this._END_CONTAINER = false;
+	                this._HAS_CHILDREN = false;
+
+	                // check if next have children
+	                this.level4_1(next);
+
+	                // ### no children
+	                next = this.level4_2(next);
+
+	                // ### break
+	                this.level4_3b(next);
+	                if (this._BREAK_WHILE) break;
+
+	                this.level4_4b(next);
+	                if (this._BREAK_WHILE) break;
+
+	                // ### next while
+	                next = this.preventEmptySibling(next.nextSibling) || next.nextElementSibling;
+	            }
+	        }
+
+	        /**
+	         * while: children
+	         * @param Object (Node element)
+	         */
+
+	    }, {
+	        key: "level4_1",
+	        value: function level4_1(next) {
+	            var data = this.data;
+	            var self = this;
+
+	            var child = this.children(next, function (elem) {
+	                if (!self._END_CONTAINER) self.append(elem, data.fn);
+	                if (elem == data.sibling.end) self._END_CONTAINER = true;
+	            });
+
+	            return child ? this._HAS_CHILDREN = true : this._HAS_CHILDREN = false;
+	        }
+
+	        /**
+	         * while: no-children
+	         * @param Object (Node element)
+	         * @return Object (Node element)
+	         */
+
+	    }, {
+	        key: "level4_2",
+	        value: function level4_2(next) {
+	            return !this._HAS_CHILDREN && !this._END_CONTAINER ? next = this.append(next, this.data.fn) : next;
+	        }
+
+	        /**
+	         * while: break
+	         * @param Object (Node element)
+	         */
+
+	    }, {
+	        key: "level4_3b",
+	        value: function level4_3b(next) {
+	            var data = this.data;
+
+	            if (data.sibling.end && next == data.sibling.end.toString()) {
+	                if (data.end.textContent.toString().substring(0, data.offset.end) == next.textContent) this._BREAK_WHILE = true;
+	            }
+	        }
+
+	        /**
+	         * while: break
+	         * @param Object (Node element)
+	         */
+
+	    }, {
+	        key: "level4_4b",
+	        value: function level4_4b(next) {
+	            if (next == this.data.sibling.end || this._END_CONTAINER) this._BREAK_WHILE = true;
+	        }
+
+	        /**
+	         * order the range (user selection) object for the process function
+	         * @param Object (range)
+	         * @param FN (what to do with the selection)
+	         * @return Object
+	         */
+
+	    }, {
+	        key: "rangeData",
+	        value: function rangeData(range, FN) {
+	            return {
+	                start: range.startContainer,
+	                end: range.endContainer,
+	                offset: {
+	                    start: range.startOffset,
+	                    end: range.endOffset
+	                },
+	                sibling: {
+	                    start: range.startContainer.nextSibling,
+	                    end: range.endContainer.previousSibling
+	                },
+	                range: range,
+	                fn: FN
+	            };
+	        }
+
+	        /**
+	         * refresh range sibling after the first appendFromTo fn 
+	         * @return Object (range data)
+	         */
+
+	    }, {
+	        key: "refreshSibling",
+	        value: function refreshSibling() {
+	            var data = this.data;
+	            if (data.sibling.start == null) data.sibling.start = this.preventEmptySibling(data.range.startContainer.nextSibling) || data.range.startContainer.nextElementSibling;
+	            if (data.sibling.end == null) data.sibling.end = this.preventEmptySibling(data.range.endContainer.previousSibling) || data.range.endContainer.previousElementSibling;
+
+	            return data;
+	        }
+
+	        /**
+	         * prevent empty sibling 
+	         * if empty return Null
+	         * @param Object (Node)
+	         * @return Object || Null
+	         */
+
+	    }, {
+	        key: "preventEmptySibling",
+	        value: function preventEmptySibling(elem) {
+	            return elem && elem.nodeType == 3 && elem.data && elem.data.trim().length == 0 ? null : elem;
+	        }
+
+	        /**
+	         * get all the children of current element
+	         * - set callback fn on each child
+	         * @param Object (Node)
+	         * @param FN (callback function - what to do with the child)
+	         */
+
+	    }, {
+	        key: "children",
+	        value: function children(node, callback) {
+	            var child = node.childNodes;
+	            child.forEach(function (element) {
+	                element.children ? this.children(element, callback) : callback(element);
+	            }, this);
+
+	            return child.length > 0 ? child : false;
+	        }
+
+	        /**
+	         * helper fn for appendFromTo
+	         * insert all the element into new element (@from = null, @to = null)
+	         * @param Object (Node)
+	         * @param FN (append the element)
+	         * @return Object (Node)
+	         */
+
+	    }, {
+	        key: "append",
+	        value: function append(node, FN) {
+	            return this.appendFromTo(node, null, null, FN);
+	        }
+
+	        /**
+	         * append part from element into new element
+	         * @param Object (Node)
+	         * @param Number || Null (offset start, null = 0)
+	         * @param Number || Null (offset end, null = node.length)
+	         * @param FN (append the important part into new element - this happend in FN)
+	         * @return Object (the important part - Node)
+	         */
+
+	    }, {
+	        key: "appendFromTo",
+	        value: function appendFromTo(node, from, to, FN) {
+	            var text = node.textContent || '';
+	            var parent = node.parentElement || null;
+	            var nextSibling = node.nextSibling;
+
+	            if (to == null) to = text.length;
+	            if (from == null) from = 0;
+
+	            var before = text.substring(0, from);
+	            var main = text.substring(from, to);
+	            var after = text.substring(to, text.length);
+
+	            parent.removeChild(node);
+
+	            main = main.length > 0 ? FN(main) : null;
+
+	            if (before.length > 0) parent.insertBefore(this.constructor.createTextNode(before), nextSibling);
+	            if (main) parent.insertBefore(main, nextSibling);
+	            if (after.length > 0) parent.insertBefore(this.constructor.createTextNode(after), nextSibling);
+
+	            return main;
+	        }
+
+	        /**
+	         * create Text node
+	         * @param String 
+	         * @return Object (text node)
+	         */
+
+	    }], [{
+	        key: "createTextNode",
+	        value: function createTextNode(text) {
+	            return document.createTextNode(text).cloneNode(true);
+	        }
+	    }]);
+
+	    return Append;
+	}();
+
+	exports.default = Append;
 
 /***/ },
-/* 310 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10062,7 +10128,7 @@
 	exports.default = EditBackground;
 
 /***/ },
-/* 311 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10071,7 +10137,7 @@
 	 * defalut button for main functions in Main navigation
 	 */
 
-	var _AjaxClass = __webpack_require__(312);
+	var _AjaxClass = __webpack_require__(311);
 
 	var _AjaxClass2 = _interopRequireDefault(_AjaxClass);
 
@@ -10083,7 +10149,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _Code = __webpack_require__(314);
+	var _Code = __webpack_require__(313);
 
 	var _Code2 = _interopRequireDefault(_Code);
 
@@ -10206,7 +10272,7 @@
 	}];
 
 /***/ },
-/* 312 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10227,7 +10293,7 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
-	var _SerializeClass = __webpack_require__(313);
+	var _SerializeClass = __webpack_require__(312);
 
 	var _SerializeClass2 = _interopRequireDefault(_SerializeClass);
 
@@ -10412,7 +10478,7 @@
 	exports.default = Ajax;
 
 /***/ },
-/* 313 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10532,7 +10598,7 @@
 	exports.default = Serialize;
 
 /***/ },
-/* 314 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10543,17 +10609,17 @@
 	 * helper function for codemirror
 	 */
 
-	var _codemirror = __webpack_require__(315);
+	var _codemirror = __webpack_require__(314);
 
 	var _codemirror2 = _interopRequireDefault(_codemirror);
 
-	var _htmlmixed = __webpack_require__(316);
+	var _htmlmixed = __webpack_require__(315);
 
 	var _htmlmixed2 = _interopRequireDefault(_htmlmixed);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(320);
+	__webpack_require__(319);
 
 
 	var _exports = module.exports;
@@ -10594,7 +10660,7 @@
 	};
 
 /***/ },
-/* 315 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -19564,7 +19630,7 @@
 
 
 /***/ },
-/* 316 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -19572,7 +19638,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(315), __webpack_require__(317), __webpack_require__(318), __webpack_require__(319));
+	    mod(__webpack_require__(314), __webpack_require__(316), __webpack_require__(317), __webpack_require__(318));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror", "../xml/xml", "../javascript/javascript", "../css/css"], mod);
 	  else // Plain browser env
@@ -19722,7 +19788,7 @@
 
 
 /***/ },
-/* 317 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -19730,7 +19796,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(315));
+	    mod(__webpack_require__(314));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -20122,7 +20188,7 @@
 
 
 /***/ },
-/* 318 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -20130,7 +20196,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(315));
+	    mod(__webpack_require__(314));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -20903,7 +20969,7 @@
 
 
 /***/ },
-/* 319 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -20911,7 +20977,7 @@
 
 	(function(mod) {
 	  if (true) // CommonJS
-	    mod(__webpack_require__(315));
+	    mod(__webpack_require__(314));
 	  else if (typeof define == "function" && define.amd) // AMD
 	    define(["../../lib/codemirror"], mod);
 	  else // Plain browser env
@@ -21734,16 +21800,16 @@
 
 
 /***/ },
-/* 320 */
+/* 319 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
+/* 320 */,
 /* 321 */,
 /* 322 */,
-/* 323 */,
-/* 324 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21890,7 +21956,7 @@
 	}];
 
 /***/ },
-/* 325 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21951,7 +22017,7 @@
 	}];
 
 /***/ },
-/* 326 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21960,7 +22026,7 @@
 	 * default buttons for Edit background navigation
 	 */
 
-	var _EditBackgroundClass = __webpack_require__(310);
+	var _EditBackgroundClass = __webpack_require__(309);
 
 	var _EditBackgroundClass2 = _interopRequireDefault(_EditBackgroundClass);
 
@@ -22011,14 +22077,14 @@
 	}];
 
 /***/ },
-/* 327 */
+/* 326 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 328 */,
-/* 329 */
+/* 327 */,
+/* 328 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

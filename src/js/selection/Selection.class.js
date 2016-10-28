@@ -1,12 +1,15 @@
 "use strict";
 
 import Config from './../../config.js';
-import { process } from './process.helper.js';
+import Append from './Append.class.js';
 
 /**
  * class for user selection
  */
 export default class Selection {
+    /**
+     * __consturct
+     */
     constructor() {
         this.config = Config.editable;
         this.selected = this.get();
@@ -36,6 +39,7 @@ export default class Selection {
 
     /**
      * get selected text
+     * @return String
      */
     text() {
         return this.selected ? this.selected.toString() : null;
@@ -57,7 +61,9 @@ export default class Selection {
      */
     append(FN) {
         if (!this.selected || this.selected.type == 'Caret' || !this.range) return;
-        process(this.range, FN);
+        if (this.parentEditable()) {
+            new Append(this.range, FN);
+        }
     }
 
     /**
@@ -67,8 +73,9 @@ export default class Selection {
      */
     insert(Node) {
         if (!this.range) return;
-
-        this.range.insertNode(Node);
+        if (this.parentEditable()) {
+            this.range.insertNode(Node);
+        }
     }
 
     /**
@@ -77,7 +84,9 @@ export default class Selection {
      */
     remove() {
         if (!this.range) return;
-        return this.range.extractContents();
+        if (this.parentEditable()) {
+            return this.range.extractContents();
+        }
     }
 
     /**
@@ -102,8 +111,8 @@ export default class Selection {
         var editable = false;
 
         while (parent) {
-            if (parent.getAttribute('contenteditable') == 'true'
-                && parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin) {
+            if (parent.getAttribute('contenteditable') == 'true' &&
+                parent.getAttribute(this.config.attribute.plugin) == this.config.attribute.plugin) {
                 editable = parent;
                 break;
             }
