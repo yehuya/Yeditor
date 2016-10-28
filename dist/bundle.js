@@ -10585,7 +10585,7 @@
 	        value: function addData(key, value) {
 	            // GET
 	            var and = this.StringData.length > 0 ? '&' : '';
-	            this.StringData += encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
+	            this.StringData += and + encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
 
 	            // POST
 	            this.FromData.append(key, value);

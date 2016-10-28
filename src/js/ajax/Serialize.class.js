@@ -13,10 +13,10 @@ export default class Serialize {
      * for ajax sending
      * @param Array (of HTML elements)
      */
-    constructor(ArrayOfElements){
+    constructor(ArrayOfElements) {
         this.FromData = new FormData(); // for POST method
         this.StringData = ''; // for GET method
-        
+
         this.config = Config.editable;
         this.convert(ArrayOfElements);
     }
@@ -25,7 +25,7 @@ export default class Serialize {
      * get serialize array of elements for POST ajax method
      * @return Object (FormData)
      */
-    POST(){
+    POST() {
         return this.FromData;
     }
 
@@ -33,7 +33,7 @@ export default class Serialize {
      * get serialize array of elements for GET
      * @return String
      */
-    GET(){
+    GET() {
         return this.StringData;
     }
 
@@ -42,7 +42,7 @@ export default class Serialize {
      * @param Array of Object
      * @structure: {element.name : element.content}
      */
-    makeBigObject(ArrayOfElements){
+    makeBigObject(ArrayOfElements) {
         var object = {};
 
         ArrayOfElements.forEach(function(elem) {
@@ -56,9 +56,9 @@ export default class Serialize {
      * convert this.makeBigObject into ajax request by this.addData
      * @param Array of Object
      */
-    convert(ArrayOfElements){
+    convert(ArrayOfElements) {
         var object = this.makeBigObject(ArrayOfElements);
-        for(let key in object){
+        for (let key in object) {
             this.addData(key, object[key]);
         }
     }
@@ -69,12 +69,12 @@ export default class Serialize {
      * @param String (key)
      * @param String (value)
      */
-    addData(key, value){
+    addData(key, value) {
         // GET
         let and = this.StringData.length > 0 ? '&' : '';
-        this.StringData += encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
-        
+        this.StringData += and + encodeURIComponent(key.trim()) + '=' + encodeURIComponent(value.trim());
+
         // POST
         this.FromData.append(key, value);
     }
-} 
+}
