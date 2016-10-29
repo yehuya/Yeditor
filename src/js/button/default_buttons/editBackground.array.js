@@ -15,6 +15,7 @@ exports.editBackground = [
      */
     {
         name: 'Add background',
+        description: 'Change background image',
         class: ['fa', 'fa-file-image-o'],
         element: (function() {
             var label = document.createElement('label');
@@ -47,5 +48,21 @@ exports.editBackground = [
                 }
             }
         ]
+    },
+    {
+        name: 'remove background',
+        description: 'Remove background image',
+        class: ['fa', 'fa-times'],
+        event: {
+            name: 'click',
+            fn: function(event) {
+                event.preventDefault();
+                var ok = confirm('Are you sure?');
+                if (!ok) return;
+
+                var currentBg = EditBackground.getCurrentBackground();
+                currentBg.style.backgroundImage = '';
+            }
+        }
     }
 ];

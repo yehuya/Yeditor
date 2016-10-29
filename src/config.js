@@ -49,6 +49,7 @@ exports.editable = {
 exports.nav = {
     class: `${prefix}-nav`,
     id: `${prefix}-nav`,
+    openNavigation: true // main navigation close or open
 }
 
 /**
@@ -73,8 +74,10 @@ exports.EditBackground = {
  * @for editor/button/Button.class.js
  */
 exports.button = {
+    areaClass: `${prefix}-nav-btn-area`,
+    descriptionClass: `${prefix}-nav-btn-description`,
     class: `${prefix}-nav-btn`,
-    tagName: 'button' 
+    tagName: 'button'
 }
 
 /**

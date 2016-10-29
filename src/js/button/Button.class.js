@@ -43,17 +43,49 @@ export default class Button {
      * @return Object
      */
     create(btn) {
-        if(typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
+        var area = this.area();
+
+        if (typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
         this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element(); // check if btn element is DOM element
         this.class(btn.class, btn.align);
-        this.elem.title = btn.description || null;
         this.elem.id = btn.id || null;
 
         if (btn.text && btn.text.length > 0) this.elem.appendChild(document.createTextNode(btn.text));
 
         this.event(btn.event);
 
-        return this.elem;
+        var des = this.description(btn.description);
+
+        area.appendChild(this.elem)
+        if (des) area.appendChild(des);
+
+        return area;
+    }
+
+    /**
+     * the button will placed inside this element
+     * @return Object (Node) || boolean (false)
+     */
+    area() {
+        var place = document.createElement('div');
+        place.classList.add(this.config.areaClass);
+
+        return place;
+    }
+
+    /**
+     * create buttton description element
+     * @param String (button description)
+     * @return Object (Node)
+     */
+    description(text) {
+        if (!text || text.length <= 0) return false;
+
+        var des = document.createElement('div');
+        des.classList.add(this.config.descriptionClass);
+        des.innerText = text;
+
+        return des;
     }
 
     /**
@@ -72,14 +104,14 @@ export default class Button {
     class(classes, align) {
         this.elem.classList.add(this.config.class);
 
-        if (align == 'right' || align == 'left') {
-            this.elem.classList.add(align);
-        } else {
-            this.elem.classList.add('center');
-        }
+        // if (align == 'right' || align == 'left') {
+        //     this.elem.classList.add(align);
+        // } else {
+        //     this.elem.classList.add('center');
+        // }
 
         if (Array.isArray(classes)) {
-            classes.forEach(function (cls) {
+            classes.forEach(function(cls) {
                 this.elem.classList.add(cls);
             }, this);
         } else if (classes) {
@@ -95,7 +127,7 @@ export default class Button {
      */
     event(events) {
         if (Array.isArray(events)) {
-            events.forEach(function (event) {
+            events.forEach(function(event) {
                 this.elem.addEventListener(event.name, event.fn);
             }, this);
         } else if (events) {

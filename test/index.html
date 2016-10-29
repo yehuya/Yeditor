@@ -61,6 +61,22 @@
         </div>
     </div>
 
+    <style>
+        #show {
+            display: none;
+        }
+        
+        #show:focus {
+            display: block;
+        }
+        
+        #hello:focus+#show {
+            display: block;
+        }
+    </style>
+    <button id="hello">hello</button>
+    <input type="text" id="show" />
+
     <script src="../dist/bundle.js"></script>
     <script src="js/image.js"></script>
     <script>
@@ -70,13 +86,17 @@
                     callback(url);
                 });
             }*/
+            openNavigation: true,
             url: 'http://localhost',
-            done: function(data){
+            done: function(data) {
                 console.log(data);
             }
         });
 
-        editor.api.ajax.addParam({name: 'hello', value: 'world'});
+        editor.api.ajax.addParam({
+            name: 'hello',
+            value: 'world'
+        });
 
         var title = document.getElementsByTagName('h1')[0];
         var edit = title.editable({

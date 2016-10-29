@@ -13,12 +13,14 @@ export default class Navigation {
      * __construct
      * create navigation
      * @param Array Of Object (buttons array)
-     * @param String (navigation id) 
+     * @param String (navigation id)
+     * @param String (navigation css class) 
      */
-    constructor(buttons, id){
+    constructor(buttons, id, cssClass) {
         this.config = Config.nav;
-        this.buttons = buttons; 
+        this.buttons = buttons;
         this.id = id;
+        this.cssClass = cssClass;
         this.elem;
 
         this.create();
@@ -28,10 +30,13 @@ export default class Navigation {
      * create navigation element (DOM)
      * @return Object
      */
-    element(){
+    element() {
         this.elem = document.createElement('nav');
         this.elem.id = this.id;
         this.elem.classList.add(this.config.class);
+        if (this.cssClass) {
+            this.elem.classList.add(this.cssClass);
+        }
 
         return this.elem;
     }
@@ -40,7 +45,7 @@ export default class Navigation {
      * insert nav element into the document.body
      * @param Object (DOM element)
      */
-    insertIntoBody(){
+    insertIntoBody() {
         return document.body.appendChild(this.elem);
     }
 
@@ -49,7 +54,7 @@ export default class Navigation {
      * @param Object (nav element)
      * @param Object (DOM element)
      */
-    append(Node){
+    append(Node) {
         return this.elem.appendChild(Node);
     }
 
@@ -58,7 +63,7 @@ export default class Navigation {
      * @param Object (nav element)
      * @param Array (buttons)
      */
-    insertEditButtons(){
+    insertEditButtons() {
         this.buttons.forEach(function(element) {
             this.append(element);
         }, this);
@@ -72,7 +77,7 @@ export default class Navigation {
      * - append edit button into nav
      * - append nav into body
      */
-    create(){
+    create() {
         this.element();
         this.insertEditButtons();
         this.insertIntoBody();
@@ -82,7 +87,7 @@ export default class Navigation {
      * add button into the navigation
      * @param Object
      */
-    addButton(object){
+    addButton(object) {
         var btn = new Button(object);
         this.append(btn);
     }

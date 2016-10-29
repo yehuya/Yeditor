@@ -15,8 +15,9 @@ exports.editImage = [
      */
     {
         name: 'image src',
+        description: 'Change image',
         class: ['fa', 'fa-picture-o'],
-        element: (function(){
+        element: (function() {
             var label = document.createElement('label');
             var input = document.createElement('input');
             input.type = 'file';
@@ -27,20 +28,19 @@ exports.editImage = [
 
             return label;
         })(),
-        event: [
-            {
+        event: [{
                 name: 'mousedown',
-                fn: function(event){
+                fn: function(event) {
                     event.preventDefault();
                 }
             },
             {
                 name: 'change',
-                fn: function(event){
+                fn: function(event) {
                     var files = event.target.files || event.dataTransfer.files;
-                    var currentImage = EditImage.getCurrentImage();                 
-                    
-                    Images.getURL(files[0], function(url){
+                    var currentImage = EditImage.getCurrentImage();
+
+                    Images.getURL(files[0], function(url) {
                         currentImage.src = url;
                         EditImage.show(currentImage);
                     });
@@ -48,6 +48,23 @@ exports.editImage = [
                     this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
                 }
             }
-        ] 
+        ]
+    },
+    {
+        name: 'remove image',
+        description: 'Remove image',
+        class: ['fa', 'fa-times'],
+        event: {
+            name: 'click',
+            fn: function(event) {
+                var ok = confirm('Are you sure?');
+                if (!ok) return;
+
+                var currentImage = EditImage.getCurrentImage();
+                var parent = currentImage.parentElement;
+                EditImage.hide();
+                parent.removeChild(currentImage);
+            }
+        }
     }
 ];

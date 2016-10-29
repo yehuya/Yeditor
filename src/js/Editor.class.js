@@ -52,8 +52,9 @@ export default class Editor {
      * init user options
      * @param Object (user)
      */
-    initOptions(options){
+    initOptions(options) {
         if (options && typeof options == 'object') {
+            if (options.hasOwnProperty('openNavigation')) Config.nav.openNavigation = options.openNavigation;
             if (options.hasOwnProperty('uploadImage')) Config.image.uploadImage = options.uploadImage;
             if (options.hasOwnProperty('url')) Config.ajax.url = options.url;
             if (options.hasOwnProperty('method')) Config.ajax.method = options.method;
@@ -70,8 +71,10 @@ export default class Editor {
      * - image
      * - background
      */
-    initNavigation(){
-        this.api.navigation.main = new Navigation(Buttons.getMainNavButton(), Config.nav.id);
+    initNavigation() {
+        var close = Config.nav.openNavigation ? false : 'close'; // main navigation open or close
+        this.api.navigation.main = new Navigation(Buttons.getMainNavButton(), Config.nav.id, close);
+
         this.api.navigation.image = new EditImage().nav;
         this.api.navigation.background = new EditBackground().nav;
     }
@@ -80,7 +83,7 @@ export default class Editor {
      * expose classes to window scope
      * - bind window.Element and Editable.class.js
      */
-    initWindow(){
+    initWindow() {
         window.Element.prototype[Config.editable.prototype] = this.bindEditable;
     }
 

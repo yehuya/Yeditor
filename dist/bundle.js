@@ -8305,6 +8305,7 @@
 	        key: 'initOptions',
 	        value: function initOptions(options) {
 	            if (options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) == 'object') {
+	                if (options.hasOwnProperty('openNavigation')) _config2.default.nav.openNavigation = options.openNavigation;
 	                if (options.hasOwnProperty('uploadImage')) _config2.default.image.uploadImage = options.uploadImage;
 	                if (options.hasOwnProperty('url')) _config2.default.ajax.url = options.url;
 	                if (options.hasOwnProperty('method')) _config2.default.ajax.method = options.method;
@@ -8325,7 +8326,9 @@
 	    }, {
 	        key: 'initNavigation',
 	        value: function initNavigation() {
-	            this.api.navigation.main = new _NavigationClass2.default(_ButtonHelper2.default.getMainNavButton(), _config2.default.nav.id);
+	            var close = _config2.default.nav.openNavigation ? false : 'close'; // main navigation open or close
+	            this.api.navigation.main = new _NavigationClass2.default(_ButtonHelper2.default.getMainNavButton(), _config2.default.nav.id, close);
+
 	            this.api.navigation.image = new _EditImageClass2.default().nav;
 	            this.api.navigation.background = new _EditBackgroundClass2.default().nav;
 	        }
@@ -8450,7 +8453,8 @@
 	 */
 	_exports.nav = {
 	    class: prefix + '-nav',
-	    id: prefix + '-nav'
+	    id: prefix + '-nav',
+	    openNavigation: true // main navigation close or open
 	};
 
 	/**
@@ -8475,6 +8479,8 @@
 	 * @for editor/button/Button.class.js
 	 */
 	_exports.button = {
+	    areaClass: prefix + '-nav-btn-area',
+	    descriptionClass: prefix + '-nav-btn-description',
 	    class: prefix + '-nav-btn',
 	    tagName: 'button'
 	};
@@ -8874,14 +8880,16 @@
 	     * __construct
 	     * create navigation
 	     * @param Array Of Object (buttons array)
-	     * @param String (navigation id) 
+	     * @param String (navigation id)
+	     * @param String (navigation css class) 
 	     */
-	    function Navigation(buttons, id) {
+	    function Navigation(buttons, id, cssClass) {
 	        _classCallCheck(this, Navigation);
 
 	        this.config = _config2.default.nav;
 	        this.buttons = buttons;
 	        this.id = id;
+	        this.cssClass = cssClass;
 	        this.elem;
 
 	        this.create();
@@ -8899,6 +8907,9 @@
 	            this.elem = document.createElement('nav');
 	            this.elem.id = this.id;
 	            this.elem.classList.add(this.config.class);
+	            if (this.cssClass) {
+	                this.elem.classList.add(this.cssClass);
+	            }
 
 	            return this.elem;
 	        }
@@ -9044,17 +9055,55 @@
 	    _createClass(Button, [{
 	        key: 'create',
 	        value: function create(btn) {
+	            var area = this.area();
+
 	            if (typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
 	            this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element(); // check if btn element is DOM element
 	            this.class(btn.class, btn.align);
-	            this.elem.title = btn.description || null;
 	            this.elem.id = btn.id || null;
 
 	            if (btn.text && btn.text.length > 0) this.elem.appendChild(document.createTextNode(btn.text));
 
 	            this.event(btn.event);
 
-	            return this.elem;
+	            var des = this.description(btn.description);
+
+	            area.appendChild(this.elem);
+	            if (des) area.appendChild(des);
+
+	            return area;
+	        }
+
+	        /**
+	         * the button will placed inside this element
+	         * @return Object (Node) || boolean (false)
+	         */
+
+	    }, {
+	        key: 'area',
+	        value: function area() {
+	            var place = document.createElement('div');
+	            place.classList.add(this.config.areaClass);
+
+	            return place;
+	        }
+
+	        /**
+	         * create buttton description element
+	         * @param String (button description)
+	         * @return Object (Node)
+	         */
+
+	    }, {
+	        key: 'description',
+	        value: function description(text) {
+	            if (!text || text.length <= 0) return false;
+
+	            var des = document.createElement('div');
+	            des.classList.add(this.config.descriptionClass);
+	            des.innerText = text;
+
+	            return des;
 	        }
 
 	        /**
@@ -9079,11 +9128,11 @@
 	        value: function _class(classes, align) {
 	            this.elem.classList.add(this.config.class);
 
-	            if (align == 'right' || align == 'left') {
-	                this.elem.classList.add(align);
-	            } else {
-	                this.elem.classList.add('center');
-	            }
+	            // if (align == 'right' || align == 'left') {
+	            //     this.elem.classList.add(align);
+	            // } else {
+	            //     this.elem.classList.add('center');
+	            // }
 
 	            if (Array.isArray(classes)) {
 	                classes.forEach(function (cls) {
@@ -9228,6 +9277,7 @@
 	{
 	    name: 'Add image',
 	    class: ['fa', 'fa-picture-o'],
+	    description: 'Add image',
 	    element: function () {
 	        var label = document.createElement('label');
 	        var input = document.createElement('input');
@@ -9261,6 +9311,7 @@
 	 */
 	{
 	    name: 'Add background',
+	    description: 'Add background image',
 	    class: ['fa', 'fa-file-image-o'],
 	    element: function () {
 	        var label = document.createElement('label');
@@ -10165,6 +10216,7 @@
 	{
 	    name: 'save',
 	    class: ['fa', 'fa-floppy-o'],
+	    description: 'Save',
 	    element: function element() {
 	        var btn = document.createElement(_config2.default.button.tagName);
 
@@ -10193,6 +10245,7 @@
 	    name: 'Close nav',
 	    class: ['fa', 'fa-times'],
 	    align: 'left',
+	    description: 'Minimize',
 	    id: ['closeBTN'],
 	    event: {
 	        name: 'click',
@@ -10226,8 +10279,8 @@
 
 	            var position = function position(event) {
 	                btn.classList.add('move');
-	                btn.style.top = parseInt(event.pageY) - 35 + 'px';
-	                btn.style.left = parseInt(event.pageX) - 35 + 'px';
+	                btn.style.top = parseInt(event.clientY) - 35 + 'px';
+	                btn.style.left = parseInt(event.clientX) - 35 + 'px';
 	            };
 
 	            window.addEventListener('mousemove', position);
@@ -10249,6 +10302,7 @@
 	{
 	    name: 'code',
 	    class: ['fa', 'fa-code'],
+	    description: 'Source code',
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
@@ -21835,6 +21889,7 @@
 	{
 	    name: 'bold',
 	    class: ['fa', 'fa-bold'],
+	    description: 'Bold',
 	    event: {
 	        name: 'click',
 	        fn: function fn() {
@@ -21876,6 +21931,7 @@
 	 */
 	{
 	    name: 'italic',
+	    description: 'Italic',
 	    class: ['fa', 'fa-italic'],
 	    event: {
 	        name: 'click',
@@ -21918,6 +21974,7 @@
 	 */
 	{
 	    name: 'underline',
+	    description: 'Underline',
 	    class: ['fa', 'fa-underline'],
 	    event: {
 	        name: 'click',
@@ -21953,6 +22010,54 @@
 	            selection.append(underline);
 	        }
 	    }
+	}, {
+	    name: 'add link',
+	    description: 'Add link',
+	    class: ['fa', 'fa-link'],
+	    event: [{
+	        name: 'click',
+	        fn: function fn(e) {
+
+	            var selection = new _SelectionClass2.default();
+	            var text = selection.text();
+	            if (!selection.selected.isCollapsed && selection.parentEditable()) {
+
+	                var url = prompt('Add link url..', 'http://');
+
+	                var link = document.createElement('a');
+	                link.href = url;
+
+	                var get = selection.remove();
+	                link.appendChild(get);
+	                selection.insert(link);
+	            }
+	        }
+	    }]
+	}, {
+	    name: 'remove link',
+	    description: 'Remove links',
+	    class: ['fa', 'fa-chain-broken'],
+	    event: [{
+	        name: 'click',
+	        fn: function fn(e) {
+	            var selection = new _SelectionClass2.default();
+
+	            if (!selection.selected.isCollapsed && selection.parentEditable()) {
+
+	                var get = selection.remove();
+	                var links = get.querySelectorAll('a');
+
+	                links.forEach(function (link) {
+	                    var parent = link.parentElement || get;
+	                    var content = document.createTextNode(link.textContent);
+	                    parent.insertBefore(content, link);
+	                    parent.removeChild(link);
+	                });
+
+	                selection.insert(get);
+	            }
+	        }
+	    }]
 	}];
 
 /***/ },
@@ -21983,6 +22088,7 @@
 	 */
 	{
 	    name: 'image src',
+	    description: 'Change image',
 	    class: ['fa', 'fa-picture-o'],
 	    element: function () {
 	        var label = document.createElement('label');
@@ -22014,6 +22120,22 @@
 	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
 	        }
 	    }]
+	}, {
+	    name: 'remove image',
+	    description: 'Remove image',
+	    class: ['fa', 'fa-times'],
+	    event: {
+	        name: 'click',
+	        fn: function fn(event) {
+	            var ok = confirm('Are you sure?');
+	            if (!ok) return;
+
+	            var currentImage = _EditImageClass2.default.getCurrentImage();
+	            var parent = currentImage.parentElement;
+	            _EditImageClass2.default.hide();
+	            parent.removeChild(currentImage);
+	        }
+	    }
 	}];
 
 /***/ },
@@ -22044,6 +22166,7 @@
 	 */
 	{
 	    name: 'Add background',
+	    description: 'Change background image',
 	    class: ['fa', 'fa-file-image-o'],
 	    element: function () {
 	        var label = document.createElement('label');
@@ -22074,6 +22197,21 @@
 	            this.getElementsByTagName('input')[0].value = ''; // clone the input for new image
 	        }
 	    }]
+	}, {
+	    name: 'remove background',
+	    description: 'Remove background image',
+	    class: ['fa', 'fa-times'],
+	    event: {
+	        name: 'click',
+	        fn: function fn(event) {
+	            event.preventDefault();
+	            var ok = confirm('Are you sure?');
+	            if (!ok) return;
+
+	            var currentBg = _EditBackgroundClass2.default.getCurrentBackground();
+	            currentBg.style.backgroundImage = '';
+	        }
+	    }
 	}];
 
 /***/ },
