@@ -10109,7 +10109,12 @@
 	                EditBackground.show(this);
 	                EditBackground.setCurrentBackground(this);
 
-	                this.addEventListener('blur', EditBackground.hide);
+	                this.addEventListener('blur', function (event) {
+	                    if (event.relatedTarget) {
+	                        if (event.relatedTarget.classList.contains('frontendEditor-nav-btn')) return;
+	                        EditBackground.hide();
+	                    }
+	                });
 	            });
 	        }
 
