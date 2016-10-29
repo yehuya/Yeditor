@@ -54,9 +54,16 @@ export default class Editor {
      */
     initOptions(options) {
         if (options && typeof options == 'object') {
+            // navigation
             if (options.hasOwnProperty('openNavigation')) Config.nav.openNavigation = options.openNavigation;
-            if (options.hasOwnProperty('navOrder')) Config.nav.order = options.navOrder;
+            if (options.hasOwnProperty('navMainOrder')) Config.nav.order = options.navMainOrder;
+            if (options.hasOwnProperty('navImageOrder')) Config.editImage.order = options.navImageOrder;
+            if (options.hasOwnProperty('navBackgroundOrder')) Config.EditBackground.order = options.navBackgroundOrder;
+
+            // upload image
             if (options.hasOwnProperty('uploadImage')) Config.image.uploadImage = options.uploadImage;
+
+            // ajax 
             if (options.hasOwnProperty('url')) Config.ajax.url = options.url;
             if (options.hasOwnProperty('method')) Config.ajax.method = options.method;
             if (options.hasOwnProperty('done')) Config.ajax.done = options.done;

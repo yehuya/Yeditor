@@ -106,6 +106,7 @@ export default class EditImage {
         element.addEventListener('drop', function(e) {
             setTimeout(function() {
                 self.setAllImages(element);
+                EditImage.hide();
             }, 0)
         });
     }

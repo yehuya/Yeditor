@@ -43,19 +43,31 @@ export default class Button {
      * @return Object
      */
     create(btn) {
-        var area = this.area(btn.name);
+        if (!btn.name || btn.name.length < 1) return;
+        
+        var area = this.area();
 
+        // element
         if (typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
         this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element(); // check if btn element is DOM element
-        this.class(btn.class, btn.align);
-        this.elem.id = btn.id || null;
 
+        // class, id
+        this.class(btn.class, btn.align);
+        if (btn.id) this.elem.id = btn.id;
+
+        // name attr
+        this.elem.setAttribute(this.config.areaNameAttr, btn.name);
+
+        // text
         if (btn.text && btn.text.length > 0) this.elem.appendChild(document.createTextNode(btn.text));
 
+        // event
         this.event(btn.event);
 
+        // description
         var des = this.description(btn.description);
 
+        // append all into btn area
         area.appendChild(this.elem)
         if (des) area.appendChild(des);
 
@@ -64,13 +76,11 @@ export default class Button {
 
     /**
      * the button will placed inside this element
-     * @param String (the button name)
      * @return Object (Node) || boolean (false)
      */
-    area(name) {
+    area() {
         var place = document.createElement('div');
         place.classList.add(this.config.areaClass);
-        place.setAttribute(this.config.areaNameAttr, name);
 
         return place;
     }

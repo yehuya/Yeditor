@@ -52,7 +52,7 @@ exports.editBackground = [
     {
         name: 'remove background',
         description: 'Remove background image',
-        class: ['fa', 'fa-times'],
+        class: ['fa', 'fa-trash-o'],
         event: {
             name: 'click',
             fn: function(event) {

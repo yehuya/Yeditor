@@ -91,4 +91,13 @@ export default class Navigation {
         var btn = new Button(object);
         this.append(btn);
     }
+
+    /**
+     * get all buttons name in the nav
+     * @return Array
+     */
+    getAllButtonsName() {
+        var arr = this.nav.querySelectorAll('[' + Config.button.areaNameAttr + ']');
+        return arr;
+    }
 }

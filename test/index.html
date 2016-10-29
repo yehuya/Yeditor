@@ -62,15 +62,15 @@
     </div>
 
     <script src="../dist/bundle.js"></script>
-    <script src="js/sort.js"></script>
     <script>
+        // the main function of the plugin
         var editor = new Editor({
             /*uploadImage: function(file, callback){
                 $.get('http://localhost').then(function(url){
                     callback(url);
                 });
             }*/
-            navOrder: ['save', 'bold'],
+            navMainOrder: ['Close nav', ['<span style="opacity: .2;">|</span>'], 'save', 'bold', 'italic', 'underline', 'Add image', 'Add background', 'add link', 'remove link', 'code'],
             openNavigation: true,
             url: 'http://localhost',
             done: function(data) {
@@ -78,12 +78,14 @@
             }
         });
 
+        // Api - add param to ajax requset
         editor.api.ajax.addParam({
             name: 'hello',
             value: 'world'
         });
 
         var title = document.getElementsByTagName('h1')[0];
+        // set area as editable
         var edit = title.editable({
             name: 'title'
         });
@@ -99,16 +101,7 @@
         QA.editable({
             name: 'QA'
         });
-
-        //### usefull link convert to base64 into binary
-        // http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
     </script>
-
-    <!-- test user selection process
-    <button style="position: fixed;top: 0;left: 10px;outline:none;width: 100px;" class="btn btn-info" onclick="testQA(bold)">Bold</button>
-    <script src="js/selection/append.js"></script>
-    <script src="js/selection/helper.js"></script>
-    <script src="js/selection/process.js"></script>-->
 </body>
 
 </html>

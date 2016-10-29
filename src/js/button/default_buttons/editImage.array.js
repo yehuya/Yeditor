@@ -53,7 +53,7 @@ exports.editImage = [
     {
         name: 'remove image',
         description: 'Remove image',
-        class: ['fa', 'fa-times'],
+        class: ['fa', 'fa-trash-o'],
         event: {
             name: 'click',
             fn: function(event) {

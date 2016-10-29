@@ -8305,9 +8305,16 @@
 	        key: 'initOptions',
 	        value: function initOptions(options) {
 	            if (options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) == 'object') {
+	                // navigation
 	                if (options.hasOwnProperty('openNavigation')) _config2.default.nav.openNavigation = options.openNavigation;
-	                if (options.hasOwnProperty('navOrder')) _config2.default.nav.order = options.navOrder;
+	                if (options.hasOwnProperty('navMainOrder')) _config2.default.nav.order = options.navMainOrder;
+	                if (options.hasOwnProperty('navImageOrder')) _config2.default.editImage.order = options.navImageOrder;
+	                if (options.hasOwnProperty('navBackgroundOrder')) _config2.default.EditBackground.order = options.navBackgroundOrder;
+
+	                // upload image
 	                if (options.hasOwnProperty('uploadImage')) _config2.default.image.uploadImage = options.uploadImage;
+
+	                // ajax 
 	                if (options.hasOwnProperty('url')) _config2.default.ajax.url = options.url;
 	                if (options.hasOwnProperty('method')) _config2.default.ajax.method = options.method;
 	                if (options.hasOwnProperty('done')) _config2.default.ajax.done = options.done;
@@ -8485,6 +8492,7 @@
 	_exports.button = {
 	    areaNameAttr: 'data-btn-name',
 	    areaClass: prefix + '-nav-btn-area',
+	    separationClass: prefix + '-nav-btn-separation',
 	    descriptionClass: prefix + '-nav-btn-description',
 	    class: prefix + '-nav-btn',
 	    tagName: 'button'
@@ -8813,6 +8821,7 @@
 	            element.addEventListener('drop', function (e) {
 	                setTimeout(function () {
 	                    self.setAllImages(element);
+	                    EditImage.hide();
 	                }, 0);
 	            });
 	        }
@@ -8993,6 +9002,18 @@
 	            var btn = new _ButtonClass2.default(object);
 	            this.append(btn);
 	        }
+
+	        /**
+	         * get all buttons name in the nav
+	         * @return Array
+	         */
+
+	    }, {
+	        key: 'getAllButtonsName',
+	        value: function getAllButtonsName() {
+	            var arr = this.nav.querySelectorAll('[' + _config2.default.button.areaNameAttr + ']');
+	            return arr;
+	        }
 	    }]);
 
 	    return Navigation;
@@ -9069,19 +9090,31 @@
 	    _createClass(Button, [{
 	        key: 'create',
 	        value: function create(btn) {
-	            var area = this.area(btn.name);
+	            if (!btn.name || btn.name.length < 1) return;
 
+	            var area = this.area();
+
+	            // element
 	            if (typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
 	            this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element(); // check if btn element is DOM element
-	            this.class(btn.class, btn.align);
-	            this.elem.id = btn.id || null;
 
+	            // class, id
+	            this.class(btn.class, btn.align);
+	            if (btn.id) this.elem.id = btn.id;
+
+	            // name attr
+	            this.elem.setAttribute(this.config.areaNameAttr, btn.name);
+
+	            // text
 	            if (btn.text && btn.text.length > 0) this.elem.appendChild(document.createTextNode(btn.text));
 
+	            // event
 	            this.event(btn.event);
 
+	            // description
 	            var des = this.description(btn.description);
 
+	            // append all into btn area
 	            area.appendChild(this.elem);
 	            if (des) area.appendChild(des);
 
@@ -9090,16 +9123,14 @@
 
 	        /**
 	         * the button will placed inside this element
-	         * @param String (the button name)
 	         * @return Object (Node) || boolean (false)
 	         */
 
 	    }, {
 	        key: 'area',
-	        value: function area(name) {
+	        value: function area() {
 	            var place = document.createElement('div');
 	            place.classList.add(this.config.areaClass);
-	            place.setAttribute(this.config.areaNameAttr, name);
 
 	            return place;
 	        }
@@ -9255,6 +9286,7 @@
 	/**
 	 * create button from object by Button class
 	 * - get array of button object
+	 * - sort the button array
 	 * - return array of button element
 	 * @param Array Of Object
 	 * @return Array Of Object
@@ -9262,22 +9294,35 @@
 	_exports.createAllButtons = function (array, order) {
 	    var ready_button = [];
 
-	    console.log(array, order);
-	    array = Sort(order, array);
-	    console.log(array);
+	    // sort 
+	    array = _exports.sort(order, array);
 
 	    array.forEach(function (button) {
-	        var btn = new _ButtonClass2.default(button);
-	        ready_button.push(btn);
-
-	        getAllButtonsName(button);
+	        var separation = void 0;
+	        if (separation = _exports.separation(button)) {
+	            // separation button
+	            ready_button.push(separation);
+	        } else {
+	            var btn = new _ButtonClass2.default(button);
+	            ready_button.push(btn);
+	        }
 	    });
+
 	    return ready_button;
 	};
 
-	function Sort(sort, resort) {
+	/**
+	 * sort array by other array
+	 * @param Array (the other array)
+	 * @param Array (will be sorted)
+	 * @return Array 
+	 */
+	_exports.sort = function (sort, resort) {
 	    var newArr = [];
 	    sort.forEach(function (elem) {
+	        // for separation button
+	        if (Array.isArray(elem)) return newArr.push(elem);
+
 	        resort.forEach(function (el, i) {
 	            if (el.name == elem) {
 	                newArr.push(el);
@@ -9288,11 +9333,25 @@
 	    });
 
 	    return newArr.concat(resort);
-	}
+	};
 
-	function getAllButtonsName(button) {
-	    console.log(button.name);
-	}
+	/**
+	 * allow separation button inside the sort array in exports.sort fn
+	 * check if the @param is Array and create elem with the array value inside as innerHTML
+	 * else return false
+	 * @param Array
+	 * @return Object (Node) || Boolean (false)
+	 */
+	_exports.separation = function (button) {
+	    if (Array.isArray(button)) {
+	        var btn = document.createElement('div');
+	        btn.classList.add(_config2.default.button.separationClass);
+	        btn.innerHTML = button[0];
+	        return btn;
+	    } else {
+	        return false;
+	    }
+	};
 
 /***/ },
 /* 305 */
@@ -22174,7 +22233,7 @@
 	}, {
 	    name: 'remove image',
 	    description: 'Remove image',
-	    class: ['fa', 'fa-times'],
+	    class: ['fa', 'fa-trash-o'],
 	    event: {
 	        name: 'click',
 	        fn: function fn(event) {
@@ -22251,7 +22310,7 @@
 	}, {
 	    name: 'remove background',
 	    description: 'Remove background image',
-	    class: ['fa', 'fa-times'],
+	    class: ['fa', 'fa-trash-o'],
 	    event: {
 	        name: 'click',
 	        fn: function fn(event) {

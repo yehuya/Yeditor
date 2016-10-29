@@ -45,6 +45,7 @@ exports.getEditBackgroundButton = function() {
 /**
  * create button from object by Button class
  * - get array of button object
+ * - sort the button array
  * - return array of button element
  * @param Array Of Object
  * @return Array Of Object
@@ -52,22 +53,34 @@ exports.getEditBackgroundButton = function() {
 exports.createAllButtons = function(array, order) {
     var ready_button = [];
 
-    console.log(array, order);
-    array = Sort(order, array);
-    console.log(array)
+    // sort 
+    array = exports.sort(order, array);
 
     array.forEach(function(button) {
-        let btn = new Button(button);
-        ready_button.push(btn);
-
-        getAllButtonsName(button);
+        let separation;
+        if (separation = exports.separation(button)) { // separation button
+            ready_button.push(separation);
+        } else {
+            let btn = new Button(button);
+            ready_button.push(btn);
+        }
     });
+
     return ready_button;
 }
 
-function Sort(sort, resort) {
+/**
+ * sort array by other array
+ * @param Array (the other array)
+ * @param Array (will be sorted)
+ * @return Array 
+ */
+exports.sort = function(sort, resort) {
     var newArr = [];
     sort.forEach(elem => {
+        // for separation button
+        if (Array.isArray(elem)) return newArr.push(elem)
+
         resort.forEach((el, i) => {
             if (el.name == elem) {
                 newArr.push(el);
@@ -80,6 +93,20 @@ function Sort(sort, resort) {
     return newArr.concat(resort);
 }
 
-function getAllButtonsName(button) {
-    console.log(button.name);
+/**
+ * allow separation button inside the sort array in exports.sort fn
+ * check if the @param is Array and create elem with the array value inside as innerHTML
+ * else return false
+ * @param Array
+ * @return Object (Node) || Boolean (false)
+ */
+exports.separation = function(button) {
+    if (Array.isArray(button)) {
+        var btn = document.createElement('div');
+        btn.classList.add(Config.button.separationClass);
+        btn.innerHTML = button[0];
+        return btn;
+    } else {
+        return false;
+    }
 }

@@ -1,4 +1,4 @@
-var a = ['a', 'b', 'c', 'e','g', 'e', 'f', 'd'];
+var a = ['a', 'b', 'c', 'e', 'g', 'e', 'f', 'd'];
 var s = ['b', 'a', 'c', 'd', 'e'];
 
 function Sort(sort, resort) {
@@ -16,4 +16,4 @@ function Sort(sort, resort) {
 }
 
 var the = Sort(s, a);
-console.log(the);
+// console.log(the);

@@ -79,6 +79,7 @@ exports.EditBackground = {
 exports.button = {
     areaNameAttr: 'data-btn-name',
     areaClass: `${prefix}-nav-btn-area`,
+    separationClass: `${prefix}-nav-btn-separation`,
     descriptionClass: `${prefix}-nav-btn-description`,
     class: `${prefix}-nav-btn`,
     tagName: 'button'
