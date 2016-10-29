@@ -97,7 +97,8 @@ export default class Navigation {
      * @return Array
      */
     getAllButtonsName() {
-        var arr = this.nav.querySelectorAll('[' + Config.button.areaNameAttr + ']');
+        var getButtons = Array.prototype.slice.call(this.elem.querySelectorAll('[' + Config.button.areaNameAttr + ']'), 0);
+        var arr = getButtons.map(elem => { return elem.getAttribute(Config.button.areaNameAttr) });
         return arr;
     }
 }

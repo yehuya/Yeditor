@@ -9011,7 +9011,10 @@
 	    }, {
 	        key: 'getAllButtonsName',
 	        value: function getAllButtonsName() {
-	            var arr = this.nav.querySelectorAll('[' + _config2.default.button.areaNameAttr + ']');
+	            var getButtons = Array.prototype.slice.call(this.elem.querySelectorAll('[' + _config2.default.button.areaNameAttr + ']'), 0);
+	            var arr = getButtons.map(function (elem) {
+	                return elem.getAttribute(_config2.default.button.areaNameAttr);
+	            });
 	            return arr;
 	        }
 	    }]);
