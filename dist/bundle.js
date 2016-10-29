@@ -8306,6 +8306,7 @@
 	        value: function initOptions(options) {
 	            if (options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) == 'object') {
 	                if (options.hasOwnProperty('openNavigation')) _config2.default.nav.openNavigation = options.openNavigation;
+	                if (options.hasOwnProperty('navOrder')) _config2.default.nav.order = options.navOrder;
 	                if (options.hasOwnProperty('uploadImage')) _config2.default.image.uploadImage = options.uploadImage;
 	                if (options.hasOwnProperty('url')) _config2.default.ajax.url = options.url;
 	                if (options.hasOwnProperty('method')) _config2.default.ajax.method = options.method;
@@ -8454,7 +8455,8 @@
 	_exports.nav = {
 	    class: prefix + '-nav',
 	    id: prefix + '-nav',
-	    openNavigation: true // main navigation close or open
+	    openNavigation: true, // main navigation close or open
+	    order: []
 	};
 
 	/**
@@ -8463,7 +8465,8 @@
 	_exports.editImage = {
 	    navActiveClass: 'active',
 	    currentImageClass: prefix + '-current-edit-image',
-	    navId: prefix + '-edit-image-nav'
+	    navId: prefix + '-edit-image-nav',
+	    order: []
 	};
 
 	/**
@@ -8472,13 +8475,15 @@
 	_exports.EditBackground = {
 	    navActiveClass: 'active',
 	    currentImageClass: prefix + '-current-edit-background',
-	    navId: prefix + '-edit-background-nav'
+	    navId: prefix + '-edit-background-nav',
+	    order: []
 	};
 
 	/**
 	 * @for editor/button/Button.class.js
 	 */
 	_exports.button = {
+	    areaNameAttr: 'data-btn-name',
 	    areaClass: prefix + '-nav-btn-area',
 	    descriptionClass: prefix + '-nav-btn-description',
 	    class: prefix + '-nav-btn',
@@ -8791,6 +8796,7 @@
 
 	        /**
 	         * set all element images child - editable
+	         * add drop event (if element drop it will call to this fn again)
 	         * @param Object (Node - parent)
 	         */
 
@@ -8801,6 +8807,14 @@
 	            for (var i = 0; i < allImages.length; i++) {
 	                EditImage.setImage(allImages[i]);
 	            }
+
+	            // on drop
+	            var self = this;
+	            element.addEventListener('drop', function (e) {
+	                setTimeout(function () {
+	                    self.setAllImages(element);
+	                }, 0);
+	            });
 	        }
 
 	        /**
@@ -9055,7 +9069,7 @@
 	    _createClass(Button, [{
 	        key: 'create',
 	        value: function create(btn) {
-	            var area = this.area();
+	            var area = this.area(btn.name);
 
 	            if (typeof btn.element == 'function') btn.element = btn.element(); // if btn element is function 
 	            this.elem = this.constructor.isDOM(btn.element) ? btn.element : this.element(); // check if btn element is DOM element
@@ -9076,14 +9090,16 @@
 
 	        /**
 	         * the button will placed inside this element
+	         * @param String (the button name)
 	         * @return Object (Node) || boolean (false)
 	         */
 
 	    }, {
 	        key: 'area',
-	        value: function area() {
+	        value: function area(name) {
 	            var place = document.createElement('div');
 	            place.classList.add(this.config.areaClass);
+	            place.setAttribute(this.config.areaNameAttr, name);
 
 	            return place;
 	        }
@@ -9189,6 +9205,10 @@
 	 * the button come from default array of the buttons
 	 */
 
+	var _config = __webpack_require__(299);
+
+	var _config2 = _interopRequireDefault(_config);
+
 	var _ButtonClass = __webpack_require__(303);
 
 	var _ButtonClass2 = _interopRequireDefault(_ButtonClass);
@@ -9212,8 +9232,8 @@
 	 * @for Main nav
 	 */
 	_exports.getMainNavButton = function () {
-	  var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
-	  return _exports.createAllButtons(allArrayOfTheBtn);
+	    var allArrayOfTheBtn = [].concat(_imageArray.image, _navArray.nav, _textArray.text);
+	    return _exports.createAllButtons(allArrayOfTheBtn, _config2.default.nav.order);
 	};
 
 	/**
@@ -9221,7 +9241,7 @@
 	 * @for Edit image nav
 	 */
 	_exports.getEditImageButton = function () {
-	  return _exports.createAllButtons(_editImageArray.editImage);
+	    return _exports.createAllButtons(_editImageArray.editImage, _config2.default.editImage.order);
 	};
 
 	/**
@@ -9229,7 +9249,7 @@
 	 * @for Edit backgound nav
 	 */
 	_exports.getEditBackgroundButton = function () {
-	  return _exports.createAllButtons(_editBackgroundArray.editBackground);
+	    return _exports.createAllButtons(_editBackgroundArray.editBackground, _config2.default.EditBackground.order);
 	};
 
 	/**
@@ -9239,14 +9259,40 @@
 	 * @param Array Of Object
 	 * @return Array Of Object
 	 */
-	_exports.createAllButtons = function (array) {
-	  var ready_button = [];
-	  array.forEach(function (button) {
-	    var btn = new _ButtonClass2.default(button);
-	    ready_button.push(btn);
-	  });
-	  return ready_button;
+	_exports.createAllButtons = function (array, order) {
+	    var ready_button = [];
+
+	    console.log(array, order);
+	    array = Sort(order, array);
+	    console.log(array);
+
+	    array.forEach(function (button) {
+	        var btn = new _ButtonClass2.default(button);
+	        ready_button.push(btn);
+
+	        getAllButtonsName(button);
+	    });
+	    return ready_button;
 	};
+
+	function Sort(sort, resort) {
+	    var newArr = [];
+	    sort.forEach(function (elem) {
+	        resort.forEach(function (el, i) {
+	            if (el.name == elem) {
+	                newArr.push(el);
+	                resort.splice(i, 1);
+	                return;
+	            }
+	        });
+	    });
+
+	    return newArr.concat(resort);
+	}
+
+	function getAllButtonsName(button) {
+	    console.log(button.name);
+	}
 
 /***/ },
 /* 305 */

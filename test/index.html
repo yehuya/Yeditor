@@ -61,24 +61,8 @@
         </div>
     </div>
 
-    <style>
-        #show {
-            display: none;
-        }
-        
-        #show:focus {
-            display: block;
-        }
-        
-        #hello:focus+#show {
-            display: block;
-        }
-    </style>
-    <button id="hello">hello</button>
-    <input type="text" id="show" />
-
     <script src="../dist/bundle.js"></script>
-    <script src="js/image.js"></script>
+    <script src="js/sort.js"></script>
     <script>
         var editor = new Editor({
             /*uploadImage: function(file, callback){
@@ -86,6 +70,7 @@
                     callback(url);
                 });
             }*/
+            navOrder: ['save', 'bold'],
             openNavigation: true,
             url: 'http://localhost',
             done: function(data) {

@@ -92,6 +92,7 @@ export default class EditImage {
 
     /**
      * set all element images child - editable
+     * add drop event (if element drop it will call to this fn again)
      * @param Object (Node - parent)
      */
     static setAllImages(element) {
@@ -99,6 +100,14 @@ export default class EditImage {
         for (let i = 0; i < allImages.length; i++) {
             EditImage.setImage(allImages[i]);
         }
+
+        // on drop
+        var self = this;
+        element.addEventListener('drop', function(e) {
+            setTimeout(function() {
+                self.setAllImages(element);
+            }, 0)
+        });
     }
 
     /**

@@ -49,7 +49,8 @@ exports.editable = {
 exports.nav = {
     class: `${prefix}-nav`,
     id: `${prefix}-nav`,
-    openNavigation: true // main navigation close or open
+    openNavigation: true, // main navigation close or open
+    order: []
 }
 
 /**
@@ -58,7 +59,8 @@ exports.nav = {
 exports.editImage = {
     navActiveClass: 'active',
     currentImageClass: `${prefix}-current-edit-image`,
-    navId: `${prefix}-edit-image-nav`
+    navId: `${prefix}-edit-image-nav`,
+    order: []
 }
 
 /**
@@ -67,13 +69,15 @@ exports.editImage = {
 exports.EditBackground = {
     navActiveClass: 'active',
     currentImageClass: `${prefix}-current-edit-background`,
-    navId: `${prefix}-edit-background-nav`
+    navId: `${prefix}-edit-background-nav`,
+    order: []
 }
 
 /**
  * @for editor/button/Button.class.js
  */
 exports.button = {
+    areaNameAttr: 'data-btn-name',
     areaClass: `${prefix}-nav-btn-area`,
     descriptionClass: `${prefix}-nav-btn-description`,
     class: `${prefix}-nav-btn`,
