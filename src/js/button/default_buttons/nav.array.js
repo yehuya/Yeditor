@@ -114,9 +114,21 @@ exports.nav = [
                 let selection = new Selection();
                 let parent = selection.parentEditable();
 
-                Code.toggleShow();
-                Code.CodeMirror.off('change', Code.EventFn.change);
+                if(selection.selected.isCollapsed && selection.selected.type != "Caret"){
+                    if(Code.element().classList.contains('active')){
+                        Code.CodeMirror.off('change', Code.EventFn.change);
+                        return Code.hide();
+                    }else{
+                        return alert('Please select element');
+                    }
+                }
 
+                if(Code.element().classList.contains('active')){
+                    Code.CodeMirror.off('change', Code.EventFn.change);
+                }
+
+                Code.show();
+                
                 Code.EventFn.change = function() {
                     parent.innerHTML = Code.CodeMirror.doc.getValue();
                 }

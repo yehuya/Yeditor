@@ -10422,8 +10422,20 @@
 	            var selection = new _SelectionClass2.default();
 	            var parent = selection.parentEditable();
 
-	            _Code2.default.toggleShow();
-	            _Code2.default.CodeMirror.off('change', _Code2.default.EventFn.change);
+	            if (selection.selected.isCollapsed && selection.selected.type != "Caret") {
+	                if (_Code2.default.element().classList.contains('active')) {
+	                    _Code2.default.CodeMirror.off('change', _Code2.default.EventFn.change);
+	                    return _Code2.default.hide();
+	                } else {
+	                    return alert('Please select element');
+	                }
+	            }
+
+	            if (_Code2.default.element().classList.contains('active')) {
+	                _Code2.default.CodeMirror.off('change', _Code2.default.EventFn.change);
+	            }
+
+	            _Code2.default.show();
 
 	            _Code2.default.EventFn.change = function () {
 	                parent.innerHTML = _Code2.default.CodeMirror.doc.getValue();
@@ -10824,6 +10836,20 @@
 	 */
 	_exports.toggleShow = function () {
 	  _exports.element().classList.toggle('active');
+	};
+
+	/**
+	 * show code area
+	 */
+	_exports.show = function () {
+	  _exports.element().classList.add('active');
+	};
+
+	/**
+	 * hide code area
+	 */
+	_exports.hide = function () {
+	  _exports.element().classList.remove('active');
 	};
 
 /***/ },

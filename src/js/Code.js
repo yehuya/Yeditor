@@ -46,3 +46,17 @@ exports.element = function() {
 exports.toggleShow = function() {
     exports.element().classList.toggle('active');
 }
+
+/**
+ * show code area
+ */
+exports.show = function(){
+    exports.element().classList.add('active');
+}
+
+/**
+ * hide code area
+ */
+exports.hide = function(){
+    exports.element().classList.remove('active');
+}
