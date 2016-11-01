@@ -1,4 +1,5 @@
-/* editable dom element */
+/* prefix */
+$prefix: "Yeditor";
 
 [contenteditable="true"] {
     outline: none;
@@ -7,34 +8,20 @@
     transition: background 250ms linear;
 }
 
-
-/* FOCUS, HOVER */
-
 [contenteditable="true"]:focus,
 [contenteditable="true"]:hover {
     background: #efefef;
 }
 
-
-/* editable element > img */
-
 [contenteditable="true"] img {
     cursor: pointer;
 }
-
-
-/* editable element > img:FOCUS */
 
 [contenteditable="true"] img:active {
     opacity: 0.5;
 }
 
-
-/**
-* main nav open
-*/
-
-#frontendEditor-nav {
+##{$prefix}-nav {
     background-color: white;
     width: 100%;
     position: fixed;
@@ -47,16 +34,11 @@
     z-index: 999999;
 }
 
-#frontendEditor-nav #openBTN {
+##{$prefix}-nav #openBTN {
     display: none;
 }
 
-
-/**
-* main nav close
-*/
-
-#frontendEditor-nav.close {
+##{$prefix}-nav.close {
     width: 0px;
     height: 0px;
     border: 0;
@@ -64,12 +46,12 @@
     opacity: 1;
 }
 
-#frontendEditor-nav.close .frontendEditor-nav-btn,
-#frontendEditor-nav.close .frontendEditor-nav-btn-separation {
+##{$prefix}-nav.close .#{$prefix}-nav-btn,
+##{$prefix}-nav.close .#{$prefix}-nav-btn-separation {
     display: none;
 }
 
-#frontendEditor-nav.close #openBTN {
+##{$prefix}-nav.close #openBTN {
     display: block;
     position: fixed;
     top: 2%;
@@ -82,21 +64,16 @@
     border-radius: 100%;
 }
 
-
-/**
-* main nav button
-*/
-
-.frontendEditor-nav-btn-separation {
+.#{$prefix}-nav-btn-separation {
     display: inline-block;
 }
 
-.frontendEditor-nav-btn-area {
+.#{$prefix}-nav-btn-area {
     display: inline-block;
     position: relative;
 }
 
-.frontendEditor-nav-btn-description {
+.#{$prefix}-nav-btn-description {
     display: none;
     font-size: 60%;
     position: absolute;
@@ -110,11 +87,11 @@
     white-space: nowrap;
 }
 
-.frontendEditor-nav-btn-area:hover>.frontendEditor-nav-btn-description {
+.#{$prefix}-nav-btn-area:hover>.#{$prefix}-nav-btn-description {
     display: block;
 }
 
-.frontendEditor-nav-btn {
+.#{$prefix}-nav-btn {
     border: 0;
     background: white;
     color: black;
@@ -126,20 +103,30 @@
     min-width: 40px;
 }
 
-.frontendEditor-nav-btn.left {
+.#{$prefix}-nav-btn.left {
     float: left;
 }
 
-.frontendEditor-nav-btn.right {
+.#{$prefix}-nav-btn.right {
     float: right;
 }
 
-.frontendEditor-nav-btn:hover,
-.frontendEditor-nav-btn:focus {
+.#{$prefix}-nav-btn:hover,
+.#{$prefix}-nav-btn:focus {
     background: #efefef;
     outline: none;
 }
 
+##{$prefix}-edit-image-nav,
+##{$prefix}-edit-background-nav {
+    position: absolute;
+    display: none;
+}
+
+##{$prefix}-edit-image-nav.active,
+##{$prefix}-edit-background-nav.active {
+    display: block;
+}
 
 /**
 * .CodeMirror
@@ -159,20 +146,4 @@
 .CodeMirror.active {
     height: 250px;
     opacity: 1;
-}
-
-
-/**
-* edit image navigation
-*/
-
-#frontendEditor-edit-image-nav,
-#frontendEditor-edit-background-nav {
-    position: absolute;
-    display: none;
-}
-
-#frontendEditor-edit-image-nav.active,
-#frontendEditor-edit-background-nav.active {
-    display: block;
 }

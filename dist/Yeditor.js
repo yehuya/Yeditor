@@ -70,7 +70,7 @@
 
 
 	// expose the class to window scope
-	window.Editor = _EditorClass2.default;
+	window.Yeditor = _EditorClass2.default;
 
 /***/ },
 /* 1 */
@@ -8414,7 +8414,7 @@
 	"use strict";
 
 	var _exports = module.exports;
-	var prefix = 'frontendEditor'; // the plugin name
+	var prefix = 'Yeditor'; // the plugin name
 
 	_exports.prefix = prefix;
 

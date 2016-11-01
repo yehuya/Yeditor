@@ -1,7 +1,7 @@
 "use strict";
 
 const exports = module.exports;
-const prefix = 'frontendEditor'; // the plugin name
+const prefix = 'Yeditor'; // the plugin name
 
 exports.prefix = prefix;
 

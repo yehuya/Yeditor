@@ -8,7 +8,7 @@
 import "babel-polyfill";
 
 // add main style file
-require('./css/style.css');
+require('./css/style.scss');
 
 // add font-awesome style (its helpful with the button)
 require('font-awesome/css/font-awesome.css');
@@ -17,4 +17,4 @@ require('font-awesome/css/font-awesome.css');
 import Editor from './js/Editor.class.js';
 
 // expose the class to window scope
-window.Editor = Editor;
+window.Yeditor = Editor;
