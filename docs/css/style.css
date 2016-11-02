@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -52,19 +53,13 @@ html, body {
 
 .title strong {
     position: relative;
-    font-size: 124%;
-    line-height: 76%;
-    top: 1.98vw;
     right: -0.9vw;
 }
 
-.title span {
-    font-size: 10%;
-    display: block;
-    margin-top: -1vw;
-    text-align: right;
-    margin-right: 1vw;
-    letter-spacing: 0.36vw;
+.sub-title {
+    font-size: 2.11vw;
+    margin-left: 1.6vw;
+    margin-top: -1.3vw;
 }
 
 .btn {
@@ -73,6 +68,13 @@ html, body {
     color: black;
     display: inline-block;
     margin: 4vw 2vw 0;
+}
+
+.btn:focus,
+.btn:active {
+    box-shadow: none;
+    text-decoration: none;
+    outline: none;
 }
 
 .btn:hover {
