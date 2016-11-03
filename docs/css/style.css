@@ -17,21 +17,11 @@ body {
 }
 
 .background {
-    background-image: url('http://placehold.it/400?text=simple+background');
+    background-image: url('http://placehold.it/500/E8117F/ffffff?text=Background');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-}
-
-.logo {
-    width: 139px;
-}
-
-.footer {
-    margin: 10px 0 0;
-    font-size: 80%;
-    padding: 5px;
-    background: #efefef;
+    color: white;
 }
 
 .home {
@@ -51,14 +41,8 @@ body {
     color: black;
 }
 
-.title strong {
-    position: relative;
-    right: -0.9vw;
-}
-
 .sub-title {
     font-size: 2.11vw;
-    margin-left: 1.6vw;
     margin-top: -1.3vw;
 }
 
@@ -67,7 +51,11 @@ body {
     text-align: center;
     color: black;
     display: inline-block;
-    margin: 4vw 2vw 0;
+    margin: 3.3vw 2vw 0;
+}
+
+.btn span {
+    font-size: 80%;
 }
 
 .btn:focus,
@@ -86,18 +74,10 @@ body {
     font-size: 7vw;
 }
 
-.bg {
-    background: #efefef;
+.demo {
+    border: 1px solid black;
 }
 
-#try {
-    background: black;
-    color: white;
-    border: 1px solid black;
-    font-size: 2vw;
-    padding: 1vw;
-    box-sizing: border-box;
-    height: 12vw;
-    width: 12vw;
-    border-radius: 100%;
+[contenteditable=true]:focus, [contenteditable=true]:hover {
+    background: none;
 }
