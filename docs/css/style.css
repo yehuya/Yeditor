@@ -79,5 +79,5 @@ body {
 }
 
 [contenteditable=true]:focus, [contenteditable=true]:hover {
-    background: none;
+    background: white;
 }
