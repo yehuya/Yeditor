@@ -1,13 +1,25 @@
 {
   "name": "yeditor",
   "version": "1.0.0",
-  "description": "front-end editor for web page",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+    "name": "yehuya"
   },
-  "author": "yehuya",
-  "license": "ISC",
+  "description": "Front-end editor for web page",
+  "main": "dist/Yeditor.min.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "open ./docs/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yehuya/Yeditor.git"
+  },
+  "homepage": "https://yehuya.github.io/Yeditor/",
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "frontend-editor"
+  ],
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
@@ -16,13 +28,12 @@
     "css-loader": "^0.25.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
+    "medium-editor": "^5.22.1",
     "node-sass": "^3.10.1",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.2"
-  },
-  "dependencies": {
+    "webpack": "^1.13.2",
     "codemirror": "^5.19.0",
     "font-awesome": "^4.7.0"
   }
