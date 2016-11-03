@@ -17,11 +17,11 @@ body {
 }
 
 .background {
-    background-image: url('http://placehold.it/500/E8117F/ffffff?text=Background');
+    background-image: url('http://placehold.it/500?text=Background');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    color: white;
+    color: black;
 }
 
 .home {
