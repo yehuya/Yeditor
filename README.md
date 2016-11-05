@@ -81,5 +81,31 @@ title.editable({
 #### Options
 * <code>name:</code> (String) (default: null) the name of the editable element. the name is 'key', the 'value' = this element content, for ajax request - sending it to the server
 
+## Api
+How to take Yeditor into your system, use it as you wish..
+
+### How it works
+Yeditor api exists in the main function example:
+```javascript
+var Yeditor = new Yeditor();
+var Api = Yeditor.api;
+```
+Now <code>Api</code> reffer to Yeditor api
+
+### Ajax
+#### addParam
+Add data to save request
+```javascript
+Api.ajax.addParam({name: '<DATA-KEY>', value: '<DATA-VALUE>'});
+```
+
+### Code
+For 'code' button in the main navigation - we are using [CodeMirror](https://codemirror.net/) so the api expose to you the CodeMirror options of the code button (codemirror) element
+```javascript
+// the CodeMirror options will show up
+Api.code
+```
+
+
 
 
