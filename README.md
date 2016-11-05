@@ -85,7 +85,7 @@ title.editable({
 How to take Yeditor into your system, use it as you wish..
 
 ### How it works
-Yeditor api exists in the main function example:
+Yeditor api exists in the main function. example:
 ```javascript
 var Yeditor = new Yeditor();
 var Api = Yeditor.api;
@@ -105,6 +105,29 @@ For 'code' button in the main navigation - we are using [CodeMirror](https://cod
 // the CodeMirror options will show up
 Api.code
 ```
+
+### Navigation
+Yeditor has three navigation 
+* Main - exists at the top of the screen
+* Image - exists on each image (when image clicked)
+* Background - exists on each element with background (focus on the element)
+
+The api options exists for all the navigation but each nav has own endpoint.
+```javascript
+// navigation endpoint for using api options
+
+// Main
+Api.navigation.main
+
+// Image 
+Api.navigation.image
+
+// Background
+Api.navigation.background
+
+```
+
+
 
 
 
