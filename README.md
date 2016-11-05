@@ -157,5 +157,33 @@ Add custom button into the navigation
 }
 ```
 
+### Selection
+Do something with user selection
+```javascript
+// for get the current user selection you need to call it like this:
+var Selection = new Api.selection();
 
+// now you can use the api selection functions with the Selection variable
+```
+
+#### get()
+return user selection object
+
+#### text()
+return user selection text 
+
+#### parent()
+return user selection area parent element 
+
+#### parentEditable()
+Check if the parent of the selection area is editable
+return <code>false</code> if the parent is not editable
+
+#### insert(Node)
+Insert element into the current location of the user selection
+<code>@Node</code> is Node element 
+
+#### remove()
+remove the user selection 
+return <code>document fragment node</code>
 
