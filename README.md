@@ -93,8 +93,14 @@ var Api = Yeditor.api;
 Now <code>Api</code> reffer to Yeditor api
 
 ### Ajax
-#### addParam()
-Add data to save request
+This class send the editable area content into your server
+```javascript
+Api.ajax;
+```
+
+#### addParam(Object)
+Add data to ajax request - sending this data with save request<br />
+<code>@Object</code>
 ```javascript
 Api.ajax.addParam({name: '<DATA-KEY>', value: '<DATA-VALUE>'});
 ```
@@ -189,7 +195,7 @@ return <code>document fragment node</code>
 
 #### append(FN)
 Take user selection text and append it into new element - usefull for bold / underline etc..<br />
-how <code>@Fn</code> works:
+How <code>@FN</code> works:
 ```javascript
 Selection.append(function(text){
   var bold = document.createElement('span');
@@ -197,6 +203,9 @@ Selection.append(function(text){
   bold.innerText = text; // the user selection text - from @text argument
   
   return bold.cloneNode(true);
-})
+});
 ```
+
+
+
 
