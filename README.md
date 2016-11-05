@@ -1,5 +1,5 @@
 # Yeditor
-Front-End Editor for web page
+Front-End Editor for web page [DEMO](https://yehuya.github.io/Yeditor/)
 
 ## Init
 Add Yeditor file into your html file
