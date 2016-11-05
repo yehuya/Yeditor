@@ -93,7 +93,7 @@ var Api = Yeditor.api;
 Now <code>Api</code> reffer to Yeditor api
 
 ### Ajax
-#### addParam
+#### addParam()
 Add data to save request
 ```javascript
 Api.ajax.addParam({name: '<DATA-KEY>', value: '<DATA-VALUE>'});
@@ -127,8 +127,35 @@ Api.navigation.background
 
 ```
 
+#### Element()
+Return the navigation dom element
 
+#### getAllButtonsName()
+Get all the buttons name in the navigation
+(helpfull for order the nav in Yeditor main function)
 
+#### addButton(BUTTON_OBJECT)
+Add button into the navigation
+@param Object
+
+#### how to create BUTTON_OBJECT
+```javascript
+{
+  name: // button name
+  description: // what the button does - in short 
+  class: // button class use Array ([]) for multiple classes - OPTIONAL
+  text: // insert text into the button - OPTIONAL
+  id: // button id - OPTIONAL
+  element: // button element - DOM (it can be function thet return element) - OPTIONAL
+  event: [// button event
+    {
+      name: // event name, example: 'click', 'change' - use the origin addEventListener name
+      fn: // the function itself (what will happen)
+    }
+    // you can add multiple event
+  ]
+}
+```
 
 
 
