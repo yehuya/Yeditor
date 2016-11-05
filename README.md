@@ -127,7 +127,7 @@ Api.navigation.background
 
 ```
 
-#### Element()
+#### element()
 Return the navigation dom element
 
 #### getAllButtonsName()
@@ -135,10 +135,10 @@ Get all the buttons name in the navigation
 (helpfull for order the nav in Yeditor main function)
 
 #### addButton(BUTTON_OBJECT)
-Add button into the navigation
-@param Object
+Add custom button into the navigation
 
-#### how to create BUTTON_OBJECT
+<code>@param Object</code> - user guide:
+
 ```javascript
 {
   name: // button name
