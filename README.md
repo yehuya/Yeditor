@@ -176,14 +176,14 @@ return user selection text
 return user selection area parent element 
 
 #### parentEditable()
-Check if the parent of the selection area is editable
+Check if the parent of the selection area is editable<br />
 return <code>false</code> if the parent is not editable
 
 #### insert(Node)
-Insert element into the current location of the user selection
+Insert element into the current location of the user selection<br />
 <code>@Node</code> is Node element 
 
 #### remove()
-remove the user selection 
+remove the user selection<br />
 return <code>document fragment node</code>
 
