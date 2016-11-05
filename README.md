@@ -15,7 +15,7 @@ Yeditor includes two parts:
 * Editable elements
 
 ### Main function
-Initialize Yeditor (add Element editable protoype and plugin navigations)
+Initialize Yeditor (add Element prototype and plugin navigations)
 ```javascript
 var Editor = new Yeditor({
   // OPTIONS
