@@ -131,7 +131,7 @@ Api.navigation.background
 Return the navigation dom element
 
 #### getAllButtonsName()
-Get all the buttons name in the navigation
+Get all the buttons name in the navigation<br />
 (helpfull for order the nav in Yeditor main function)
 
 #### addButton(BUTTON_OBJECT)
@@ -186,4 +186,17 @@ Insert element into the current location of the user selection<br />
 #### remove()
 remove the user selection<br />
 return <code>document fragment node</code>
+
+#### append(FN)
+Take user selection text and append it into new element - usefull for bold / underline etc..<br />
+how <code>@Fn</code> works:
+```javascript
+Selection.append(function(text){
+  var bold = document.createElement('span');
+  bold.style.fontWeight = 'bold';
+  bold.innerText = text; // the user selection text - from @text argument
+  
+  return bold.cloneNode(true);
+})
+```
 
