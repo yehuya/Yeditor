@@ -206,6 +206,17 @@ Selection.append(function(text){
 });
 ```
 
+### Image
+Helpfull functions for using in images with Yeditor
+```javascript
+Api.image
+```
 
+#### base64(file, callback)
+ get image file and return it as base64 data url
+ <code>@file</code> the image file<br />
+ <code>@callback</code> (function) callback with 2 arguments 
+ * <code>@url</code>
+ * <code>@file</code>
 
 
