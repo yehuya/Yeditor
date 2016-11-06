@@ -213,10 +213,16 @@ Api.image
 ```
 
 #### base64(file, callback)
- get image file and return it as base64 data url
+ get image file and return it as base64 data url<br />
  <code>@file</code> the image file<br />
  <code>@callback</code> (function) callback with 2 arguments 
  * <code>@url</code>
  * <code>@file</code>
-
-
+ example: 
+ ```javascript
+ var imgFile = <IMAGE-FILE>;
+ var base64 = Api.image.base64(imgFile, function(url, file){
+  // @url - file base64 data-url
+  // @file - the original image file @imgFile
+ }1)
+ ```
