@@ -1,5 +1,7 @@
 # Yeditor
-Front-End Editor for web page [DEMO](https://yehuya.github.io/Yeditor/)
+Front-End Editor for web page<br />
+* [Yeditor site](https://yehuya.github.io/Yeditor/)
+* [DEMO (playground)](https://yehuya.github.io/Yeditor/demo.html)
 
 ## Init
 Add Yeditor file into your html file
