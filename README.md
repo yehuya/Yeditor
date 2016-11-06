@@ -289,3 +289,37 @@ Set <code>@img</code> as the current editable image<br />
 #### removeCurrentImage()
 Remove current editing image (remove only the class attribute - that mean it is the current editable image)
 
+### Edit background navigation
+Background navigation api<br />
+```javascript
+Api.edit.background
+```
+
+#### getNavigation()
+return navigation dom element
+
+#### show(bg)
+Show navigation above the current <code>@bg</code> element<br />
+<code>@bg</code> The element with backgound
+
+#### hide()
+Hide navigation
+
+#### setBackground(bg)
+Set <code>@bg</code> editable by the navigation<br />
+<code>@bg</code> dom element with background
+
+#### setAllbackground(element)
+Set all backgrounds inside the <code>@element</code> as editable by the navigation<br />
+<code>@element</code> The parent dom element - all element children will be editable
+
+#### getCurrentBackground()
+return the current editable background
+
+#### setCurrentBackground(bg)
+Set <code>@bg</code> as the current editable background<br />
+<code>@bg</code> dom element with background
+
+#### removeCurrentBackground()
+Remove current editing background (remove only the class attribute - that mean it is the current editable background)
+
