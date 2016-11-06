@@ -279,6 +279,13 @@ Set <code>@img</code> editable by the navigation<br />
 Set all images inside the <code>@element</code> as editable by the navigation<br />
 <code>@element</code> The parent dom element - all element children will be editable
 
+#### getCurrentImage()
+return the current editable image
 
+#### setCurrentImage(img)
+Set <code>@img</code> as the current editable image<br />
+<code>@img</code> image dom element
 
+#### removeCurrentImage()
+Remove current editing image (remove only the class attribute - that mean it is the current editable image)
 
