@@ -4,7 +4,7 @@
 Front-End Editor for web page<br />
 * [Yeditor site](https://yehuya.github.io/Yeditor/)
 * [DEMO (playground)](https://yehuya.github.io/Yeditor/demo.html)
-* [Api](#api)
+* [Api](API.md)
 
 ## Init
 Add Yeditor file into your html file
