@@ -1,3 +1,5 @@
+![Yeditor](https://yehuya.github.io/Yeditor/images/Yeditor-100.png)
+
 # Yeditor
 Front-End Editor for web page<br />
 * [Yeditor site](https://yehuya.github.io/Yeditor/)
