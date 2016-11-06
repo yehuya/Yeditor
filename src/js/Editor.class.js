@@ -16,7 +16,7 @@ import Ajax from './ajax/Ajax.class.js';
 import Serialize from './ajax/Serialize.class.js';
 import { CodeMirror } from './Code.js';
 
-export default class Editor {
+export class Editor {
     /**
      * __construct
      * setup api

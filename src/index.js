@@ -14,7 +14,9 @@ require('./css/style.scss');
 require('font-awesome/css/font-awesome.css');
 
 // import the main class
-import Editor from './js/Editor.class.js';
+import {Editor as Yeditor} from './js/Editor.class.js';
 
 // expose the class to window scope
-window.Yeditor = Editor;
+if(window){
+    window.Yeditor = Yeditor;
+}

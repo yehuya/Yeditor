@@ -56,10 +56,6 @@
 
 	var _EditorClass = __webpack_require__(298);
 
-	var _EditorClass2 = _interopRequireDefault(_EditorClass);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	// add main style file
 	__webpack_require__(326);
 
@@ -70,7 +66,9 @@
 
 
 	// expose the class to window scope
-	window.Yeditor = _EditorClass2.default;
+	if (window) {
+	  window.Yeditor = _EditorClass.Editor;
+	}
 
 /***/ },
 /* 1 */
@@ -8210,6 +8208,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Editor = undefined;
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -8261,7 +8260,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Editor = function () {
+	var Editor = exports.Editor = function () {
 	    /**
 	     * __construct
 	     * setup api
@@ -8403,9 +8402,6 @@
 	 * editable area
 	 * the 'SAVE' btn send all the the editable area content togther
 	 */
-
-
-	exports.default = Editor;
 
 /***/ },
 /* 299 */
