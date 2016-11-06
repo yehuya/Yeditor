@@ -6,6 +6,11 @@ Front-End Editor for web page<br />
 * [DEMO (playground)](https://yehuya.github.io/Yeditor/demo.html)
 * [Api](API.md)
 
+#### npm 
+```bash
+$npm install yeditor --save
+```
+
 ## Init
 Add Yeditor file into your html file
 ```html
