@@ -213,16 +213,46 @@ Api.image
 ```
 
 #### base64(file, callback)
- get image file and return it as base64 data url<br />
+ Get image file and return it as base64 data url<br />
  <code>@file</code> the image file<br />
  <code>@callback</code> (function) callback with 2 arguments 
  * <code>@url</code>
  * <code>@file</code>
  example: 
+ 
  ```javascript
  var imgFile = <IMAGE-FILE>;
  var base64 = Api.image.base64(imgFile, function(url, file){
   // @url - file base64 data-url
   // @file - the original image file @imgFile
- }1)
+ });
+ ```
+ 
+ #### addBackground(url, element)
+ Add element background image <br />
+ <code>@url</code> background image url<br />
+ <code>@element</code> Node element - the element
+ 
+ #### insertImageIntoUserSelection(url)
+ Insert new image into user selection location<br />
+ <code>@url</code> Image url
+ 
+ #### getURL(file, callback)
+ Get image or backround url by the user definition (Main function options - uploadImage)<br />
+ If <code>uploadImage</code> option is <b>not</b> empty (null) - get the file url from your server (by uploadImage fn)<br />
+ Else return file url as base64<br />
+ <code>@file</code> the image file<br />
+ <code>@callback</code> (function) callback with 1 argument 
+ * <code>@url</code>
+ 
+ example:
+ 
+ ```javascript
+ var imgFile = <IMAGE-FILE>;
+ Api.image.getURL(imgFile, function(url){
+  var img = document.createElement('img');
+  img.src= url;
+  
+  document.body.appendChild(img);
+ });
  ```
