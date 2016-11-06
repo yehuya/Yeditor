@@ -215,9 +215,8 @@ Api.image
 #### base64(file, callback)
  Get image file and return it as base64 data url<br />
  <code>@file</code> the image file<br />
- <code>@callback</code> (function) callback with 2 arguments 
- * <code>@url</code>
- * <code>@file</code>
+ <code>@callback</code> (function) callback with 2 arguments (url, file)
+
  example: 
  
  ```javascript
@@ -242,17 +241,16 @@ Api.image
  If <code>uploadImage</code> option is <b>not</b> empty (null) - get the file url from your server (by uploadImage fn)<br />
  Else return file url as base64<br />
  <code>@file</code> the image file<br />
- <code>@callback</code> (function) callback with 1 argument 
- * <code>@url</code>
+ <code>@callback</code> (function) callback with 1 argument (url)
  
  example:
  
  ```javascript
  var imgFile = <IMAGE-FILE>;
  Api.image.getURL(imgFile, function(url){
-  var img = document.createElement('img');
-  img.src= url;
+    var img = document.createElement('img');
+    img.src= url;
   
-  document.body.appendChild(img);
+    document.body.appendChild(img);
  });
  ```
