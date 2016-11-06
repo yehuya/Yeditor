@@ -225,7 +225,7 @@ Api.image
   // @url - file base64 data-url
   // @file - the original image file @imgFile
  });
- `````
+ ```
  
  
  #### addBackground(url, element)
