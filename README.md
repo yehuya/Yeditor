@@ -255,3 +255,30 @@ Api.image.getURL(imgFile, function(url){
   document.body.appendChild(img);
 });
 ```
+
+### Edit image navigation
+Image navigation api<br />
+```javascript
+Api.edit.image
+```
+
+#### getNavigation()
+return navigation dom element
+
+#### show(img)
+Show navigation above the current <code>@img</code>
+
+#### hide()
+Hide navigation
+
+#### setImage(img)
+Set <code>@img</code> editable by the navigation<br />
+<code>@img</code> image dom element
+
+#### setAllImages(element)
+Set all images inside the <code>@element</code> as editable by the navigation<br />
+<code>@element</code> The parent dom element - all element children will be editable
+
+
+
+
