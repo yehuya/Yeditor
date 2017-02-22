@@ -5,6 +5,7 @@ Front-End Editor for web page<br />
 * [Yeditor site](https://yehuya.github.io/Yeditor/)
 * [DEMO (playground)](https://yehuya.github.io/Yeditor/demo.html)
 * [Api](API.md)
+* [Chrome extension](https://chrome.google.com/webstore/detail/yeditor/ahckekfmpmanhdmkoecnhcdfinilmjgf?hl=he)
 
 #### npm 
 ```bash
